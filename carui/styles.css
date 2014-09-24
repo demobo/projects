@@ -32,3 +32,20 @@
     font-size: 12px;
     color: rgba(127,255,255,0.75);
 }
+
+.label i.fa {
+    font-size: 40px;
+    line-height: 60px;
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    border-radius: 60px;
+    border: solid 2px;
+    margin: 15px;
+    vertical-align: top;
+}
+
+.label div {
+    display: inline-block;
+    margin: 0px;
+}
