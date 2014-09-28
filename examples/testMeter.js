@@ -65,12 +65,14 @@ define(function(require, exports, module) {
         },
 
         toShow: function() {
+            this.halt();
             this.setPosition(0, this.options.yPosition, 0, stepTransition);
             this.setOpacity(1, stepTransition);
             this._showing = true;
         },
 
         toHide: function() {
+            this.halt();
             this.setPosition(-stepWidth+1, this.options.yPosition, 0, stepTransition);
             this.setOpacity(0.1 , stepTransition);
             this._showing = false;
