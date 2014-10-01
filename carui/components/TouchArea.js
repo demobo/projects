@@ -131,7 +131,8 @@ define(function(require, exports, module) {
                 origin: [0.5, 0.5],
                 classes: ['element'],
                 style: {
-                    borderRadius: "1000px"
+                    borderRadius: "1000px",
+                    borderColor: "white"
                 }
             });
 
@@ -139,7 +140,8 @@ define(function(require, exports, module) {
                 origin: [0.5, 0.5],
                 classes: ['element'],
                 style: {
-                    borderRadius: "1000px"
+                    borderRadius: "1000px",
+                    borderColor: "white"
                 }
             });
 
@@ -170,6 +172,7 @@ define(function(require, exports, module) {
             this.fingers.x[data.touch] = data.clientX;
             this.fingers.y[data.touch] = data.clientY;
 
+            // (x, y) = position of circle's center
             var len = _(this.fingers.x).size();
             var x = _.reduce(this.fingers.x, function(memo, num){ return memo + num; }, 0)/len;
             var y = _.reduce(this.fingers.y, function(memo, num){ return memo + num; }, 0)/len;
@@ -186,31 +189,18 @@ define(function(require, exports, module) {
                     this.circleLabel.setStyle({
                         backgroundColor: "#ddd"
                     });
-                        this.innerCircle.setSize([0,0]);
-                        this.outerCircle.setSize([0,0]);
                 } else if (data.count == 2){
                     this.circleLabel.setContent("Mode");
                     this.circleLabel.setSize([50,20]);
                     this.circleLabel.setStyle({
                         backgroundColor: "#00d8ff"
                     });
-                    //if (radius <= 100) {
-                      //  this.innerCircle.setSize([150, 150]);
-                    //} else if ( radius >= 300) {
-                      //  this.innerCircle.setSize([275, 275]);
-                    //} else {
-                        this.innerCircle.setSize([radius, radius]);
-                    //};
-                    this.outerCircle.setSize([0,0]);
-
                 } else {
                     this.circleLabel.setContent("Temperature");
                     this.circleLabel.setSize([100,20]);
                     this.circleLabel.setStyle({
                         backgroundColor: "#C4CF47"
                     });
-                    this.innerCircle.setSize([0,0]);
-                    this.outerCircle.setSize([400,400]);
                 }
 
                 this.halt();
@@ -240,20 +230,27 @@ define(function(require, exports, module) {
                         y
                     );
 
-                    var radius = Math.sqrt(Math.pow(data.clientX - x,2) + Math.pow(data.clientY - y,2))   ;
-                    this.innerCircle.setSize([radius, radius]);
-
-
-
-                    /*var value = Math.max(0,Math.min(100, Math.floor(this.values[data.count]/10)));
-                    this.emit('fingerChange', {
-                        delta: data.delta[1],
-                        x: x,
-                        y: y,
-                        count: this.count,
-                        color: this.color,
-                        value: value
-                    });*/
+                    var radius = Math.sqrt(Math.pow(data.clientX - x,2) + Math.pow(data.clientY - y,2))*2;
+                    if (data.count==1) {
+                        this.innerCircle.setSize([0,0]);
+                        this.outerCircle.setSize([0,0]);
+                    } else if (data.count==2) {
+                        if (radius <= 150) {
+                            this.innerCircle.setSize([150,150]);
+                        } else if (radius >= 290) {
+                            this.innerCircle.setSize([290,290]);
+                        } else {
+                            this.innerCircle.setSize([radius, radius]);
+                        };
+                        this.outerCircle.setSize([0,0]);
+                    } else {
+                        this.innerCircle.setSize([0,0]);
+                        if (radius <= 310) {
+                            this.outerCircle.setSize([310,310]);
+                        } else {
+                            this.outerCircle.setSize([radius,radius]);
+                        }
+                    }
                 }
             }
         }
