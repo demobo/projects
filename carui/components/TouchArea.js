@@ -50,6 +50,7 @@ define(function(require, exports, module) {
                         border: "solid 2px "+this.color,
                         backgroundColor: "transparent"
                     });
+                        this.circleSurface.setOpacity(0.3)
                 } else if (data.count==2) {
                     this.color = "#00d8ff";
                     this.setSize(400,400);
@@ -57,6 +58,7 @@ define(function(require, exports, module) {
                         border: "solid 40px "+this.color,
                         backgroundColor: "transparent"
                     });
+                    this.circleSurface.setOpacity(0.3)
                 } else {
                     this.color = "#C4CF47";
                     this.setSize(300,300);
@@ -64,6 +66,7 @@ define(function(require, exports, module) {
                         border: "none",
                         backgroundColor: this.color
                     });
+                    this.circleSurface.setOpacity(0.3)
                 }
                 this.halt();
                 this.setOpacity(1);
@@ -114,7 +117,7 @@ define(function(require, exports, module) {
             this.setOpacity(0);
 
             this.circleLabel = new UIElement({
-                origin: [1,1],
+                origin: [1, 1],
                 size: [60, 20],
                 color: "#707070",
                 content: "",
@@ -124,8 +127,25 @@ define(function(require, exports, module) {
                 },
                 opacity: 1
             });
+            this.innerCircle = new UIElement({
+                origin: [0.5, 0.5],
+                classes: ['element'],
+                style: {
+                    borderRadius: "1000px"
+                }
+            });
 
-            this._addChild(this.circleLabel).center();
+            this.outerCircle = new UIElement({
+                origin: [0.5, 0.5],
+                classes: ['element'],
+                style: {
+                    borderRadius: "1000px"
+                }
+            });
+
+
+            this._addChild(this.circleLabel)._addChild(this.innerCircle)._addChild(this.outerCircle).center();
+            //this._addChild(this.innerCircle).center();
             this.reset();
             this.hide();
             this.values = [0,0,0,0,0,0,0,0,0];
@@ -155,16 +175,28 @@ define(function(require, exports, module) {
                 if (data.count == 1) {
                     this.circleLabel.setContent("Volume");
                     this.circleLabel.setSize([70,20]);
+                    this.circleLabel.setStyle({
+                        backgroundColor: "#ddd"
+                    });
+                        this.innerCircle.setSize([0,0]);
+                        this.outerCircle.setSize([0,0]);
                 } else if (data.count == 2){
                     this.circleLabel.setContent("Mode");
                     this.circleLabel.setSize([50,20]);
+                    this.circleLabel.setStyle({
+                        backgroundColor: "#00d8ff"
+                    });
+                    this.innerCircle.setSize([100,100]);
+                    this.outerCircle.setSize([0,0])
+
                 } else {
                     this.circleLabel.setContent("Temperature");
                     this.circleLabel.setSize([100,20]);
                     this.circleLabel.setStyle({
-                        backgroundColor: "#C4CF20"
+                        backgroundColor: "#C4CF47"
                     });
-
+                    this.innerCircle.setSize([0,0]);
+                    this.outerCircle.setSize([400,400]);
                 }
 
                 this.halt();
@@ -172,11 +204,11 @@ define(function(require, exports, module) {
                 this.setScale(1, 1, 1, {duration: 200, curve: "easeOut"}, function () {
                     this.emit('fingerShow');
                 }.bind(this));
-                //this.update(data);
+                this.update(data);
             }
-        }
+        },
 
-       /* update: function(data) {
+        update: function(data) {
             if (data.count) {
                 this.fingers.x[data.touch] = data.clientX;
                 this.fingers.y[data.touch] = data.clientY;
@@ -205,7 +237,7 @@ define(function(require, exports, module) {
                     });
                 }
             }
-        } */
+        }
     });
 
 
@@ -233,8 +265,8 @@ define(function(require, exports, module) {
             });
 
             inputSurface.on('touchUpdate', function (data) {
+                secondaryCircle.update(data);
                 fingerCircle.update(data);
-                //secondaryCircle.update(data);
             });
 
             inputSurface.on('touchEnd', function () {
