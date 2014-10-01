@@ -119,7 +119,8 @@ define(function(require, exports, module) {
                 color: "#707070",
                 content: "",
                 style: {
-                    background: "#00d8ff"
+                    background: "#00d8ff",
+                    textAlign: "center"
                 },
                 opacity: 1
             });
@@ -153,22 +154,29 @@ define(function(require, exports, module) {
                 this.setScale(0, 0, 1);
                 if (data.count == 1) {
                     this.circleLabel.setContent("Volume");
+                    this.circleLabel.setSize([70,20]);
                 } else if (data.count == 2){
                     this.circleLabel.setContent("Mode");
+                    this.circleLabel.setSize([50,20]);
                 } else {
                     this.circleLabel.setContent("Temperature");
+                    this.circleLabel.setSize([100,20]);
+                    this.circleLabel.setStyle({
+                        backgroundColor: "#C4CF20"
+                    });
+
                 }
 
                 this.halt();
                 this.setOpacity(1);
-                this.setScale(1, 1, 1, {duration: 1000, curve: "easeOut"}, function () {
+                this.setScale(1, 1, 1, {duration: 200, curve: "easeOut"}, function () {
                     this.emit('fingerShow');
                 }.bind(this));
-                this.update(data);
+                //this.update(data);
             }
-        },
+        }
 
-        update: function(data) {
+       /* update: function(data) {
             if (data.count) {
                 this.fingers.x[data.touch] = data.clientX;
                 this.fingers.y[data.touch] = data.clientY;
@@ -197,7 +205,7 @@ define(function(require, exports, module) {
                     });
                 }
             }
-        }
+        } */
     });
 
 
@@ -226,7 +234,7 @@ define(function(require, exports, module) {
 
             inputSurface.on('touchUpdate', function (data) {
                 fingerCircle.update(data);
-                secondaryCircle.update(data);
+                //secondaryCircle.update(data);
             });
 
             inputSurface.on('touchEnd', function () {
