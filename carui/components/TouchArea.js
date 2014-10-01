@@ -144,8 +144,8 @@ define(function(require, exports, module) {
             });
 
 
-            this._addChild(this.circleLabel)._addChild(this.innerCircle)._addChild(this.outerCircle).center();
-            //this._addChild(this.innerCircle).center();
+            this._addChild(this.circleLabel)._addChild(this.innerCircle)
+                ._addChild(this.outerCircle).center();
             this.reset();
             this.hide();
             this.values = [0,0,0,0,0,0,0,0,0];
@@ -169,6 +169,14 @@ define(function(require, exports, module) {
             this.count = data.count;
             this.fingers.x[data.touch] = data.clientX;
             this.fingers.y[data.touch] = data.clientY;
+
+            var len = _(this.fingers.x).size();
+            var x = _.reduce(this.fingers.x, function(memo, num){ return memo + num; }, 0)/len;
+            var y = _.reduce(this.fingers.y, function(memo, num){ return memo + num; }, 0)/len;
+
+            var radius = Math.sqrt(Math.pow(data.clientX - x,2) + Math.pow(data.clientY - y,2));
+
+
             if (data.count == _(this.fingers.x).size()) {
                 this.setOpacity(0);
                 this.setScale(0, 0, 1);
@@ -186,8 +194,14 @@ define(function(require, exports, module) {
                     this.circleLabel.setStyle({
                         backgroundColor: "#00d8ff"
                     });
-                    this.innerCircle.setSize([100,100]);
-                    this.outerCircle.setSize([0,0])
+                    //if (radius <= 100) {
+                      //  this.innerCircle.setSize([150, 150]);
+                    //} else if ( radius >= 300) {
+                      //  this.innerCircle.setSize([275, 275]);
+                    //} else {
+                        this.innerCircle.setSize([radius, radius]);
+                    //};
+                    this.outerCircle.setSize([0,0]);
 
                 } else {
                     this.circleLabel.setContent("Temperature");
@@ -226,7 +240,12 @@ define(function(require, exports, module) {
                         y
                     );
 
-                    var value = Math.max(0,Math.min(100, Math.floor(this.values[data.count]/10)));
+                    var radius = Math.sqrt(Math.pow(data.clientX - x,2) + Math.pow(data.clientY - y,2))   ;
+                    this.innerCircle.setSize([radius, radius]);
+
+
+
+                    /*var value = Math.max(0,Math.min(100, Math.floor(this.values[data.count]/10)));
                     this.emit('fingerChange', {
                         delta: data.delta[1],
                         x: x,
@@ -234,7 +253,7 @@ define(function(require, exports, module) {
                         count: this.count,
                         color: this.color,
                         value: value
-                    });
+                    });*/
                 }
             }
         }
@@ -259,7 +278,7 @@ define(function(require, exports, module) {
             var secondaryCircle = new SecondaryCircle();
             secondaryCircle._eventHandler.pipe(this._eventHandler);
 
-            inputSurface.on('touchStart', function (data) {
+            inputSurface.on('touchStart', function (data) {console.log(data);
                 fingerCircle.show(data);
                 secondaryCircle.show(data);
             });
