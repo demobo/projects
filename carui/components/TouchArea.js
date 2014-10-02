@@ -128,16 +128,7 @@ define(function(require, exports, module) {
                 },
                 opacity: 1
             });
-            this.innerCircle = new UIElement({
-                origin: [0.5, 0.5],
-                classes: ['element'],
-                style: {
-                    borderRadius: "1000px",
-                    borderColor: "#FFFFFF"
-                }
-            });
-
-            this.outerCircle = new UIElement({
+            this.secondaryCircle = new UIElement({
                 origin: [0.5, 0.5],
                 classes: ['element'],
                 style: {
@@ -155,8 +146,7 @@ define(function(require, exports, module) {
                 opacity: 0.5
             });
 
-            this._addChild(this.circleLabel)._addChild(this.innerCircle)
-                ._addChild(this.outerCircle)._addChild(this.line).center();
+            this._addChild(this.circleLabel)._addChild(this.secondaryCircle)._addChild(this.line).center();
             this.reset();
             this.hide();
             this.values = [0,0,0,0,0,0,0,0,0];
@@ -235,23 +225,20 @@ define(function(require, exports, module) {
 
                     var radius = Math.sqrt(Math.pow(data.clientX - x,2) + Math.pow(data.clientY - y,2))*2;
                     if (data.count==1) {
-                        this.innerCircle.setSize([0,0]);
-                        this.outerCircle.setSize([0,0]);
+                        this.secondaryCircle.setSize([0,0]);
                     } else if (data.count==2) {
                         if (radius <= 150) {
-                            this.innerCircle.setSize([150,150]);
+                            this.secondaryCircle.setSize([150,150]);
                         } else if (radius >= 290) {
-                            this.innerCircle.setSize([290,290]);
+                            this.secondaryCircle.setSize([290,290]);
                         } else {
-                            this.innerCircle.setSize([radius, radius]);
+                            this.secondaryCircle.setSize([radius, radius]);
                         };
-                        this.outerCircle.setSize([0,0]);
                     } else {
-                        this.innerCircle.setSize([0,0]);
                         if (radius <= 310) {
-                            this.outerCircle.setSize([310,310]);
+                            this.secondaryCircle.setSize([310,310]);
                         } else {
-                            this.outerCircle.setSize([radius,radius]);
+                            this.secondaryCircle.setSize([radius,radius]);
                         }
                     }
                 }
