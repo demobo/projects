@@ -117,6 +117,7 @@ define(function(require, exports, module) {
             this.setOpacity(0);
 
             this.circleLabel = new UIElement({
+                align: [-0.01, -0.01],
                 origin: [1, 1],
                 size: [60, 20],
                 color: "#707070",
@@ -132,7 +133,7 @@ define(function(require, exports, module) {
                 classes: ['element'],
                 style: {
                     borderRadius: "1000px",
-                    borderColor: "white"
+                    borderColor: "#FFFFFF"
                 }
             });
 
@@ -141,13 +142,21 @@ define(function(require, exports, module) {
                 classes: ['element'],
                 style: {
                     borderRadius: "1000px",
-                    borderColor: "white"
+                    borderColor: "#FFFFFF"
                 }
             });
 
+            this.line = new UIElement({
+                origin: [1, 0],
+                size: [1, 1],
+                style:{
+                    backgroundColor: "#FFFFFF"
+                },
+                opacity: 0.5
+            });
 
             this._addChild(this.circleLabel)._addChild(this.innerCircle)
-                ._addChild(this.outerCircle).center();
+                ._addChild(this.outerCircle)._addChild(this.line).center();
             this.reset();
             this.hide();
             this.values = [0,0,0,0,0,0,0,0,0];
@@ -161,8 +170,8 @@ define(function(require, exports, module) {
 
         hide:function() {
             this.halt();
-            this.setOpacity(0, {duration: 200, curve: "easeOut"});
-            this.setScale(0, 0, 1, {duration: 200, curve: "easeOut"}, function () {
+            this.setOpacity(0, {duration: 300, curve: "easeOut"});
+            this.setScale(0, 0, 1, {duration: 300, curve: "easeOut"}, function () {
                 this.emit('fingerHide');
             }.bind(this));
         },
@@ -172,17 +181,11 @@ define(function(require, exports, module) {
             this.fingers.x[data.touch] = data.clientX;
             this.fingers.y[data.touch] = data.clientY;
 
-            // (x, y) = position of circle's center
-            var len = _(this.fingers.x).size();
-            var x = _.reduce(this.fingers.x, function(memo, num){ return memo + num; }, 0)/len;
-            var y = _.reduce(this.fingers.y, function(memo, num){ return memo + num; }, 0)/len;
-
-            var radius = Math.sqrt(Math.pow(data.clientX - x,2) + Math.pow(data.clientY - y,2));
-
 
             if (data.count == _(this.fingers.x).size()) {
                 this.setOpacity(0);
                 this.setScale(0, 0, 1);
+                this.line.setSize([1000, 1], {duration: 500, curve: "inSine"});
                 if (data.count == 1) {
                     this.circleLabel.setContent("Volume");
                     this.circleLabel.setSize([70,20]);
@@ -275,7 +278,7 @@ define(function(require, exports, module) {
             var secondaryCircle = new SecondaryCircle();
             secondaryCircle._eventHandler.pipe(this._eventHandler);
 
-            inputSurface.on('touchStart', function (data) {console.log(data);
+            inputSurface.on('touchStart', function (data) {
                 fingerCircle.show(data);
                 secondaryCircle.show(data);
             });
