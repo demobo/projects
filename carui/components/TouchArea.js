@@ -95,6 +95,11 @@ define(function(require, exports, module) {
                         y
                     );
 
+                    if (this.values[data.count] < 0) {
+                        this.values[data.count] = 0;
+                    } else if (this.values[data.count]/10 > 100) {
+                        this.values[data.count] = 1000;
+                    }
                     var value = Math.max(0,Math.min(100, Math.floor(this.values[data.count]/10)));
                     this.emit('fingerChange', {
                         delta: data.delta[1],
@@ -236,15 +241,21 @@ define(function(require, exports, module) {
                             this.secondaryCircle.setSize([radius, radius]);
                         };
                     } else {
-                        if (radius <= 310) {
+                        if (radius <= 325) {
                             this.secondaryCircle.setSize([310,310]);
                         } else {
-                            this.secondaryCircle.setSize([radius,radius]);
+                            //this.secondaryCircle.setSize([radius,radius]);
+
+                            this.outerRingSizing(radius);
                         }
                     }
                 }
             }
-        }
+        },
+
+        outerRingSizing: _.debounce(function(radius) {
+            this.secondaryCircle.setSize([radius,radius]);
+        }, 15)
     });
 
 
