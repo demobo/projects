@@ -123,14 +123,9 @@ define(function(require, exports, module) {
             this.circleLabel = new UIElement({
                 align: [-0.01, -0.01],
                 origin: [1, 1],
-                size: [60, 20],
-                color: "#707070",
-                content: "",
                 style: {
-                    background: "#00d8ff",
                     textAlign: "center"
-                },
-                opacity: 1
+                }
             });
             this.secondaryCircle = new UIElement({
                 origin: [0.5, 0.5],
@@ -229,6 +224,7 @@ define(function(require, exports, module) {
                         y
                     );
 
+
                     var radius = Math.sqrt(Math.pow(data.clientX - x,2) + Math.pow(data.clientY - y,2))*2;
                     if (data.count==1) {
                         this.secondaryCircle.setSize([0,0]);
@@ -244,18 +240,12 @@ define(function(require, exports, module) {
                         if (radius <= 325) {
                             this.secondaryCircle.setSize([310,310]);
                         } else {
-                            //this.secondaryCircle.setSize([radius,radius]);
-
-                            this.outerRingSizing(radius);
+                            this.secondaryCircle.setSize([radius,radius]);
                         }
                     }
                 }
             }
-        },
-
-        outerRingSizing: _.debounce(function(radius) {
-            this.secondaryCircle.setSize([radius,radius]);
-        }, 15)
+        }
     });
 
 
