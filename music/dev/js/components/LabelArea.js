@@ -5,6 +5,7 @@ define(function(require, exports, module) {
                     'Classical for Studying','Payphone','The Script','Owl City & Carly Rae Jepson','Jason Chen','Train',
                     'Utada','Idina Menzel','Disney','Sixpence None the Richer','John Green','BoA'];
     var source = ['Pandora','YouTube','Last.fm','Grooveshark','Spotify'];
+    var sound = ['mute','unmute'];
 
     var LabelArea = UIElement.extend({
         constructor:function(options) {
@@ -38,15 +39,20 @@ define(function(require, exports, module) {
             this.setStyle({
                 color: data.color
             });
-            var icons = ["fa-volume-up", "fa-sliders", "fa-tasks"];
-            var icon = '<i class="fa ' + icons[data.count-1] + '"></i>';
             var content = '';
-            if (data.count==1) {
-                content = icon + "<div>" + data.value + "</div>";
-            } else if (data.count==2) {
-                content = icon + "<div>" + playlist[data.value] + " Radio" + "</div>";
+
+            if (data.direction == 'y') {
+                var icons = ["fa-volume-up", "fa-sliders", "fa-tasks"];
+                var icon = '<i class="fa ' + icons[data.count - 1] + '"></i>';
+                if (data.count == 1) {
+                    content = icon + "<div>" + data.value + "</div>";
+                } else if (data.count == 2) {
+                    content = icon + "<div>" + playlist[data.value] + " Radio" + "</div>";
+                } else {
+                    content = icon + "<div>" + source[data.value] + "</div>";
+                }
             } else {
-                content = icon + "<div>" + source[data.value] + "</div>";
+                content = "<div>" + sound[data.value] + "</div>";
             }
             this.setContent(content);
         }

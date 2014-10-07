@@ -87,7 +87,7 @@ define(function(require, exports, module) {
                     var y = _.reduce(this.fingers.y, function(memo, num){ return memo + num; }, 0)/len;
 
                     if (this.y) this.yValues[data.count] = Math.floor(this.yValues[data.count]-y+this.y); // y stepping
-                    if (this.x) this.xValues[data.count] = Math.floor(this.xValues[data.count]-x+this.x);  //x stepping
+                    if (this.x) this.xValues[data.count] = Math.floor(this.xValues[data.count]+x-this.x);  //x stepping
 
                     this.x = x;
                     this.y = y;
@@ -95,13 +95,19 @@ define(function(require, exports, module) {
                         x,
                         y
                     );
-
+                    // y bounds
                     if (this.yValues[data.count] < 0) {
                         this.yValues[data.count] = 0;
                     } else if (this.yValues[data.count]/10 > 100) {
                         this.yValues[data.count] = 1000;
                     }
-
+                    // x bounds
+                    if (this.xValues[data.count] < -1) {
+                        this.xValues[data.count] = -1;
+                    } else if (this.xValues[data.count]/100 > 1) {
+                        this.xValues[data.count] = 100;
+                    }
+                    // set y array length
                     if (data.count==1) {
                         dataSize = 10;
                     } else if (data.count==2) {
@@ -109,14 +115,20 @@ define(function(require, exports, module) {
                     } else {
                         dataSize = 200;
                     }
+                    var direction = 'y';
+                    if (direction == 'y') {
+                        var value = Math.max(0, Math.min(100, Math.floor(this.yValues[data.count]/dataSize))); //controls stepping
+                    } else {
+                        var value = Math.max(0, Math.min(1, Math.floor(this.xValues[data.count]/100)));
+                    }
 
-                    var value = Math.max(0,Math.min(100, Math.floor(this.yValues[data.count]/dataSize))); //controls stepping
                     this.emit('fingerChange', {
                         delta: data.delta[1],
                         x: x,
                         y: y,
                         count: this.count,
                         color: this.color,
+                        direction: direction,
                         value: value
                     });
                 }
