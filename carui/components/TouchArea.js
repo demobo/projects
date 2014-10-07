@@ -262,6 +262,7 @@ define(function(require, exports, module) {
             });
 
             var fingerCircle = new FingerCircle();
+
             fingerCircle._eventHandler.pipe(this._eventHandler);
 
             var secondaryCircle = new SecondaryCircle();

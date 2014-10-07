@@ -7,6 +7,12 @@ define(function(require, exports, module) {
 
     var Transitionable = require('famous/transitions/Transitionable');
 
+    var config = [
+        {title: "Volumen", step:.1, color: "green"},
+        {title: "Frequency", step:.1, color: "yellow"},
+        {title: "Station", step:10, color: "red"},
+    ];
+
     var background = new UIElement({
         style: {
             background: '#333'

@@ -1,0 +1,35 @@
+{
+   "name": "de Mobo Muisc",
+   "description": "de Mobo Muisc",
+   "short_name": "de Mobo Muisc",
+   "browser_action":
+   {
+	  "default_icon": "images/colabeo19.png",
+      "default_title": "Colabeo"
+   },
+   "background" : {
+    "scripts": ["js/demobo.js","js/background.js"]
+   },
+   "content_scripts": [
+      {
+         "all_frames": false,
+         "js": ["js/main.js"],
+		 "matches": [ "*://*/*" ],
+         "run_at": "document_idle"
+      }
+   ],
+   "content_security_policy": "script-src 'self' https://net.demobo.com https://cdn.firebase.com https://*.firebaseio.com https://*.firebaseio-demo.com; object-src 'self'",
+   "icons":
+   {
+   	 "128": "images/colabeo128.png",
+      "48": "images/colabeo48.png",
+	  "19": "images/colabeo19.png",
+      "16": "images/colabeo16.png"
+   },
+   "homepage_url": "http://www.colabeo.com",
+   "permissions": [
+     "*://*/*", "tabs", "notifications"
+   ],
+   "version": "0.0.12",
+   "manifest_version": 2
+}
