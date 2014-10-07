@@ -1,18 +1,12 @@
 define(function(require, exports, module) {
     var UIElement           = require('core/UIElement');
 
-    var playlist = ['IU','Imagine Dragons','CNBlue','Lindsey Stirling','Infinite','SNSD','Beast','Eric Nam','House',
-                    'Classical for Studying','Payphone','The Script','Owl City & Carly Rae Jepson','Jason Chen','Train',
-                    'Utada','Idina Menzel','Disney','Sixpence None the Richer','John Green','BoA'];
-    var source = ['Pandora','YouTube','Last.fm','Grooveshark','Spotify'];
-    var sound = ['mute','unmute'];
-
     var LabelArea = UIElement.extend({
         constructor:function(options) {
             this._callSuper(UIElement, 'constructor', {
                 classes: ["label"],
                 position: [0, 0, 0],
-                size: [1000,100],
+                size: [700,100],
                 style: {
                     fontFamily: 'avenir next',
                     fontWeight: 200,
@@ -39,24 +33,44 @@ define(function(require, exports, module) {
             this.setStyle({
                 color: data.color
             });
-            var content = '';
 
             if (data.direction == 'y') {
                 var icons = ["fa-volume-up", "fa-sliders", "fa-tasks"];
                 var icon = '<i class="fa ' + icons[data.count - 1] + '"></i>';
-                if (data.count == 1) {
-                    content = icon + "<div>" + data.value + "</div>";
+                var playlists = ['IU','Imagine Dragons','CNBlue','Lindsey Stirling','Infinite','SNSD','Beast','Eric Nam','House',
+                    'Classical for Studying','Payphone','The Script','Owl City & Carly Rae Jepson','Jason Chen','Train',
+                    'Utada','Idina Menzel','Disney','Sixpence None the Richer','John Green','BoA'];
+                for (var i = 0; i < playlists.length; i++){
+                    playlists[i] += ' Radio';
+                    if (playlists[i].length > 12) {
+                        playlists[i] = playlists[i].slice(0,12);
+                        playlists[i] += '...';
+                    }
+                }
+                var sources = ['Pandora','YouTube','Last.fm','Grooveshark','Spotify','Jango'];
+
+                if (data.count==1) {
+                    var content = icon + "<div>" + data.value + "</div>";
                 } else if (data.count == 2) {
-                    content = icon + "<div>" + playlist[data.value] + " Radio" + "</div>";
+                    content = icon + "<div>" + playlists[data.value] + "</div>";
                 } else {
-                    content = icon + "<div>" + source[data.value] + "</div>";
+                    content = icon + "<div>" + sources[data.value] + "</div>";
                 }
             } else {
-                content = "<div>" + sound[data.value] + "</div>";
+                this.setStyle({
+                    textAlign: "right"
+                });
+                var sound = ['mute','unmute'];
+                var feels = ['Hate','Love'];
+
+                if (data.count==1) {
+                    content = sound[data.value];
+                } else {
+                    content = feels[data.value];
+                }
             }
             this.setContent(content);
         }
-
     });
 
     module.exports = LabelArea;

@@ -49,7 +49,7 @@ define(function(require, exports, module) {
                     this.color = "#ddd";
                     this.setSize(100,100);
                     this.circleSurface.setStyle({
-                        border: "solid 2px "+this.color,
+                        border: "solid 5px "+this.color,
                         backgroundColor: "transparent"
                     });
                 } else if (data.count==2) {
@@ -87,7 +87,7 @@ define(function(require, exports, module) {
                     var y = _.reduce(this.fingers.y, function(memo, num){ return memo + num; }, 0)/len;
 
                     if (this.y) this.yValues[data.count] = Math.floor(this.yValues[data.count]-y+this.y); // y stepping
-                    if (this.x) this.xValues[data.count] = Math.floor(this.xValues[data.count]+x-this.x);  //x stepping
+                    if (this.x) this.xValues[data.count] = Math.floor(this.xValues[data.count]+x-this.x); // x stepping
 
                     this.x = x;
                     this.y = y;
@@ -102,10 +102,10 @@ define(function(require, exports, module) {
                         this.yValues[data.count] = 1000;
                     }
                     // x bounds
-                    if (this.xValues[data.count] < -1) {
-                        this.xValues[data.count] = -1;
-                    } else if (this.xValues[data.count]/100 > 1) {
-                        this.xValues[data.count] = 100;
+                    if (this.xValues[data.count] < 0) {
+                        this.xValues[data.count] = 0;
+                    } else if (this.xValues[data.count]/300 > 1) {
+                        this.xValues[data.count] = 300;
                     }
                     // set y array length
                     if (data.count==1) {
@@ -117,9 +117,9 @@ define(function(require, exports, module) {
                     }
                     var direction = 'y';
                     if (direction == 'y') {
-                        var value = Math.max(0, Math.min(100, Math.floor(this.yValues[data.count]/dataSize))); //controls stepping
+                        var value = Math.max(0, Math.min(100, Math.floor(this.yValues[data.count]/dataSize)));
                     } else {
-                        var value = Math.max(0, Math.min(1, Math.floor(this.xValues[data.count]/100)));
+                        var value = Math.max(0, Math.min(1, Math.floor(this.xValues[data.count]/300)));
                     }
 
                     this.emit('fingerChange', {
@@ -200,20 +200,20 @@ define(function(require, exports, module) {
                 this.setScale(0, 0, 1);
                 this.line.setSize([1000 , 1], {duration: 300, curve: "inSine"});
                 if (data.count == 1) {
-                    this.circleLabel.setContent("Volume");
-                    this.circleLabel.setSize([70,20]);
+                    this.circleLabel.setContent("VOLUME");
+                    this.circleLabel.setSize([80,20]);
                     this.circleLabel.setStyle({
                         backgroundColor: "#ddd"
                     });
                 } else if (data.count == 2){
-                    this.circleLabel.setContent("Mode");
-                    this.circleLabel.setSize([50,20]);
+                    this.circleLabel.setContent("PLAYLIST");
+                    this.circleLabel.setSize([80,20]);
                     this.circleLabel.setStyle({
                         backgroundColor: "#00d8ff"
                     });
                 } else {
-                    this.circleLabel.setContent("Temperature");
-                    this.circleLabel.setSize([100,20]);
+                    this.circleLabel.setContent("MUSIC SOURCE");
+                    this.circleLabel.setSize([130,20]);
                     this.circleLabel.setStyle({
                         backgroundColor: "#C4CF47"
                     });
