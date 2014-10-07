@@ -241,11 +241,17 @@ define(function(require, exports, module) {
                             this.secondaryCircle.setSize([310,310]);
                         } else {
                             this.secondaryCircle.setSize([radius,radius]);
+
+                            //this.outerRingSizing(radius);
                         }
                     }
                 }
             }
-        }
+        },
+
+        /*outerRingSizing: _.debounce(function(radius) {
+            this.secondaryCircle.setSize([radius,radius]);
+        }, 20)*/
     });
 
 
