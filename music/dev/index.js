@@ -6,7 +6,7 @@ define(function(require, exports, module) {
     var TouchArea = require('./js/components/TouchArea');
 
     var config = [
-        {title: "Volumen", step:.1, color: "green"},
+        {title: "Volume", step:.1, color: "green"},
         {title: "Frequency", step:.1, color: "yellow"},
         {title: "Station", step:10, color: "red"},
     ];

@@ -19,7 +19,8 @@ define(function(require, exports, module) {
             this._addChild(this.circleSurface);
             this.reset();
             this.hide();
-            this.values = [0,0,0,0,0,0,0,0,0];
+            this.xValues = [0,0,0,0,0,0,0,0,0];
+            this.yValues = [0,0,0,0,0,0,0,0,0];
         },
 
         reset: function() {
@@ -80,11 +81,13 @@ define(function(require, exports, module) {
                 this.fingers.x[data.touch] = data.clientX;
                 this.fingers.y[data.touch] = data.clientY;
                 var len = _(this.fingers.x).size();
+                var dataSize = 0;
                 if (data.count==this.count) {
                     var x = _.reduce(this.fingers.x, function(memo, num){ return memo + num; }, 0)/len;
                     var y = _.reduce(this.fingers.y, function(memo, num){ return memo + num; }, 0)/len;
 
-                    if (this.y) this.values[data.count] = Math.floor(this.values[data.count]-y+this.y);
+                    if (this.y) this.yValues[data.count] = Math.floor(this.yValues[data.count]-y+this.y); // y stepping
+                    if (this.x) this.xValues[data.count] = Math.floor(this.xValues[data.count]-x+this.x);  //x stepping
 
                     this.x = x;
                     this.y = y;
@@ -93,12 +96,21 @@ define(function(require, exports, module) {
                         y
                     );
 
-                    if (this.values[data.count] < 0) {
-                        this.values[data.count] = 0;
-                    } else if (this.values[data.count]/10 > 100) {
-                        this.values[data.count] = 1000;
+                    if (this.yValues[data.count] < 0) {
+                        this.yValues[data.count] = 0;
+                    } else if (this.yValues[data.count]/10 > 100) {
+                        this.yValues[data.count] = 1000;
                     }
-                    var value = Math.max(0,Math.min(100, Math.floor(this.values[data.count]/10)));
+
+                    if (data.count==1) {
+                        dataSize = 10;
+                    } else if (data.count==2) {
+                        dataSize = 50;
+                    } else {
+                        dataSize = 200;
+                    }
+
+                    var value = Math.max(0,Math.min(100, Math.floor(this.yValues[data.count]/dataSize))); //controls stepping
                     this.emit('fingerChange', {
                         delta: data.delta[1],
                         x: x,
@@ -239,17 +251,11 @@ define(function(require, exports, module) {
                             this.secondaryCircle.setSize([310,310]);
                         } else {
                             this.secondaryCircle.setSize([radius,radius]);
-
-                            //this.outerRingSizing(radius);
                         }
                     }
                 }
             }
-        },
-
-        /*outerRingSizing: _.debounce(function(radius) {
-            this.secondaryCircle.setSize([radius,radius]);
-        }, 20)*/
+        }
     });
 
 
