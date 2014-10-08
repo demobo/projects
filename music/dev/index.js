@@ -30,12 +30,15 @@ define(function(require, exports, module) {
     touchData.on("change", function(model) {
         labelArea.show();
         var data = model.attributes;
+        labelArea.touchstart(data);
         labelArea.update(data);
     });
-
     touchArea.on("fingerChange", function(data){
         touchData.save(data);
     });
+    /*touchArea.on("click", function(data){
+        touchData.save(data);
+    });*/
     touchArea.on("fingerHide", function(data){
         labelArea.setDelay(800).hide();
     });

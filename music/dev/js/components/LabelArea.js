@@ -29,12 +29,29 @@ define(function(require, exports, module) {
             this.setPosition(20,0,0, {duration : 200, curve : 'easeOut'});
         },
 
+        touchstart: function(data) {
+            this.initPos = data;
+        },
+
         update: function(data) {
             this.setStyle({
                 color: data.color
             });
 
-            if (data.direction == 'y') {
+            /*if (data.play) {
+                this.setStyle({
+                    textAlign: "right"
+                });
+                console.log(clicks);
+                if (clicks%2 == 0) {
+                    var content = "Pause";
+                } else {
+                    content = "Play"
+                }
+                this.hide();
+            }*/
+
+            if (data.direction == 'y' /*&& !(data.play)*/) {
                 var icons = ["fa-volume-up", "fa-sliders", "fa-tasks"];
                 var icon = '<i class="fa ' + icons[data.count - 1] + '"></i>';
                 var playlists = ['IU','Imagine Dragons','CNBlue','Lindsey Stirling','Infinite','SNSD','Beast','Eric Nam','House',
@@ -50,18 +67,18 @@ define(function(require, exports, module) {
                 var sources = ['Pandora','YouTube','Last.fm','Grooveshark','Spotify','Jango'];
 
                 if (data.count==1) {
-                    var content = icon + "<div>" + data.value + "</div>";
+                    content = icon + "<div>" + data.value + "</div>";
                 } else if (data.count == 2) {
                     content = icon + "<div>" + playlists[data.value] + "</div>";
                 } else {
                     content = icon + "<div>" + sources[data.value] + "</div>";
                 }
-            } else {
+            } else /*if (!data.play)*/ {
                 this.setStyle({
                     textAlign: "right"
                 });
                 var sound = ['mute','unmute'];
-                var feels = ['Hate','Love'];
+                var feels = ['Love','Hate'];
 
                 if (data.count==1) {
                     content = sound[data.value];
