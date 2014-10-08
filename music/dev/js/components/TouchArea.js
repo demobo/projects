@@ -31,8 +31,8 @@ define(function(require, exports, module) {
 
         hide: function() {
             this.halt();
-            this.setOpacity(0, {duration: 300, curve: "easeOut"});
-            this.setScale(0,0,1, {duration : 300, curve : 'easeOut'}, function() {
+            this.setOpacity(0, {duration: 200, curve: "easeOut"});
+            this.setScale(0,0,1, {duration : 200, curve : 'easeOut'}, function() {
                 this.emit('fingerHide');
             }.bind(this));
         },
@@ -81,7 +81,9 @@ define(function(require, exports, module) {
                 this.fingers.x[data.touch] = data.clientX;
                 this.fingers.y[data.touch] = data.clientY;
                 var len = _(this.fingers.x).size();
-                var dataSize = 0;
+                var stepSize = [20,50,200];
+                var limit = [100, 20, 5];
+
                 if (data.count==this.count) {
                     var x = _.reduce(this.fingers.x, function(memo, num){ return memo + num; }, 0)/len;
                     var y = _.reduce(this.fingers.y, function(memo, num){ return memo + num; }, 0)/len;
@@ -95,11 +97,12 @@ define(function(require, exports, module) {
                         x,
                         y
                     );
+
                     // y bounds
                     if (this.yValues[data.count] < 0) {
                         this.yValues[data.count] = 0;
-                    } else if (this.yValues[data.count]/10 > 100) {
-                        this.yValues[data.count] = 1000;
+                    } else if (this.yValues[data.count]/stepSize[data.count-1] > limit[data.count-1]) {
+                        this.yValues[data.count] = stepSize[data.count-1]*limit[data.count-1];
                     }
                     // x bounds
                     if (this.xValues[data.count] < 0) {
@@ -107,17 +110,10 @@ define(function(require, exports, module) {
                     } else if (this.xValues[data.count]/300 > 1) {
                         this.xValues[data.count] = 300;
                     }
-                    // set y array length
-                    if (data.count==1) {
-                        dataSize = 10;
-                    } else if (data.count==2) {
-                        dataSize = 50;
-                    } else {
-                        dataSize = 200;
-                    }
+
                     var direction = 'y';
                     if (direction == 'y') {
-                        var value = Math.max(0, Math.min(100, Math.floor(this.yValues[data.count]/dataSize)));
+                        var value = Math.max(0, Math.min(100, Math.floor(this.yValues[data.count]/stepSize[data.count-1])));
                     } else {
                         var value = Math.max(0, Math.min(1, Math.floor(this.xValues[data.count]/300)));
                     }
@@ -170,7 +166,6 @@ define(function(require, exports, module) {
             this._addChild(this.circleLabel)._addChild(this.secondaryCircle)._addChild(this.line);
             this.reset();
             this.hide();
-            this.values = [0,0,0,0,0,0,0,0,0];
         },
 
         reset: function() {
@@ -181,8 +176,8 @@ define(function(require, exports, module) {
 
         hide:function() {
             this.halt();
-            this.setOpacity(0, {duration: 300, curve: "easeOut"});
-            this.setScale(0, 0, 1, {duration: 300, curve: "easeOut"}, function () {
+            this.setOpacity(0, {duration: 200, curve: "easeOut"});
+            this.setScale(0, 0, 1, {duration: 200, curve: "easeOut"}, function () {
                 this.emit('fingerHide');
             }.bind(this));
             this.line.setSize([1 , 1], {duration: 200, curve: "inSine"});
@@ -236,8 +231,6 @@ define(function(require, exports, module) {
                 if (data.count==this.count) {
                     var x = _.reduce(this.fingers.x, function(memo, num){ return memo + num; }, 0)/len;
                     var y = _.reduce(this.fingers.y, function(memo, num){ return memo + num; }, 0)/len;
-
-                    if (this.y) this.values[data.count] = Math.floor(this.values[data.count]-y+this.y);
 
                     this.x = x;
                     this.y = y;
@@ -302,9 +295,9 @@ define(function(require, exports, module) {
 
             inputSurface.on('touchEnd', function(){
                 fingerCircle.reset();
-                fingerCircle.setDelay(300, fingerCircle.hide.bind(fingerCircle));
+                fingerCircle.setDelay(200, fingerCircle.hide.bind(fingerCircle));
                 secondaryCircle.reset();
-                secondaryCircle.setDelay(300, secondaryCircle.hide.bind(secondaryCircle));
+                secondaryCircle.setDelay(200, secondaryCircle.hide.bind(secondaryCircle));
             });
 
             this._addChild(fingerCircle);

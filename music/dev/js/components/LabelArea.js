@@ -39,7 +39,7 @@ define(function(require, exports, module) {
                 var icon = '<i class="fa ' + icons[data.count - 1] + '"></i>';
                 var playlists = ['IU','Imagine Dragons','CNBlue','Lindsey Stirling','Infinite','SNSD','Beast','Eric Nam','House',
                     'Classical for Studying','Payphone','The Script','Owl City & Carly Rae Jepson','Jason Chen','Train',
-                    'Utada','Idina Menzel','Disney','Sixpence None the Richer','John Green','BoA'];
+                    'Utada','Idina Menzel','Disney','Sixpence None the Richer',"L'arc en Ciel",'Nico Touches the Wall'];
                 for (var i = 0; i < playlists.length; i++){
                     playlists[i] += ' Radio';
                     if (playlists[i].length > 12) {
