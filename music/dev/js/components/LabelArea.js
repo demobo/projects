@@ -1,6 +1,18 @@
 define(function(require, exports, module) {
     var UIElement           = require('core/UIElement');
 
+    var playlists = ['IU','Imagine Dragons','CNBlue','Lindsey Stirling','Infinite','SNSD','Beast','Eric Nam','House',
+        'Classical for Studying','Payphone','The Script','Owl City & Carly Rae Jepson','Jason Chen','Train',
+        'Utada','Idina Menzel','Disney','Sixpence None the Richer',"L'arc en Ciel",'Nico Touches the Wall'];
+    for (var i = 0; i < playlists.length; i++){
+        playlists[i] += ' Radio';
+        if (playlists[i].length > 12) {
+            playlists[i] = playlists[i].slice(0,12);
+            playlists[i] += '...';
+        }
+    }
+    var sources = ['Pandora','YouTube','Last.fm','Grooveshark','Spotify','Jango'];
+
     var LabelArea = UIElement.extend({
         constructor:function(options) {
             this._callSuper(UIElement, 'constructor', {
@@ -11,7 +23,6 @@ define(function(require, exports, module) {
                     fontFamily: 'avenir next',
                     fontWeight: 200,
                     fontSize: "72px",
-                    textAlign: "left",
                     margin: "20px",
                     color: "transparent"
                 }
@@ -29,61 +40,59 @@ define(function(require, exports, module) {
             this.setPosition(20,0,0, {duration : 200, curve : 'easeOut'});
         },
 
-        touchstart: function(data) {
-            this.initPos = data;
+        touchStart: function(data, count) {
+            if (count == 0) {
+                this.initPos = [data.x, data.y];
+            }
+        },
+
+        touchCount: function(data, count) {
+            if (count == 10) {
+                this.dx = Math.abs(data.x - this.initPos[0]);
+                this.dy = Math.abs(data.y - this.initPos[1]);
+                if (this.dx >= this.dy) {
+                    this.direction = 'x';
+                } else {
+                    this.direction = 'y';
+                }
+            }
+        },
+
+        touchEnd: function() {
+            this.direction = 'reset';
         },
 
         update: function(data) {
             this.setStyle({
                 color: data.color
             });
+            var content = '            ';
 
-            /*if (data.play) {
+            if (this.direction == 'y') {
                 this.setStyle({
-                    textAlign: "right"
+                    textAlign: "left"
                 });
-                console.log(clicks);
-                if (clicks%2 == 0) {
-                    var content = "Pause";
-                } else {
-                    content = "Play"
-                }
-                this.hide();
-            }*/
-
-            if (data.direction == 'y' /*&& !(data.play)*/) {
                 var icons = ["fa-volume-up", "fa-sliders", "fa-tasks"];
                 var icon = '<i class="fa ' + icons[data.count - 1] + '"></i>';
-                var playlists = ['IU','Imagine Dragons','CNBlue','Lindsey Stirling','Infinite','SNSD','Beast','Eric Nam','House',
-                    'Classical for Studying','Payphone','The Script','Owl City & Carly Rae Jepson','Jason Chen','Train',
-                    'Utada','Idina Menzel','Disney','Sixpence None the Richer',"L'arc en Ciel",'Nico Touches the Wall'];
-                for (var i = 0; i < playlists.length; i++){
-                    playlists[i] += ' Radio';
-                    if (playlists[i].length > 12) {
-                        playlists[i] = playlists[i].slice(0,12);
-                        playlists[i] += '...';
-                    }
-                }
-                var sources = ['Pandora','YouTube','Last.fm','Grooveshark','Spotify','Jango'];
 
                 if (data.count==1) {
-                    content = icon + "<div>" + data.value + "</div>";
+                    content = icon + "<div>" + data.value[1] + "</div>";
                 } else if (data.count == 2) {
-                    content = icon + "<div>" + playlists[data.value] + "</div>";
+                    content = icon + "<div>" + playlists[data.value[1]] + "</div>";
                 } else {
-                    content = icon + "<div>" + sources[data.value] + "</div>";
+                    content = icon + "<div>" + sources[data.value[1]] + "</div>";
                 }
-            } else /*if (!data.play)*/ {
+            } else if (this.direction == 'x')/*if (!data.play)*/ {
                 this.setStyle({
                     textAlign: "right"
                 });
-                var sound = ['mute','unmute'];
+                var sound = ['mute','unmute','extra'];
                 var feels = ['Love','Hate'];
 
                 if (data.count==1) {
-                    content = sound[data.value];
+                    content = sound[data.value[0]];
                 } else {
-                    content = feels[data.value];
+                    content = feels[data.value[0]];
                 }
             }
             this.setContent(content);

@@ -27,11 +27,14 @@ define(function(require, exports, module) {
     var touchData = new TouchModel({
         id: 'touchModel'
     });
+    var count = 0;
     touchData.on("change", function(model) {
         labelArea.show();
         var data = model.attributes;
-        labelArea.touchstart(data);
+        labelArea.touchStart(data,count);
+        labelArea.touchCount(data,count);
         labelArea.update(data);
+        count++;
     });
     touchArea.on("fingerChange", function(data){
         touchData.save(data);
@@ -40,7 +43,9 @@ define(function(require, exports, module) {
         touchData.save(data);
     });*/
     touchArea.on("fingerHide", function(data){
-        labelArea.setDelay(800).hide();
+        labelArea.touchEnd();
+        labelArea.setDelay(600).hide();
+        count = 0;
     });
     touchArea.on("fingerShow", function(data){
         labelArea.show();

@@ -44,6 +44,7 @@ define(function(require, exports, module) {
             this.count = data.count;
             this.fingers.x[data.touch] = data.clientX;
             this.fingers.y[data.touch] = data.clientY;
+
             if (data.count==_(this.fingers.x).size()) {
                 this.setOpacity(0);
                 this.setScale(0,0,1);
@@ -114,12 +115,9 @@ define(function(require, exports, module) {
                         this.xValues[data.count] = 200;
                     }
 
-                    var direction = 'y';
-                    if (direction == 'y') {
-                        var value = Math.max(0, Math.min(100, Math.floor(this.yValues[data.count]/stepSize[data.count-1])));
-                    } else {
-                        value = Math.max(0, Math.min(100, Math.floor(this.xValues[data.count]/200)));
-                    }
+                    var yvalue = Math.max(0, Math.min(100, Math.floor(this.yValues[data.count]/stepSize[data.count-1])));
+                    var xvalue = Math.max(0, Math.min(1, Math.floor(this.xValues[data.count]/200)));
+
 
                     this.emit('fingerChange', {
                         delta: data.delta[1],
@@ -127,8 +125,7 @@ define(function(require, exports, module) {
                         y: y,
                         count: this.count,
                         color: this.color,
-                        direction: direction,
-                        value: value,
+                        value: [xvalue,yvalue],
                         play: false
                     });
                 }

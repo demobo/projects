@@ -47,9 +47,7 @@ define(function(require, exports, module) {
         hide:function() {
             this.halt();
             this.setOpacity(0, {duration: 200, curve: "easeOut"});
-            this.setScale(0, 0, 1, {duration: 200, curve: "easeOut"}, function () {
-                this.emit('fingerHide');
-            }.bind(this));
+            this.setScale(0, 0, 1, {duration: 200, curve: "easeOut"});
             this.line.setSize([1 , 1], {duration: 200, curve: "inSine"});
 
         },
@@ -58,7 +56,6 @@ define(function(require, exports, module) {
             this.count = data.count;
             this.fingers.x[data.touch] = data.clientX;
             this.fingers.y[data.touch] = data.clientY;
-
 
             if (data.count == _(this.fingers.x).size()) {
                 this.setOpacity(0);
@@ -86,9 +83,7 @@ define(function(require, exports, module) {
 
                 this.halt();
                 this.setOpacity(1);
-                this.setScale(1, 1, 1, {duration: 200, curve: "easeOut"}, function () {
-                    this.emit('fingerShow');
-                }.bind(this));
+                this.setScale(1, 1, 1, {duration: 200, curve: "easeOut"});
                 this.update(data);
             }
         },
@@ -110,22 +105,22 @@ define(function(require, exports, module) {
                     );
 
 
-                    var radius = Math.sqrt(Math.pow(data.clientX - x,2) + Math.pow(data.clientY - y,2))*2;
+                    var diameter = Math.sqrt(Math.pow(data.clientX - x,2) + Math.pow(data.clientY - y,2))*2;
                     if (data.count==1) {
                         this.secondaryCircle.setSize([0,0]);
                     } else if (data.count==2) {
-                        if (radius <= 150) {
+                        if (diameter <= 150) {
                             this.secondaryCircle.setSize([150,150]);
-                        } else if (radius >= 290) {
+                        } else if (diameter >= 290) {
                             this.secondaryCircle.setSize([290,290]);
                         } else {
-                            this.secondaryCircle.setSize([radius, radius]);
+                            this.secondaryCircle.setSize([diameter, diameter]);
                         }
                     } else {
-                        if (radius <= 325) {
+                        if (diameter <= 325) {
                             this.secondaryCircle.setSize([310,310]);
                         } else {
-                            this.secondaryCircle.setSize([radius,radius]);
+                            this.secondaryCircle.setSize([diameter,diameter]);
                         }
                     }
                 }
