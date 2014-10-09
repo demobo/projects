@@ -77,7 +77,7 @@ function initDemobo() {
         isHost: false,
         appName: "demoboMusic",
         method: "code",
-        layers: ["firebase"],
+        layers: ["socketio", "firebase"],
         layerTimeout: 10000,
         timeout: 30000,
         onSuccess: function() {

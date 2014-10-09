@@ -12,13 +12,19 @@ define(function(require, exports, module) {
         {title: "Station", step:10, color: "red"}
     ];
 
+    var touchData = new TouchModel({
+        id: 'touchModel'
+    });
+
     var background = new UIElement({
         style: {
             background: '#333'
         }
     });
 
-    var labelArea = new LabelArea();
+    var labelArea = new LabelArea({
+        model: touchModel
+    });
 
     var touchArea = new TouchArea();
 
@@ -27,9 +33,7 @@ define(function(require, exports, module) {
     var TouchModel = Backbone.DemoboStorage.Model.extend({
         demoboID: 'touchModel'
     });
-    var touchData = new TouchModel({
-        id: 'touchModel'
-    });
+
     var count = 0;
     touchData.on("change", function(model) {
         labelArea.show();
@@ -44,11 +48,11 @@ define(function(require, exports, module) {
         }
     });
     touchArea.on("fingerChange", function(data){
-        touchData.save(data);
+        processTouchData(data);
         count++;
     });
     touchArea.on("tap", function(data){
-        touchData.save(data);
+        processTouchData(data);
         count = 0;
     });
     touchArea.on("fingerHide", function(data){
@@ -68,6 +72,16 @@ define(function(require, exports, module) {
     app.addChild(meter);
 
     initDemobo();
+
+    function processTouchData(data) {
+        // do some processing figuring out action and value
+        var tData = {
+            action: "volume",
+            value: 50,
+            color: "yellow"
+        };
+        touchData.save(tData);
+    }
 
     function initDemobo() {
 //        demobo_guid = demobo.Utils.generateCode(5);

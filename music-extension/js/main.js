@@ -1,7 +1,7 @@
 var dev = true;
 //change these two lines for loading local files
 var appEnginePort = 1250;
-var devurl = "//172.16.0.43";
+var devurl = "//127.0.0.1";
 var produrl = "//cdn-dot-demobo.appspot.com";
 
 var injectedScript = function() {
@@ -45,8 +45,6 @@ if (!document.getElementById('toggle')) {
 	} else {
 		load.setAttribute('onclick', 'javascript:((function(c){(c.demoboPortal&&c.demoboPortal.set("mode","EXTENSION"));c._extension=1;var d=window.__dmtg;((!c.demoboPortal&&function(){var a=new Date,b=c.document.createElement("script"),e="' + produrl + '";window.demoboBase=e;b.src="' + produrl + '/core/entry.js?"+a.getTime();b.className="demoboJS";c.document.body&&c.document.body.appendChild(b)})||d)()})(window))');
 	}
-	// load.setAttribute('onclick', 'javascript:(function(c){(c.demoboPortal&&c.demoboPortal.set("mode","EXTENSION"));!c.demoboPortal&&(function(){c._extension=1;var a=new Date,b=c.document.createElement("script"),e="' + produrl + '";window.demoboBase=e;b.src="' + produrl + '/core/entry.js?"+a.getTime();b.className="demoboJS";c.document.body&&c.document.body.appendChild(b)}());})(window)');
-	//  load.setAttribute('onclick', 'javascript:(function(){if (window.demobo)return;document.getElementById("toggle").click()})()');
 	document.body.appendChild(load);
 
 	injectJavascript(injectedScript);

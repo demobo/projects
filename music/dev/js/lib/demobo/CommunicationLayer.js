@@ -368,7 +368,7 @@ var demobo = demobo || {};
 
     function CommunicationLayerSocketio(options) {
         CommunicationLayerGeneric.apply(this, arguments);
-        this.target = io.connect("127.0.0.1:4000");
+        this.target = io.connect("172.16.0.43:4000");
         this.target.emit('create', this.channel);
         setTimeout(function() {
             if (this.onConnect) this.onConnect.call(this);
