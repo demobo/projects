@@ -12,6 +12,7 @@ define(function(require, exports, module) {
         }
     }
     var sources = ['Pandora','YouTube','Last.fm','Grooveshark','Spotify','Jango'];
+    var mode = 'play';
 
     var LabelArea = UIElement.extend({
         constructor:function(options) {
@@ -44,10 +45,11 @@ define(function(require, exports, module) {
             if (count == 0) {
                 this.initPos = [data.x, data.y];
             }
+            this.count = count;
         },
 
-        touchCount: function(data, count) {
-            if (count == 10) {
+        touchCount: function(data) {
+            if (this.count == 10) {
                 this.dx = Math.abs(data.x - this.initPos[0]);
                 this.dy = Math.abs(data.y - this.initPos[1]);
                 if (this.dx >= this.dy) {
@@ -66,33 +68,48 @@ define(function(require, exports, module) {
             this.setStyle({
                 color: data.color
             });
-            var content = '            ';
+            var content = '';
 
-            if (this.direction == 'y') {
-                this.setStyle({
-                    textAlign: "left"
-                });
-                var icons = ["fa-volume-up", "fa-sliders", "fa-tasks"];
-                var icon = '<i class="fa ' + icons[data.count - 1] + '"></i>';
-
-                if (data.count==1) {
-                    content = icon + "<div>" + data.value[1] + "</div>";
-                } else if (data.count == 2) {
-                    content = icon + "<div>" + playlists[data.value[1]] + "</div>";
-                } else {
-                    content = icon + "<div>" + sources[data.value[1]] + "</div>";
-                }
-            } else if (this.direction == 'x')/*if (!data.play)*/ {
+            if (data.tap) {
                 this.setStyle({
                     textAlign: "right"
                 });
-                var sound = ['mute','unmute','extra'];
-                var feels = ['Love','Hate'];
+                if (mode == 'play') {
+                    content = "Play";
+                    mode = 'pause';
+                } else if (mode == 'pause') {
+                    content = "Pause";
+                    mode = 'play'
+                }
+            } else {
+                if (this.direction == 'y') {
+                    this.setStyle({
+                        textAlign: "left"
+                    });
+                    var icons = ["fa-volume-up", "fa-sliders", "fa-tasks"];
+                    var icon = '<i class="fa ' + icons[data.count - 1] + '"></i>';
 
-                if (data.count==1) {
-                    content = sound[data.value[0]];
-                } else {
-                    content = feels[data.value[0]];
+                    if (data.count == 1) {
+                        content = icon + "<div>" + data.value[1] + "</div>";
+                    } else if (data.count == 2) {
+                        content = icon + "<div>" + playlists[data.value[1]] + "</div>";
+                    } else {
+                        content = icon + "<div>" + sources[data.value[1]] + "</div>";
+                    }
+                } else if (this.direction == 'x')/*if (!data.play)*/ {
+                    this.setStyle({
+                        textAlign: "right"
+                    });
+                    var sound = ['Next', '', 'Prev'];
+                    var feels = ['Love', '', 'Hate'];
+
+                    if (data.count == 1) {
+                        content = sound[data.value[0] + 1];
+                    } else if (data.count == 2) {
+                        content = feels[data.value[0] + 1];
+                    } else {
+                        content = ''
+                    }
                 }
             }
             this.setContent(content);

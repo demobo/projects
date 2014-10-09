@@ -92,8 +92,8 @@ define(function(require, exports, module) {
                     var x = _.reduce(this.fingers.x, function(memo, num){ return memo + num; }, 0)/len;
                     var y = _.reduce(this.fingers.y, function(memo, num){ return memo + num; }, 0)/len;
 
-                    if (this.y) this.yValues[data.count] = Math.floor(this.yValues[data.count]-y+this.y); // y stepping
-                    if (this.x) this.xValues[data.count] = Math.floor(this.xValues[data.count]-x+this.x); // x stepping
+                    if (this.y) this.yValues[data.count] = Math.floor(this.yValues[data.count]-y+this.y);
+                    if (this.x) this.xValues[data.count] = Math.floor(this.xValues[data.count]-x+this.x);
 
                     this.x = x;
                     this.y = y;
@@ -109,14 +109,14 @@ define(function(require, exports, module) {
                         this.yValues[data.count] = stepSize[data.count-1]*limit[data.count-1];
                     }
                     // x bounds
-                    if (this.xValues[data.count] < 0) {
-                        this.xValues[data.count] = 0;
+                    if (this.xValues[data.count] < -1) {
+                        this.xValues[data.count] = -1;
                     } else if (this.xValues[data.count]/200 > 1) {
                         this.xValues[data.count] = 200;
                     }
 
                     var yvalue = Math.max(0, Math.min(100, Math.floor(this.yValues[data.count]/stepSize[data.count-1])));
-                    var xvalue = Math.max(0, Math.min(1, Math.floor(this.xValues[data.count]/200)));
+                    var xvalue = Math.max(-1, Math.min(1, Math.floor(this.xValues[data.count]/200)));
 
 
                     this.emit('fingerChange', {
@@ -126,21 +126,19 @@ define(function(require, exports, module) {
                         count: this.count,
                         color: this.color,
                         value: [xvalue,yvalue],
-                        play: false
+                        tap: false
                     });
                 }
             }
-        }
+        },
 
-        /*click: function(clicks) {
-         var play = true;
-         this.emit('click', {
-         count: this.count,
-         color: this.color,
-         play: play,
-         clicks: clicks
-         });
-         }*/
+        tap: function(data) {
+            this.emit('tap', {
+            count: this.count,
+            color: this.color,
+            tap: true
+            });
+        }
 
     });
 

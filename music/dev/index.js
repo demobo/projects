@@ -34,14 +34,15 @@ define(function(require, exports, module) {
         labelArea.touchStart(data,count);
         labelArea.touchCount(data,count);
         labelArea.update(data);
-        count++;
     });
     touchArea.on("fingerChange", function(data){
         touchData.save(data);
+        count++;
     });
-    /*touchArea.on("click", function(data){
+    touchArea.on("tap", function(data){
         touchData.save(data);
-    });*/
+        count = 0;
+    });
     touchArea.on("fingerHide", function(data){
         labelArea.touchEnd();
         labelArea.setDelay(600).hide();

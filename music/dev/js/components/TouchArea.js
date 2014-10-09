@@ -34,11 +34,9 @@ define(function(require, exports, module) {
                 fingerCircle.update(data);
             });
 
-            /*var clicks = 0;
-            inputSurface.on('click', function(data){
-                clicks++;
-                fingerCircle.click(clicks);
-            });*/
+            inputSurface.on('tap', function(data){
+                fingerCircle.tap(data);
+            });
 
             inputSurface.on('touchEnd', function(){
                 fingerCircle.reset();
