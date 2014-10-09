@@ -4,6 +4,7 @@ define(function(require, exports, module) {
 
     var LabelArea = require('./js/components/LabelArea');
     var TouchArea = require('./js/components/TouchArea');
+    var Meter = require('./js/components/testMeter');
 
     var config = [
         {title: "Volume", step:.1, color: "green"},
@@ -21,6 +22,8 @@ define(function(require, exports, module) {
 
     var touchArea = new TouchArea();
 
+    var meter = new Meter();
+
     var TouchModel = Backbone.DemoboStorage.Model.extend({
         demoboID: 'touchModel'
     });
@@ -34,6 +37,11 @@ define(function(require, exports, module) {
         labelArea.touchStart(data,count);
         labelArea.touchCount(data,count);
         labelArea.update(data);
+        if (count == 0) {
+            meter.emit('eventstart', data)
+        } else if (count > 0) {
+            meter.emit('eventupdate', data)
+        }
     });
     touchArea.on("fingerChange", function(data){
         touchData.save(data);
@@ -47,6 +55,7 @@ define(function(require, exports, module) {
         labelArea.touchEnd();
         labelArea.setDelay(600).hide();
         count = 0;
+        meter.emit('eventend')
     });
     touchArea.on("fingerShow", function(data){
         labelArea.show();
@@ -56,6 +65,7 @@ define(function(require, exports, module) {
     app.addChild(background);
     app.addChild(labelArea);
     app.addChild(touchArea);
+    app.addChild(meter);
 
     initDemobo();
 

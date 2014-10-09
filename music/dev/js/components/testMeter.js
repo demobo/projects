@@ -7,20 +7,28 @@ define(function(require, exports, module) {
     var UIButton            = require('controls/UIButton');
 
     var stepHeight = 100;
-    var stepWidth = 50;
+    var stepWidth = 10;
     var margin = 1;
 
     var shift = 0;
+
+    var n1 = 40;
+    var n2 = 10;
+    var n3 = 5;
 
     var stepTransition = {
         duration: 300,
         curve: 'inOutExpo'
     };
 
-    var touchArea = new UIElement({
-        size:[undefined, undefined]
-    });
-    touchArea.setPosition(0, 0, 1);
+
+    var _setStepHeight = function(index, object, height){
+        object.height = height;
+        object.setSize(stepWidth, object.height);
+        object.options.yPosition = (index-2)*(object.height+margin);
+        object.halt();
+        object.setPosition(-stepWidth+1, object.yPosition, 0);
+    };
 
     // Element steps are UIElements
     var MeterBar = UIElement.extend({
@@ -33,20 +41,35 @@ define(function(require, exports, module) {
             this._showing = false;
             this.setPosition(-stepWidth+1, this.options.yPosition, 0);
             this.setOpacity(0.1);
-            touchArea.on('mousedown', function(event){
-                this.initPos = event.clientY;
-                if (this.options.yPosition + stepHeight > event.clientY && this.options.yPosition < event.clientY){
+            this.on('eventstart', function(event){
+                this.initPos = event.y;
+                var stepHeigth;
+                if (event.count == 1) {
+                    this.setStyle({background: '#ddd'});
+                    stepHeigth = window.innerHeight/n1
+                } else if (event.count == 2) {
+                    this.setStyle({background: '#00d8ff'});
+                    stepHeigth = window.innerHeight/n2
+                } else {
+                    this.setStyle({background: '#C4CF47'});
+                    stepHeigth = window.innerHeight/n3
+                }
+                _setStepHeight(options.i, this, stepHeigth);
+                if (this.options.yPosition + this.height > event.y && this.options.yPosition < event.y){
                     if (this._showing === false){
                         this.toShow();
                         this.setOpacity(0.5);
                     }
-                    this.isBase = true
+                    this.isBase = true;
+                }
+                if (event.tap){
+                    this.emit('eventend')
                 }
             }.bind(this));
-            touchArea.on('mousemove', function(event){
+            this.on('eventupdate', function(event){
                 if (this.initPos && !this.isBase){
                     var shiftedYpos = this.options.yPosition + shift;
-                    if ((this.initPos > shiftedYpos + stepHeight && shiftedYpos + stepHeight > event.clientY) || (shiftedYpos > this.initPos && shiftedYpos < event.clientY)){
+                    if ((this.initPos > shiftedYpos + this.height && shiftedYpos + this.height > event.y) || (shiftedYpos > this.initPos && shiftedYpos < event.y)){
                         if (this._showing === false){
                             this.toShow()
                         }
@@ -57,7 +80,7 @@ define(function(require, exports, module) {
                     }
                 }
             }.bind(this));
-            touchArea.on('mouseup', function(event){
+            this.on('eventend', function(event){
                 this.initPos = false;
                 this.isBase = false;
                 this.toHide();
@@ -66,6 +89,7 @@ define(function(require, exports, module) {
 
         toShow: function() {
             this.halt();
+            this.setPosition(-stepWidth+1, this.options.yPosition, 0);
             this.setPosition(0, this.options.yPosition, 0, stepTransition);
             this.setOpacity(1, stepTransition);
             this._showing = true;
@@ -76,18 +100,14 @@ define(function(require, exports, module) {
             this.setPosition(-stepWidth+1, this.options.yPosition, 0, stepTransition);
             this.setOpacity(0.1 , stepTransition);
             this._showing = false;
-        },
-
-        toInitTheFirst: function() {
         }
-
 
     });
 
     // Element steps are UIElements
     var MeterDot = UIElement.extend({
         constructor: function(options) {
-            options.yPosition = (options.i-1)*(stepHeight+margin);
+            options.yPosition = (options.i-2)*(stepHeight+margin);
             options.content = ".";
             options.style = {
                 marginTop: stepHeight + margin - 17 +'px',
@@ -97,10 +117,17 @@ define(function(require, exports, module) {
             this._showing = false;
             this.setPosition(0, this.options.yPosition, 0);
             this.setOpacity(0);
-            touchArea.on('mousedown', function(event){
+            this.on('eventstart', function(event){
                 this.toShow();
+                if (event.count == 1) {
+                    this.setStyle({color: '#ddd'})
+                } else if (event.count == 2) {
+                    this.setStyle({color: '#00d8ff'})
+                } else {
+                    this.setStyle({color: '#C4CF47'})
+                }
             }.bind(this));
-            touchArea.on('mouseup', function(event){
+            this.on('eventend', function(event){
                 this.toHide();
             }.bind(this));
         },
@@ -117,26 +144,28 @@ define(function(require, exports, module) {
     });
 
     // The periodic table is an UIContainer
-    var meterBar = new (UIContainer.extend({
+    var meterBar = UIContainer.extend({
         constructor: function() {
             UIContainer.prototype.constructor.call(this);
             // create Steps for each step in meter
-            for (var i_bar = 0; i_bar < window.innerHeight/stepHeight+2; i_bar++) {
+            for (var i_bar = 0; i_bar < n1; i_bar++) {
                 var element_bar = new MeterBar({
                     i: i_bar,
                     size: [stepWidth, stepHeight]
                 });
+                this._eventHandler.pipe(element_bar._eventHandler);
                 this._addChild(element_bar);
             }
-            for (var i = 0; i < window.innerHeight/stepHeight+2; i++) {
+            for (var i = 0; i < n1; i++) {
                 var element = new MeterDot({
                     i: i,
                     size: [stepWidth, stepHeight]
                 });
+                this._eventHandler.pipe(element._eventHandler);
                 this._addChild(element);
             }
-            touchArea.on('mousedown', function(event) {
-                shift = (event.clientY % (stepHeight + margin)) - stepHeight/2;
+            this.on('eventstart', function(event) {
+                shift = (event.y % (stepHeight + margin)) - stepHeight/2;
                 this.setPosition(0, shift, 0)
             }.bind(this));
 
@@ -149,10 +178,8 @@ define(function(require, exports, module) {
         toInitTheFirst: function() {
         }
 
-    }))();
+    });
 
-    var app = new UIApplication();
-    app.addChild(meterBar);
-    app.addChild(touchArea);
+    module.exports = meterBar;
 
 });
