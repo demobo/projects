@@ -136,6 +136,7 @@ define(function(require, exports, module) {
             this.emit('tap', {
             count: this.count,
             color: this.color,
+            value: [0,0],
             tap: true
             });
         }

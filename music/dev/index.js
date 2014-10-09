@@ -11,7 +11,9 @@ define(function(require, exports, module) {
         {title: "Frequency", step:.1, color: "yellow"},
         {title: "Station", step:10, color: "red"}
     ];
-
+    var TouchModel = Backbone.DemoboStorage.Model.extend({
+        demoboID: 'touchModel'
+    });
     var touchData = new TouchModel({
         id: 'touchModel'
     });
@@ -23,23 +25,19 @@ define(function(require, exports, module) {
     });
 
     var labelArea = new LabelArea({
-        model: touchModel
+        model: TouchModel
     });
 
     var touchArea = new TouchArea();
 
     var meter = new Meter();
 
-    var TouchModel = Backbone.DemoboStorage.Model.extend({
-        demoboID: 'touchModel'
-    });
+
 
     var count = 0;
     touchData.on("change", function(model) {
         labelArea.show();
         var data = model.attributes;
-        labelArea.touchStart(data,count);
-        labelArea.touchCount(data,count);
         labelArea.update(data);
         if (count == 0) {
             meter.emit('eventstart', data)
@@ -48,11 +46,11 @@ define(function(require, exports, module) {
         }
     });
     touchArea.on("fingerChange", function(data){
-        processTouchData(data);
+        processTouchData(data, count);
         count++;
     });
     touchArea.on("tap", function(data){
-        processTouchData(data);
+        processTouchData(data, count);
         count = 0;
     });
     touchArea.on("fingerHide", function(data){
@@ -73,12 +71,49 @@ define(function(require, exports, module) {
 
     initDemobo();
 
-    function processTouchData(data) {
+    function processTouchData(data, count) {
+        var action = "";
+        var value = "";
+        var direction = "undefined"
+
+        if (count == 0) {
+            initPos = [data.x, data.y];
+        }
+
+        var dx = Math.abs(data.x - initPos[0]);
+        var dy = Math.abs(data.y - initPos[1]);
+        if (dx >= dy) {
+            direction = 'x';
+        } else if (dx < dy) {
+            direction = 'y';
+        }
+
+
+        if (direction == 'x') {
+            value = data.value[0];
+            if (data.count == 1) {
+                action = "Next";
+            } else if (data.count == 2) {
+                action = "Thumb";
+            } else if (data.count == 3) {
+                action = "";
+            }
+        } else if (direction == 'y') {
+            value = data.value[1];
+            if (data.count == 1) {
+                action = "Volume";
+            } else if (data.count == 2) {
+                action = "Playlist";
+            } else if (data.count == 3) {
+                action = "Source";
+            }
+        }
+
         // do some processing figuring out action and value
         var tData = {
-            action: "volume",
-            value: 50,
-            color: "yellow"
+            action: action,
+            value: value,
+            color: data.color
         };
         touchData.save(tData);
     }
