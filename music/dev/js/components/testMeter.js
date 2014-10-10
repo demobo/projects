@@ -17,7 +17,7 @@ define(function(require, exports, module) {
     var n3 = 5;
 
     var stepTransition = {
-        duration: 100,
+        duration: 300,
         curve: 'inOutExpo'
     };
 
@@ -55,7 +55,7 @@ define(function(require, exports, module) {
                     stepHeigth = window.innerHeight/n3
                 }
                 _setStepHeight(options.i, this, stepHeigth);
-                if (this.options.yPosition + this.height >= event.y && this.options.yPosition <= event.y){
+                if (this.options.yPosition + this.height > event.y && this.options.yPosition < event.y){
                     if (this._showing === false){
                         this.toShow();
                         this.setOpacity(0.5);

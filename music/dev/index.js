@@ -32,29 +32,30 @@ define(function(require, exports, module) {
 
     var meter = new Meter();
 
-
-
     var count = 0;
+    var pos = [];
+    var dir = [0];
     touchData.on("change", function(model) {
         labelArea.show();
         var data = model.attributes;
         labelArea.update(data);
-        if (count == 0) {
-            meter.emit('eventstart', data)
-        } else if (count > 0) {
-            meter.emit('eventupdate', data)
-        }
+//        if (count == 0) {
+//            meter.emit('eventstart', data)
+//        } else if (count > 0) {
+//            meter.emit('eventupdate', data)
+//        }
     });
     touchArea.on("fingerChange", function(data){
-        processTouchData(data, count);
+        processTouchData(data, count, pos, dir);
         count++;
     });
     touchArea.on("tap", function(data){
-        processTouchData(data, count);
+        processTouchData(data, count, pos, dir);
         count = 0;
     });
     touchArea.on("fingerHide", function(data){
-        labelArea.touchEnd();
+        touchEnd();
+//        labelArea.touchEnd();
         labelArea.setDelay(600).hide();
         count = 0;
         meter.emit('eventend')
@@ -71,23 +72,22 @@ define(function(require, exports, module) {
 
     initDemobo();
 
-    function processTouchData(data, count) {
+    function processTouchData(data, count, pos, dir) {
         var action = "";
         var value = "";
-        var direction = "undefined"
+        var direction = "undefined";
+        var initPos = [];
 
-        if (count == 0) {
-            initPos = [data.x, data.y];
+        pos.push(touchStart(data));
+        if (count >= 5) {
+            initPos = pos[5];
         }
 
-        var dx = Math.abs(data.x - initPos[0]);
-        var dy = Math.abs(data.y - initPos[1]);
-        if (dx >= dy) {
-            direction = 'x';
-        } else if (dx < dy) {
-            direction = 'y';
+        dir[count] = touchFix(data, initPos);
+        if (count >= 10) {
+            direction = dir[10];
         }
-
+ //console.log(dir);
 
         if (direction == 'x') {
             value = data.value[0];
@@ -107,6 +107,8 @@ define(function(require, exports, module) {
             } else if (data.count == 3) {
                 action = "Source";
             }
+        } else if (direction == 't') {
+            action = "Play";
         }
 
         // do some processing figuring out action and value
@@ -116,6 +118,33 @@ define(function(require, exports, module) {
             color: data.color
         };
         touchData.save(tData);
+    }
+
+    function touchStart(data) {
+        var pos = [data.x, data.y];
+        return pos;
+    }
+
+    function touchFix(data, initPos) {
+        var dx = Math.abs(data.x - initPos[0]);
+        var dy = Math.abs(data.y - initPos[1]);
+
+        if (dx > dy) {
+            var direction = 'x';
+        } else if (dx < dy) {
+            direction = 'y';
+        } else if (dx == 0 && dy == 0) {
+            direction = 't';
+        } else {
+            direction = 'u';
+        }
+//console.log(data.x, data.y, initPos)
+        return direction;
+    }
+
+    function touchEnd() {
+        pos = [];
+        dir = [0];
     }
 
     function initDemobo() {

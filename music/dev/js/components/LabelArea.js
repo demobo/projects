@@ -13,8 +13,11 @@ define(function(require, exports, module) {
         }
     }
     var sources = ['Pandora','YouTube','Last.fm','Grooveshark','Spotify','Jango'];
-    var sound = ['Next', '', 'Prev'];
-    var feels = ['Love', '', 'Hate'];
+    var next = ["fa-forward", "fa-backward"];
+    var sound = ['Next', 'Prev'];
+    var thumb = ["fa-thumbs-o-up", "fa-thumbs-o-down"];
+    var feels = ['Love', 'Hate'];
+
     var mode = 'play';
 
     var LabelArea = UIElement.extend({
@@ -27,6 +30,7 @@ define(function(require, exports, module) {
                     fontFamily: 'avenir next',
                     fontWeight: 200,
                     fontSize: "72px",
+                    textAlign: "left",
                     margin: "20px",
                     color: "transparent"
                 }
@@ -42,29 +46,6 @@ define(function(require, exports, module) {
             this.halt();
             this.setOpacity(1, {duration: 200, curve: "easeOut"});
             this.setPosition(20,0,0, {duration : 200, curve : 'easeOut'});
-        },
-
-//        touchStart: function(data, count) {
-//            if (count == 0) {
-//                this.initPos = [data.x, data.y];
-//            }
-//            this.count = count;
-//        },
-//
-//        touchCount: function(data) {
-//            this.dx = Math.abs(data.x - this.initPos[0]);
-//            this.dy = Math.abs(data.y - this.initPos[1]);
-//            if (this.count == 5) {
-//                if (this.dx >= this.dy) {
-//                    this.direction = 'x';
-//                } else {
-//                    this.direction = 'y';
-//                }
-//            }
-//        },
-
-        touchEnd: function() {
-                this.direction = 'reset';
         },
 
 //        touchTap: function() {
@@ -93,20 +74,15 @@ define(function(require, exports, module) {
 //                }
 
             if (data.action == 'Volume') {
-                this.setStyle({textAlign: "left"});
                 content = '<i class="fa ' + icons[0] + '"></i>' + "<div>" + data.value + "</div>";
             } else if (data.action == "Playlist") {
-                this.setStyle({textAlign: "left"});
                 content = '<i class="fa ' + icons[1] + '"></i>' + "<div>" + playlists[data.value] + "</div>";
             } else if (data.action == "Source") {
-                this.setStyle({textAlign: "left"});
                 content = '<i class="fa ' + icons[2] + '"></i>' + "<div>" + sources[data.value] + "</div>";
             } else if (data.action == "Next") {
-                this.setStyle({textAlign: "right"});
-                content = sound[data.value + 1];
+                content = '<i class="fa ' + next[data.value] + '"></i>' + "<div>" + sound[data.value] + "</div>";
             } else if (data.action == "Thumb") {
-                this.setStyle({textAlign: "right"});
-                content = feels[data.value + 1];
+                content = '<i class="fa ' + thumb[data.value] + '"></i>' + "<div>" + feels[data.value] + "</div>";
             }
             this.setContent(content);
         }

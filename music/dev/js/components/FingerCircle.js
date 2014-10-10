@@ -116,7 +116,7 @@ define(function(require, exports, module) {
                     }
 
                     var yvalue = Math.max(0, Math.min(100, Math.floor(this.yValues[data.count]/stepSize[data.count-1])));
-                    var xvalue = Math.max(-1, Math.min(1, Math.floor(this.xValues[data.count]/200)));
+                    var xvalue = Math.max(0, Math.min(1, Math.floor(this.xValues[data.count]/200)));
 
 
                     this.emit('fingerChange', {
