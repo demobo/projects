@@ -38,12 +38,18 @@ define(function(require, exports, module) {
     touchData.on("change", function(model) {
         labelArea.show();
         var data = model.attributes;
-        labelArea.update(data);
-//        if (count == 0) {
-//            meter.emit('eventstart', data)
-//        } else if (count > 0) {
-//            meter.emit('eventupdate', data)
-//        }
+        labelArea.update(data); console.log(data.direction);
+        if ((count > 5 && data.direction != 'y') || count < 5) {
+            touchArea.emit('secHide');
+        } else {
+            touchArea.emit('secShow');
+        }
+
+        if (count == 0) {
+            meter.emit('eventstart', data)
+        } else if (count > 0) {
+            meter.emit('eventupdate', data)
+        }
     });
     touchArea.on("fingerChange", function(data){
         processTouchData(data, count, pos, dir);
@@ -51,13 +57,10 @@ define(function(require, exports, module) {
     });
     touchArea.on("tap", function(data){
         processTouchData(data, count, pos, dir);
-        count = 0;
     });
     touchArea.on("fingerHide", function(data){
         touchEnd();
-//        labelArea.touchEnd();
         labelArea.setDelay(600).hide();
-        count = 0;
         meter.emit('eventend')
     });
     touchArea.on("fingerShow", function(data){
@@ -78,16 +81,20 @@ define(function(require, exports, module) {
         var direction = "undefined";
         var initPos = [];
 
+//        console.log(data.tap, count, data.count);
         pos.push(touchStart(data));
+        if (data.tap && count == 1) {
+            direction = 't';
+            touchEnd();
+        }
         if (count >= 5) {
             initPos = pos[5];
         }
 
         dir[count] = touchFix(data, initPos);
-        if (count >= 10) {
-            direction = dir[10];
+        if (count >= 6) {
+            direction = dir[6];
         }
- //console.log(dir);
 
         if (direction == 'x') {
             value = data.value[0];
@@ -111,11 +118,14 @@ define(function(require, exports, module) {
             action = "Play";
         }
 
-        // do some processing figuring out action and value
         var tData = {
             action: action,
             value: value,
-            color: data.color
+            color: data.color,
+            direction: direction,
+            y: data.y,
+            count: data.count,
+            tap: data.tap
         };
         touchData.save(tData);
     }
@@ -143,6 +153,7 @@ define(function(require, exports, module) {
     }
 
     function touchEnd() {
+        count = 0;
         pos = [];
         dir = [0];
     }

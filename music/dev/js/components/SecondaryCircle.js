@@ -52,6 +52,12 @@ define(function(require, exports, module) {
 
         },
 
+        hideLine:function() {
+            this.line.setSize([1, 1]);
+            this.line.setOpacity(0);
+            this.circleLabel.setOpacity(0);
+        },
+
         show:function(data) {
             this.count = data.count;
             this.fingers.x[data.touch] = data.clientX;
@@ -86,6 +92,12 @@ define(function(require, exports, module) {
                 this.setScale(1, 1, 1, {duration: 200, curve: "easeOut"});
                 this.update(data);
             }
+        },
+
+        showLine: function() {
+            this.line.setSize([1000, 1]);
+            this.line.setOpacity(1);
+            this.circleLabel.setOpacity(1);
         },
 
         update: function(data) {

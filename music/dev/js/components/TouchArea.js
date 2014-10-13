@@ -45,6 +45,14 @@ define(function(require, exports, module) {
                 secondaryCircle.setDelay(200, secondaryCircle.hide.bind(secondaryCircle));
             });
 
+            this.on('secHide', function() {
+                secondaryCircle.hideLine();
+            });
+
+            this.on('secShow', function() {
+                secondaryCircle.showLine();
+            })
+
             this._addChild(fingerCircle);
             this._addChild(secondaryCircle);
             this._addChild(inputSurface);

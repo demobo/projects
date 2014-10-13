@@ -17,7 +17,7 @@ define(function(require, exports, module) {
     var n3 = 5;
 
     var stepTransition = {
-        duration: 300,
+        duration: 100,
         curve: 'inOutExpo'
     };
 

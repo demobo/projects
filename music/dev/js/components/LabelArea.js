@@ -13,12 +13,14 @@ define(function(require, exports, module) {
         }
     }
     var sources = ['Pandora','YouTube','Last.fm','Grooveshark','Spotify','Jango'];
-    var next = ["fa-forward", "fa-backward"];
-    var sound = ['Next', 'Prev'];
-    var thumb = ["fa-thumbs-o-up", "fa-thumbs-o-down"];
-    var feels = ['Love', 'Hate'];
+    var next = ["fa-forward",'', "fa-backward"];
+    var sound = ['Next','', 'Prev'];
+    var thumb = ["fa-thumbs-o-up",'', "fa-thumbs-o-down"];
+    var feels = ['Love','', 'Hate'];
+    var play = ["fa-play", "fa-pause"];
+    var Play = ['Play', 'Pause'];
 
-    var mode = 'play';
+    var mode = "play";
 
     var LabelArea = UIElement.extend({
         constructor:function(options) {
@@ -80,9 +82,17 @@ define(function(require, exports, module) {
             } else if (data.action == "Source") {
                 content = '<i class="fa ' + icons[2] + '"></i>' + "<div>" + sources[data.value] + "</div>";
             } else if (data.action == "Next") {
-                content = '<i class="fa ' + next[data.value] + '"></i>' + "<div>" + sound[data.value] + "</div>";
+                content = '<i class="fa ' + next[data.value+1] + '"></i>' + "<div>" + sound[data.value+1] + "</div>";
             } else if (data.action == "Thumb") {
-                content = '<i class="fa ' + thumb[data.value] + '"></i>' + "<div>" + feels[data.value] + "</div>";
+                content = '<i class="fa ' + thumb[data.value+1] + '"></i>' + "<div>" + feels[data.value+1] + "</div>";
+            } else if (data.action == "Play") {
+                if (mode == 'play') {
+                    content = '<i class="fa ' + play[0] + '"></i>' + "<div>" + Play[0] + "</div>";
+                    mode = 'pause';
+                } else if (mode == 'pause') {
+                    content = '<i class="fa ' + play[1] + '"></i>' + "<div>" + Play[1] + "</div>";
+                    mode = 'play'
+                }
             }
             this.setContent(content);
         }

@@ -111,12 +111,12 @@ define(function(require, exports, module) {
                     // x bounds
                     if (this.xValues[data.count] < -1) {
                         this.xValues[data.count] = -1;
-                    } else if (this.xValues[data.count]/200 > 1) {
-                        this.xValues[data.count] = 200;
+                    } else if (this.xValues[data.count]/100 > 1) {
+                        this.xValues[data.count] = 100;
                     }
 
                     var yvalue = Math.max(0, Math.min(100, Math.floor(this.yValues[data.count]/stepSize[data.count-1])));
-                    var xvalue = Math.max(0, Math.min(1, Math.floor(this.xValues[data.count]/200)));
+                    var xvalue = Math.max(-1, Math.min(1, Math.floor(this.xValues[data.count]/100)));
 
 
                     this.emit('fingerChange', {
@@ -133,12 +133,14 @@ define(function(require, exports, module) {
         },
 
         tap: function(data) {
-            this.emit('tap', {
-            count: this.count,
-            color: this.color,
-            value: [0,0],
-            tap: true
-            });
+            if (data.count == 1) {
+                this.emit('tap', {
+                    count: this.count,
+                    color: this.color,
+                    value: [0,0],
+                    tap: true
+                });
+            }
         }
 
     });
