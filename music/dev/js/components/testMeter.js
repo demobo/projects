@@ -62,9 +62,9 @@ define(function(require, exports, module) {
                     }
                     this.isBase = true;
                 }
-                if (event.tap){
-                    this.emit('eventend')
-                }
+//                if (event.tap){
+//                    this.emit('eventend')
+//                }
             }.bind(this));
             this.on('eventupdate', function(event){
                 if (this.initPos && !this.isBase){
@@ -176,6 +176,18 @@ define(function(require, exports, module) {
         },
 
         toInitTheFirst: function() {
+        },
+
+        hide: function() {
+            this.emit('eventend');
+        },
+
+        show: function(data) {
+            this.emit('eventstart', data);
+        },
+
+        update: function(data) {
+            this.emit('eventupdate', data);
         }
 
     });

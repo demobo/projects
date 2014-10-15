@@ -1,6 +1,3 @@
-/**
- * Created by betty on 10/8/14.
- */
 define(function(require, exports, module) {
     var UIComponent         = require('core/UIComponent');
     var UIElement           = require('core/UIElement');
@@ -9,6 +6,7 @@ define(function(require, exports, module) {
     var FingerCircle = UIComponent.extend({
         constructor:function(options) {
             this._callSuper(UIComponent, 'constructor', options);
+            this.dataModel = options.model
             this.setOrigin([.5,.5]);
             this.setOpacity(0);
 
@@ -35,15 +33,17 @@ define(function(require, exports, module) {
         hide: function() {
             this.halt();
             this.setOpacity(0, {duration: 200, curve: "easeOut"});
-            this.setScale(0,0,1, {duration : 200, curve : 'easeOut'}, function() {
-                this.emit('fingerHide');
-            }.bind(this));
+            this.setScale(0,0,1, {duration : 200, curve : 'easeOut'});
         },
 
         show: function(data) {
             this.count = data.count;
             this.fingers.x[data.touch] = data.clientX;
             this.fingers.y[data.touch] = data.clientY;
+
+            var len = _(this.fingers.x).size();
+            var x = _.reduce(this.fingers.x, function(memo, num){ return memo + num; }, 0)/len;
+            var y = _.reduce(this.fingers.y, function(memo, num){ return memo + num; }, 0)/len;
 
             if (data.count==_(this.fingers.x).size()) {
                 this.setOpacity(0);
@@ -74,7 +74,7 @@ define(function(require, exports, module) {
                 this.halt();
                 this.setOpacity(1);
                 this.setScale(1,1,1, {duration : 200, curve : 'easeOut'}, function(){
-                    this.emit('fingerShow');
+                    this.emit('fingerShow', {x: x, y: y});
                 }.bind(this));
                 this.update(data);
             }
@@ -129,17 +129,6 @@ define(function(require, exports, module) {
                         tap: false
                     });
                 }
-            }
-        },
-
-        tap: function(data) {
-            if (data.count == 1) {
-                this.emit('tap', {
-                    count: this.count,
-                    color: this.color,
-                    value: [0,0],
-                    tap: true
-                });
             }
         }
 

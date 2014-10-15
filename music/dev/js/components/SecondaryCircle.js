@@ -6,6 +6,7 @@ define(function(require, exports, module) {
     var SecondaryCircle = UIComponent.extend({
         constructor:function(options) {
             this._callSuper(UIComponent, 'constructor', options);
+            this.dataModel = options.model;
             this.setOpacity(0);
 
             this.circleLabel = new UIElement({
@@ -28,7 +29,7 @@ define(function(require, exports, module) {
                 origin: [1, 0],
                 size: [1, 1],
                 style:{
-                    backgroundColor: "#FFFFFF"
+                    backgroundColor: "grey"
                 },
                 opacity: 0.5
             });

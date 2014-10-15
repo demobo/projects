@@ -15,7 +15,6 @@ define(function(require, exports, module) {
         demoboID: 'touchModel'
     });
     var touchData = new TouchModel({
-        id: 'touchModel'
     });
 
     var background = new UIElement({
@@ -25,45 +24,47 @@ define(function(require, exports, module) {
     });
 
     var labelArea = new LabelArea({
-        model: TouchModel
+        model: touchData
     });
 
-    var touchArea = new TouchArea();
+    var touchArea = new TouchArea({
+        model: touchData
+    });
 
     var meter = new Meter();
 
     var count = 0;
-    var pos = [];
+    var pos = [0];
     var dir = [0];
     touchData.on("change", function(model) {
         labelArea.show();
-        var data = model.attributes;
-        labelArea.update(data); console.log(data.direction);
-        if ((count > 5 && data.direction != 'y') || count < 5) {
-            touchArea.emit('secHide');
+        var data = model.attributes; console.log(data.direction)
+        labelArea.update(data);
+        if (data.direction == 'y') {
+            touchArea.show();
+            if (count == 6) {
+                meter.show(data);
+            } else if (count > 6) {
+                meter.update(data);
+            }
         } else {
-            touchArea.emit('secShow');
-        }
-
-        if (count == 0) {
-            meter.emit('eventstart', data)
-        } else if (count > 0) {
-            meter.emit('eventupdate', data)
+            touchArea.hideLine();
         }
     });
     touchArea.on("fingerChange", function(data){
         processTouchData(data, count, pos, dir);
         count++;
     });
-    touchArea.on("tap", function(data){
-        processTouchData(data, count, pos, dir);
+    touchArea.on("fingerTap", function(data){
+        processTouchData(data, count, pos, dir); console.log('tap')
     });
-    touchArea.on("fingerHide", function(data){
+    touchArea.on("fingerHide", function(){
+        console.log('finger hide')
         touchEnd();
-        labelArea.setDelay(600).hide();
-        meter.emit('eventend')
+        labelArea.hide();
+        meter.hide();
     });
-    touchArea.on("fingerShow", function(data){
+    touchArea.on("fingerShow", function() {
         labelArea.show();
     });
 
@@ -81,30 +82,29 @@ define(function(require, exports, module) {
         var direction = "undefined";
         var initPos = [];
 
-//        console.log(data.tap, count, data.count);
-        pos.push(touchStart(data));
-        if (data.tap && count == 1) {
+        if (data.tap && data.count == 1) {
             direction = 't';
-            touchEnd();
-        }
-        if (count >= 5) {
-            initPos = pos[5];
-        }
+        } else {
+            pos[count] = touchStart(data);
+            if (count >= 5) {
+                initPos = pos[5];
+            }
 
-        dir[count] = touchFix(data, initPos);
-        if (count >= 6) {
-            direction = dir[6];
+            dir[count] = touchFix(data, initPos);
+            if (count >= 6) {
+                direction = dir[6];
+            }
         }
 
         if (direction == 'x') {
-            value = data.value[0];
-            if (data.count == 1) {
-                action = "Next";
-            } else if (data.count == 2) {
-                action = "Thumb";
-            } else if (data.count == 3) {
-                action = "";
-            }
+//            value = data.value[0];
+//            if (data.count == 1) {
+//                action = "Next";
+//            } else if (data.count == 2) {
+//                action = "Thumb";
+//            } else if (data.count == 3) {
+//                action = "";
+//            }
         } else if (direction == 'y') {
             value = data.value[1];
             if (data.count == 1) {
@@ -125,7 +125,6 @@ define(function(require, exports, module) {
             direction: direction,
             y: data.y,
             count: data.count,
-            tap: data.tap
         };
         touchData.save(tData);
     }
@@ -148,13 +147,12 @@ define(function(require, exports, module) {
         } else {
             direction = 'u';
         }
-//console.log(data.x, data.y, initPos)
         return direction;
     }
 
     function touchEnd() {
         count = 0;
-        pos = [];
+        pos = [0];
         dir = [0];
     }
 

@@ -2,7 +2,7 @@ define(function(require, exports, module) {
     var UIElement           = require('core/UIElement');
 
     var icons = ["fa-volume-up", "fa-sliders", "fa-tasks"];
-    var playlists = ['IU','Imagine Dragons','CNBlue','Lindsey Stirling','Infinite','SNSD','Beast','Eric Nam','House',
+    var playlists = ['IU','Imagine Dragons', 'Anthem Lights', 'CNBlue','Lindsey Stirling','Infinite','SNSD','Beast','House',
         'Classical for Studying','Payphone','The Script','Owl City & Carly Rae Jepson','Jason Chen','Train',
         'Utada','Idina Menzel','Disney','Sixpence None the Richer',"L'arc en Ciel",'Nico Touches the Wall'];
     for (var i = 0; i < playlists.length; i++){
