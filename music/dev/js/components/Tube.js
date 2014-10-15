@@ -80,10 +80,22 @@ define(function(require, exports, module) {
             this.tubeModel.on('change:video',function(model, value){
                 this.player.loadVideoById(value);
             }.bind(this));
-
             this.tubeModel.on('change:volume',function(model, value){
                 this.player.setVolume(value);
             }.bind(this));
+            this.tubeModel.on('change:effect',function(model, value){
+                this.changeVideoMode(value);
+            }.bind(this));
+            this.tubeModel.on('change:playPause',function(model, value){
+                if (this.player.getPlayerState() == YT.PlayerState.PLAYING) {
+                    this.player.pauseVideo();
+                    this.tubeModel.save('state', 'pause');
+                } else {
+                    this.player.playVideo();
+                    this.tubeModel.save('state', 'playing');
+                }
+            }.bind(this));
+
             this.tubeModel.on('change:playing',function(model, value){
                 if (value) this.player.playVideo();
                 else this.player.pauseVideo();
