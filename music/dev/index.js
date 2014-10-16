@@ -8,7 +8,7 @@ define(function(require, exports, module) {
 
     var info = [[{title: 'Volume', value: 0}],
                 [{title: 'BBC Animals', value: 'EQ1HKCYJM5U'}, {title: 'Lindsey Stirling', value: 'aHjpOzsQ9YI'}, {title: 'CollegeHumor', value: 'X-YCdcnf_P8'}, {title: 'Supernatural', value: 'vDYBrWP1Iwg'}, {title: 'Sam Tsui', value: 'a2RA0vsZXf8'},
-                 {title: 'Ellen Show', value: 'In9XbjyCbnY'}, {title: 'Disney', value: '8IdMPpKMdcc'}, {title: 'Pokemon', value: 'Eghk9bVNN9M'}, {title: 'Omelette', value: 'jXFldV3ImU0'}, {title: 'ESPN', value: '0tvUQslnII0'}],
+                 {title: 'Ellen Show', value: 'In9XbjyCbnY'}, {title: 'Disney', value: '8IdMPpKMdcc'}, {title: 'Pokemon', value: 'Eghk9bVNN9M'}, {title: 'Omelette', value: 'jXFldV3ImU0'}, {title: 'ESPN', value: '3GFSnsWwn8k'}],
                 [{title: 'GreyScale', value: 1}, {title: 'Sepia', value: 2}, {title: 'Blur', value: 3}, {title: 'Tint', value: 4}, {title: 'Invert', value: 5}],
                 [{color: '#ddd'}, {color: "#00d8ff"}, {color: "#C4CF47"}]];
 
@@ -46,8 +46,8 @@ define(function(require, exports, module) {
     var dir = [0];
     touchData.on("change", function(model) {
         var data = model.attributes;
-        labelArea.show(data);
-        labelArea.update(data);
+//        labelArea.show(data);
+//        labelArea.update(data);
 
         if (data.direction == 'y') {
             if (data.count == 1){
@@ -80,9 +80,14 @@ define(function(require, exports, module) {
                 tubeModel1.save('color', info[3][0].color);
             }
             touchArea.hideLine();
-
         }
     });
+    tubeModel1.on("change", function(model) {
+        var data = model.attributes;
+        labelArea.show();
+        labelArea.update(data);
+    });
+
     touchArea.on("fingerChange", function(data){
         processTouchData(data, count, pos, dir);
         count++;

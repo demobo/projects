@@ -67,7 +67,7 @@ define(function(require, exports, module) {
             this.secondaryCircle.setDelay(200, this.secondaryCircle.hide.bind(this.secondaryCircle));
             setTimeout(function(){
                 this.emit('fingerHide')
-            }.bind(this), 200);
+            }.bind(this), 300);
         },
 
         showLine: function() {

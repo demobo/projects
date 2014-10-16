@@ -32,7 +32,7 @@ define(function(require, exports, module) {
         hide: function() {
             this.setOpacity(0, {duration: 200, curve: "easeOut"});
             this.setPosition(0,0,0, {duration : 500, curve : 'easeOut'});
-//            this.init();
+            this.init();
         },
 
         show: function() {
@@ -48,34 +48,24 @@ define(function(require, exports, module) {
 
             this.tubeModel.on('change:volume', function(model, value){
                this.content = '<i class="fa ' + icons[0] + '"></i>' + "<div>" + value + "</div>";
-//               this.setStyle({
-//                    color: "#ddd"
-//               });
             }.bind(this));
             this.tubeModel.on('change:channel', function(model, value){
                 this.content = '<i class="fa ' + icons[1] + '"></i>' + "<div>" + value + "</div>";
-//                this.setStyle({
-//                    color: "#00d8ff"
-//                });
             }.bind(this));
             this.tubeModel.on('change:effectName', function(model, value){
                 this.content = '<i class="fa ' + icons[2] + '"></i>' + "<div>" + value + "</div>";
-//                this.setStyle({
-//                    color: "#C4CF47"
-//                });
             }.bind(this));
             this.tubeModel.on('change:state', function(model, value){
-//                this.setStyle({
-//                    color: "#ddd"
-//                });
-                if (value == 'pause') {
+                if (value == 'playing') {
                     this.content = '<i class="fa ' + icons[3] + '"></i>' + "<div>" + "Play" + "</div>";
-                } else if (value == 'playing') {
+                } else if (value == 'pause') {
                     this.content = '<i class="fa ' + icons[4] + '"></i>' + "<div>" + "Pause" + "<div>";
                 }
             }.bind(this));
 
             this.setContent(this.content); console.log(this.content)
+
+            this.emit('hide');
         }
     });
 

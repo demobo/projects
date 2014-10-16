@@ -32,6 +32,10 @@ define(function(require, exports, module) {
        tubeLabel.update(data);
     });
 
+    tubeLabel.on('hide', function() {
+        tubeLabel.setDelay(300, tubeLabel.hide.bind(tubeLabel));
+    });
+
     initDemobo();
     function initDemobo() {
         console.log('init')
