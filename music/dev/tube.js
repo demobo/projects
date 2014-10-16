@@ -1,6 +1,7 @@
 define(function(require, exports, module) {
     var UIApplication = require('containers/UIApplication');
     var Tube = require('./js/components/Tube');
+    var LabelArea = require('./js/components/LabelArea');
 
     var TubeModel = Backbone.DemoboStorage.Model.extend({
         demoboID: 'tube1'
@@ -14,8 +15,22 @@ define(function(require, exports, module) {
     });
     window.tube1 = tube1;
 
+    var tubeLabel = new LabelArea({
+        id: 'tube1',
+        model: tubeModel1
+    });
+    tubeLabel.setPosition(0,0,1);
+    window.tubeLabel = tubeLabel;
+
     var app = new UIApplication();
     app.addChild(tube1);
+    app.addChild(tubeLabel);
+
+    tubeModel1.on('change', function(model){
+       var data = model.attributes;
+       tubeLabel.show();
+       tubeLabel.update(data);
+    });
 
     initDemobo();
     function initDemobo() {

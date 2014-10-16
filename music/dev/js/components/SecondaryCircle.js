@@ -75,14 +75,14 @@ define(function(require, exports, module) {
                         backgroundColor: "#ddd"
                     });
                 } else if (data.count == 2){
-                    this.circleLabel.setContent("PLAYLIST");
+                    this.circleLabel.setContent("CHANNEL");
                     this.circleLabel.setSize([80,20]);
                     this.circleLabel.setStyle({
                         backgroundColor: "#00d8ff"
                     });
                 } else {
-                    this.circleLabel.setContent("MUSIC SOURCE");
-                    this.circleLabel.setSize([130,20]);
+                    this.circleLabel.setContent("EFFECT");
+                    this.circleLabel.setSize([80,20]);
                     this.circleLabel.setStyle({
                         backgroundColor: "#C4CF47"
                     });

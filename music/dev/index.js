@@ -7,9 +7,10 @@ define(function(require, exports, module) {
     var Meter = require('./js/components/testMeter');
 
     var info = [[{title: 'Volume', value: 0}],
-                [{title: 'ESPN', value: 'tYGaYg74XJw'}, {title: 'BBC', value: '8n0SkIGARuo'}, {title: 'MTV', value: 'q63b1L3hGIw'}, {title: 'CollegeHumor', value: 'YuOBzWF0Aws'}, {title: 'Comedy', value: 'xgGkt6l-WTM'}],
+                [{title: 'BBC Animals', value: 'EQ1HKCYJM5U'}, {title: 'Lindsey Stirling', value: 'aHjpOzsQ9YI'}, {title: 'CollegeHumor', value: 'X-YCdcnf_P8'}, {title: 'Supernatural', value: 'vDYBrWP1Iwg'}, {title: 'Sam Tsui', value: 'a2RA0vsZXf8'},
+                 {title: 'Ellen Show', value: 'In9XbjyCbnY'}, {title: 'Disney', value: '8IdMPpKMdcc'}, {title: 'Pokemon', value: 'Eghk9bVNN9M'}, {title: 'Omelette', value: 'jXFldV3ImU0'}, {title: 'ESPN', value: '0tvUQslnII0'}],
                 [{title: 'GreyScale', value: 1}, {title: 'Sepia', value: 2}, {title: 'Blur', value: 3}, {title: 'Tint', value: 4}, {title: 'Invert', value: 5}],
-                [{title: 'Play', value: 0}]];
+                [{color: '#ddd'}, {color: "#00d8ff"}, {color: "#C4CF47"}]];
 
     var TouchModel = Backbone.DemoboStorage.Model.extend({
         demoboID: 'touchModel'
@@ -44,23 +45,26 @@ define(function(require, exports, module) {
     var pos = [0];
     var dir = [0];
     touchData.on("change", function(model) {
-        labelArea.show();
         var data = model.attributes;
+        labelArea.show(data);
         labelArea.update(data);
 
         if (data.direction == 'y') {
             if (data.count == 1){
 //                console.log('----volume', info[0][0].value);
                 tubeModel1.save('volume',info[0][0].value);
+                tubeModel1.save('color', info[3][0].color);
             } else if (count > 6) {
                 if (data.count == 2) {
 //                    console.log('-----video', info[1][data.value].title, info[1][data.value].value);
                     tubeModel1.save('video',info[1][data.value].value);
                     tubeModel1.save('channel', info[1][data.value].title);
+                    tubeModel1.save('color', info[3][1].color);
                 } else if (data.count == 3) {
 //                    console.log('------effect', info[2][data.value].title, info[2][data.value].value);
                     tubeModel1.save('effect', info[2][data.value].value);
                     tubeModel1.save('effectName', info[2][data.value].title)
+                    tubeModel1.save('color', info[3][2].color);
                 }
             }
             touchArea.showLine();
@@ -73,6 +77,7 @@ define(function(require, exports, module) {
             if (data.direction == 't'){
 //                console.log('------playPause', Date.now())
                 tubeModel1.save('playPause', Date.now())
+                tubeModel1.save('color', info[3][0].color);
             }
             touchArea.hideLine();
 
@@ -88,6 +93,7 @@ define(function(require, exports, module) {
     touchArea.on("fingerHide", function(){
         touchEnd();
         labelArea.hide();
+//        labelArea.setDelay(300, labelArea.hide.bind(labelArea));
         meter.hide();
     });
     touchArea.on("fingerShow", function() {
@@ -135,7 +141,7 @@ define(function(require, exports, module) {
                 value = data.value[1];
                 info[0][0].value = data.value[1];
             } else if (data.count == 2) {
-                value = Math.abs((data.value[1])%5);
+                value = Math.abs((data.value[1])%10);
             } else if (data.count == 3) {
                 value = (data.value[1])%5;
             }
@@ -164,8 +170,6 @@ define(function(require, exports, module) {
             var direction = 'x';
         } else if (dx < dy) {
             direction = 'y';
-//        } else if (dx == 0 && dy == 0) {
-//            direction = 't';
         } else {
             direction = 'u';
         }
