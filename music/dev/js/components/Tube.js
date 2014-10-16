@@ -6,6 +6,7 @@ define(function(require, exports, module) {
         constructor:function(options) {
             this._callSuper(UIComponent, 'constructor', options);
             this.options = options;
+            this.tubeModel = options.model;
             this.background = new UIElement({
                 style: {
                     background: 'red'
@@ -48,12 +49,6 @@ define(function(require, exports, module) {
         },
 
         init: function() {
-            var TubeModel = Backbone.DemoboStorage.Model.extend({
-                demoboID: this.options.id
-            });
-            this.tubeModel = new TubeModel({
-                id: this.options.id
-            });
             if (demobo.Utils.isMobile()) {
                 this.initMobile.call(this);
             } else {
@@ -78,15 +73,22 @@ define(function(require, exports, module) {
 
         initWebsite: function() {
             this.tubeModel.on('change:video',function(model, value){
+                console.log('---video', value);
                 this.player.loadVideoById(value);
             }.bind(this));
             this.tubeModel.on('change:volume',function(model, value){
+                console.log('---volume', value);
+
                 this.player.setVolume(value);
             }.bind(this));
             this.tubeModel.on('change:effect',function(model, value){
+                console.log('---effect', value);
+
                 this.changeVideoMode(value);
             }.bind(this));
             this.tubeModel.on('change:playPause',function(model, value){
+                console.log('---playPause', value);
+
                 if (this.player.getPlayerState() == YT.PlayerState.PLAYING) {
                     this.player.pauseVideo();
                     this.tubeModel.save('state', 'pause');

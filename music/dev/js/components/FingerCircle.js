@@ -85,8 +85,8 @@ define(function(require, exports, module) {
                 this.fingers.x[data.touch] = data.clientX;
                 this.fingers.y[data.touch] = data.clientY;
                 var len = _(this.fingers.x).size();
-                var stepSize = [20,50,200];
-                var limit = [100, 20, 5];
+                var stepSize = [20, 50,100];
+                var limit = [100, 100, 100];
 
                 if (data.count==this.count) {
                     var x = _.reduce(this.fingers.x, function(memo, num){ return memo + num; }, 0)/len;

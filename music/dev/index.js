@@ -6,15 +6,27 @@ define(function(require, exports, module) {
     var TouchArea = require('./js/components/TouchArea');
     var Meter = require('./js/components/testMeter');
 
-    var config = [
-        {title: "Volume", step:.1, color: "green"},
-        {title: "Frequency", step:.1, color: "yellow"},
-        {title: "Station", step:10, color: "red"}
-    ];
+    var info = [[{title: 'Volume', value: 0}],
+                [{title: 'ESPN', value: 'kDybIiiYBQQ'}, {title: 'BBC', value: 'MVM0ny8TYwE'}, {title: 'MTV', value: 'XBf0yJVMSzI'}, {title: 'CollegeHumor', value: 'vd7U3OYziHY'}, {title: 'Comedy', value: 'bCEE0XFNtS0'}],
+                [{title: 'GreyScale', value: 1}, {title: 'Sepia', value: 2}, {title: 'Blur', value: 3}, {title: 'Tint', value: 4}, {title: 'Invert', value: 5}],
+                [{title: 'Play', value: 0}]];
+
+//    var config = [
+//        {title: "Volume", step:.1, color: "green"},
+//        {title: "Frequency", step:.1, color: "yellow"},
+//        {title: "Station", step:10, color: "red"}
+//    ];
     var TouchModel = Backbone.DemoboStorage.Model.extend({
         demoboID: 'touchModel'
     });
     var touchData = new TouchModel({
+    });
+
+    var TubeModel = Backbone.DemoboStorage.Model.extend({
+        demoboID: 'tube1'
+    });
+    var tubeModel1 = new TubeModel({
+        id: 'tube1'
     });
 
     var background = new UIElement({
@@ -38,9 +50,21 @@ define(function(require, exports, module) {
     var dir = [0];
     touchData.on("change", function(model) {
         labelArea.show();
-        var data = model.attributes; console.log(data.direction)
+        var data = model.attributes;
         labelArea.update(data);
         if (data.direction == 'y') {
+            if (data.count == 1){
+                console.log('----volume', info[0][0].value);
+                tubeModel1.save('volume',info[0][0].value);
+            } else if (count > 6) {
+                if (data.count == 2) {
+                    console.log('-----video', info[1][data.value].title, info[1][data.value].value);
+                    tubeModel1.save('video',info[1][data.value].value); //console.log(data.value);
+                } else if (data.count == 3) {
+                    console.log('------effect', info[2][data.value].title, info[2][data.value].value);
+                    tubeModel1.save('effect',info[2][data.value].value);
+                }
+            }
             touchArea.show();
             if (count == 6) {
                 meter.show(data);
@@ -48,7 +72,12 @@ define(function(require, exports, module) {
                 meter.update(data);
             }
         } else {
+            if (data.direction == 't'){
+                console.log('------playPause', Date.now())
+                tubeModel1.save('playPause', Date.now())
+            }
             touchArea.hideLine();
+
         }
     });
     touchArea.on("fingerChange", function(data){
@@ -56,7 +85,7 @@ define(function(require, exports, module) {
         count++;
     });
     touchArea.on("fingerTap", function(data){
-        processTouchData(data, count, pos, dir); console.log('tap')
+        processTouchData(data, count, pos, dir);
     });
     touchArea.on("fingerHide", function(){
         console.log('finger hide')
@@ -106,16 +135,20 @@ define(function(require, exports, module) {
 //                action = "";
 //            }
         } else if (direction == 'y') {
-            value = data.value[1];
             if (data.count == 1) {
                 action = "Volume";
+                value = data.value[1];
+                info[0][0].value = data.value[1];
             } else if (data.count == 2) {
-                action = "Playlist";
+                action = "Video";
+                value = Math.abs((data.value[1])%5);
             } else if (data.count == 3) {
-                action = "Source";
+                action = "Effect";
+                value = (data.value[1])%5;
             }
         } else if (direction == 't') {
             action = "Play";
+            info[3][0].value = Date.now();
         }
 
         var tData = {
@@ -124,7 +157,7 @@ define(function(require, exports, module) {
             color: data.color,
             direction: direction,
             y: data.y,
-            count: data.count,
+            count: data.count
         };
         touchData.save(tData);
     }
@@ -157,12 +190,12 @@ define(function(require, exports, module) {
     }
 
     function initDemobo() {
-//        demobo_guid = demobo.Utils.generateCode(5);
+        console.log('init')
         demobo.init({
             isHost: demobo.Utils.isMobile()?true:false,
             appName: "demoboMusic",
             method: "code",
-            layers: ["firebase"],
+            layers: ["webrtc"],
             layerTimeout: 10000,
             timeout: 30000,
             onSuccess: function() {

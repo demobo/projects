@@ -62,9 +62,6 @@ define(function(require, exports, module) {
                     }
                     this.isBase = true;
                 }
-//                if (event.tap){
-//                    this.emit('eventend')
-//                }
             }.bind(this));
             this.on('eventupdate', function(event){
                 if (this.initPos && !this.isBase){

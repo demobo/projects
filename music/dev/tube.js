@@ -2,8 +2,15 @@ define(function(require, exports, module) {
     var UIApplication = require('containers/UIApplication');
     var Tube = require('./js/components/Tube');
 
-    var tube1 = new Tube({
+    var TubeModel = Backbone.DemoboStorage.Model.extend({
+        demoboID: 'tube1'
+    });
+    var tubeModel1 = new TubeModel({
         id: 'tube1'
+    });
+    var tube1 = new Tube({
+        id: 'tube1',
+        model: tubeModel1
     });
     window.tube1 = tube1;
 
