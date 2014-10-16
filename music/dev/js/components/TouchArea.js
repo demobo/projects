@@ -70,7 +70,7 @@ define(function(require, exports, module) {
             }.bind(this), 200);
         },
 
-        show: function() {
+        showLine: function() {
             this.secondaryCircle.showLine();
         },
 

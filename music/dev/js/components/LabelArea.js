@@ -28,11 +28,18 @@ define(function(require, exports, module) {
                     color: "transparent"
                 }
             });
+            this.tubeModel = options.model;
+            this.init();
+        },
+
+        init: function() {
+            this.content = ""
         },
 
         hide: function() {
             this.setOpacity(0, {duration: 200, curve: "easeOut"});
             this.setPosition(0,0,0, {duration : 500, curve : 'easeOut'});
+            this.init();
         },
 
         show: function() {
@@ -46,28 +53,17 @@ define(function(require, exports, module) {
                 color: data.color
             });
 
-            var content = '';
+            this.tubeModel.on('change:volume', function(model, value){
+               this.content = '<i class="fa ' + icons[0] + '"></i>' + "<div>" + value + "</div>";
+            }.bind(this));
+            this.tubeModel.on('change:channel', function(model, value){
+                this.content = '<i class="fa ' + icons[1] + '"></i>' + "<div>" + value + "</div>";
+            }.bind(this));
+            this.tubeModel.on('change:effectName', function(model, value){
+                this.content = '<i class="fa ' + icons[2] + '"></i>' + "<div>" + value + "</div>";
+            }.bind(this));
 
-            if (data.action == 'Volume') {
-                content = '<i class="fa ' + icons[0] + '"></i>' + "<div>" + data.value + "</div>";
-            } else if (data.action == "Video") {
-                content = '<i class="fa ' + icons[1] + '"></i>' + "<div>" + video[data.value] + "</div>";
-            } else if (data.action == "Effect") {
-                content = '<i class="fa ' + icons[2] + '"></i>' + "<div>" + effects[data.value] + "</div>";
-            } else if (data.action == "Next") {
-                content = '<i class="fa ' + next[data.value+1] + '"></i>' + "<div>" + sound[data.value+1] + "</div>";
-            } else if (data.action == "Thumb") {
-                content = '<i class="fa ' + thumb[data.value+1] + '"></i>' + "<div>" + feels[data.value+1] + "</div>";
-            } else if (data.action == "Play") {
-                if (mode == 'play') {
-                    content = '<i class="fa ' + play[0] + '"></i>' + "<div>" + Play[0] + "</div>";
-                    mode = 'pause';
-                } else if (mode == 'pause') {
-                    content = '<i class="fa ' + play[1] + '"></i>' + "<div>" + Play[1] + "</div>";
-                    mode = 'play'
-                }
-            }
-            this.setContent(content);
+            this.setContent(this.content); //console.log(this.content)
         }
     });
 

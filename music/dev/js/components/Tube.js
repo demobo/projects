@@ -33,7 +33,7 @@ define(function(require, exports, module) {
         },
 
         onPlayerReady: function() {
-            this.tubeModel.save('video', '3wxhOurCfXw');
+//            this.tubeModel.save('video', '3wxhOurCfXw');
         },
 
         onPlayerStateChange: function(event) {
@@ -75,6 +75,7 @@ define(function(require, exports, module) {
             this.tubeModel.on('change:video',function(model, value){
                 console.log('---video', value);
                 this.player.loadVideoById(value);
+                this.player.pauseVideo();
             }.bind(this));
             this.tubeModel.on('change:volume',function(model, value){
                 console.log('---volume', value);
@@ -98,10 +99,10 @@ define(function(require, exports, module) {
                 }
             }.bind(this));
 
-            this.tubeModel.on('change:playing',function(model, value){
-                if (value) this.player.playVideo();
-                else this.player.pauseVideo();
-            }.bind(this));
+//            this.tubeModel.on('change:playing',function(model, value){
+//                if (value) this.player.playVideo();
+//                else this.player.pauseVideo();
+//            }.bind(this));
             this.tubeModel.on('change:curTime',function(model, value){
                 this.player.seekTo(value);
             }.bind(this));

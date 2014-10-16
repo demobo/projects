@@ -7,15 +7,10 @@ define(function(require, exports, module) {
     var Meter = require('./js/components/testMeter');
 
     var info = [[{title: 'Volume', value: 0}],
-                [{title: 'ESPN', value: 'kDybIiiYBQQ'}, {title: 'BBC', value: 'MVM0ny8TYwE'}, {title: 'MTV', value: 'XBf0yJVMSzI'}, {title: 'CollegeHumor', value: 'vd7U3OYziHY'}, {title: 'Comedy', value: 'bCEE0XFNtS0'}],
+                [{title: 'ESPN', value: 'tYGaYg74XJw'}, {title: 'BBC', value: '8n0SkIGARuo'}, {title: 'MTV', value: 'q63b1L3hGIw'}, {title: 'CollegeHumor', value: 'YuOBzWF0Aws'}, {title: 'Comedy', value: 'xgGkt6l-WTM'}],
                 [{title: 'GreyScale', value: 1}, {title: 'Sepia', value: 2}, {title: 'Blur', value: 3}, {title: 'Tint', value: 4}, {title: 'Invert', value: 5}],
                 [{title: 'Play', value: 0}]];
 
-//    var config = [
-//        {title: "Volume", step:.1, color: "green"},
-//        {title: "Frequency", step:.1, color: "yellow"},
-//        {title: "Station", step:10, color: "red"}
-//    ];
     var TouchModel = Backbone.DemoboStorage.Model.extend({
         demoboID: 'touchModel'
     });
@@ -36,7 +31,7 @@ define(function(require, exports, module) {
     });
 
     var labelArea = new LabelArea({
-        model: touchData
+        model: tubeModel1
     });
 
     var touchArea = new TouchArea({
@@ -52,20 +47,23 @@ define(function(require, exports, module) {
         labelArea.show();
         var data = model.attributes;
         labelArea.update(data);
+
         if (data.direction == 'y') {
             if (data.count == 1){
-                console.log('----volume', info[0][0].value);
+//                console.log('----volume', info[0][0].value);
                 tubeModel1.save('volume',info[0][0].value);
             } else if (count > 6) {
                 if (data.count == 2) {
-                    console.log('-----video', info[1][data.value].title, info[1][data.value].value);
-                    tubeModel1.save('video',info[1][data.value].value); //console.log(data.value);
+//                    console.log('-----video', info[1][data.value].title, info[1][data.value].value);
+                    tubeModel1.save('video',info[1][data.value].value);
+                    tubeModel1.save('channel', info[1][data.value].title);
                 } else if (data.count == 3) {
-                    console.log('------effect', info[2][data.value].title, info[2][data.value].value);
-                    tubeModel1.save('effect',info[2][data.value].value);
+//                    console.log('------effect', info[2][data.value].title, info[2][data.value].value);
+                    tubeModel1.save('effect', info[2][data.value].value);
+                    tubeModel1.save('effectName', info[2][data.value].title)
                 }
             }
-            touchArea.show();
+            touchArea.showLine();
             if (count == 6) {
                 meter.show(data);
             } else if (count > 6) {
@@ -73,7 +71,7 @@ define(function(require, exports, module) {
             }
         } else {
             if (data.direction == 't'){
-                console.log('------playPause', Date.now())
+//                console.log('------playPause', Date.now())
                 tubeModel1.save('playPause', Date.now())
             }
             touchArea.hideLine();
@@ -88,7 +86,6 @@ define(function(require, exports, module) {
         processTouchData(data, count, pos, dir);
     });
     touchArea.on("fingerHide", function(){
-        console.log('finger hide')
         touchEnd();
         labelArea.hide();
         meter.hide();
@@ -106,7 +103,6 @@ define(function(require, exports, module) {
     initDemobo();
 
     function processTouchData(data, count, pos, dir) {
-        var action = "";
         var value = "";
         var direction = "undefined";
         var initPos = [];
@@ -136,23 +132,16 @@ define(function(require, exports, module) {
 //            }
         } else if (direction == 'y') {
             if (data.count == 1) {
-                action = "Volume";
                 value = data.value[1];
                 info[0][0].value = data.value[1];
             } else if (data.count == 2) {
-                action = "Video";
                 value = Math.abs((data.value[1])%5);
             } else if (data.count == 3) {
-                action = "Effect";
                 value = (data.value[1])%5;
             }
-        } else if (direction == 't') {
-            action = "Play";
-            info[3][0].value = Date.now();
         }
 
         var tData = {
-            action: action,
             value: value,
             color: data.color,
             direction: direction,
@@ -175,8 +164,8 @@ define(function(require, exports, module) {
             var direction = 'x';
         } else if (dx < dy) {
             direction = 'y';
-        } else if (dx == 0 && dy == 0) {
-            direction = 't';
+//        } else if (dx == 0 && dy == 0) {
+//            direction = 't';
         } else {
             direction = 'u';
         }
