@@ -63,7 +63,7 @@ define(function(require, exports, module) {
                 }
             }.bind(this));
 
-            this.setContent(this.content); console.log(this.content)
+            this.setContent(this.content);
 
             this.emit('hide');
         }

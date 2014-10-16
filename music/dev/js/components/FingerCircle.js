@@ -85,7 +85,7 @@ define(function(require, exports, module) {
                 this.fingers.x[data.touch] = data.clientX;
                 this.fingers.y[data.touch] = data.clientY;
                 var len = _(this.fingers.x).size();
-                var stepSize = [20, 50,100];
+                var stepSize = [20, 50, 70];
                 var limit = [100, 100, 100];
 
                 if (data.count==this.count) {

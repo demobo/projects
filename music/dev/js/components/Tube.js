@@ -34,6 +34,7 @@ define(function(require, exports, module) {
 
         onPlayerReady: function() {
 //            this.tubeModel.save('video', '3wxhOurCfXw');
+            this.tubeModel.save('effect', 0);
         },
 
         onPlayerStateChange: function(event) {
@@ -129,6 +130,15 @@ define(function(require, exports, module) {
             switch (mode) {
                 case 1:
                     $('#tube1').css('-webkit-filter','grayscale(1)');
+                    break;
+                case 2:
+                    $('#tube1').css('-webkit-filter','sepia(1)');
+                    break;
+                case 3:
+                    $('#tube1').css('-webkit-filter','blur(5px)');
+                    break;
+                case 4:
+                    $('#tube1').css('-webkit-filter','invert(.8)');
                     break;
                 default:
                     $('#tube1').css('-webkit-filter','');
