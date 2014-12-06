@@ -51,23 +51,36 @@ define(function(require, exports, module) {
     }
 
     function generate() {
-        var winningRow = this.options.rowCount-1-Math.floor(Math.random()*this.options.dimension[1]);
-        var winningFruit = Math.floor(Math.random()*12);
+//        var winningRow = this.options.rowCount-1-Math.floor(Math.random()*this.options.dimension[1]);
+//        var winningFruit = Math.floor(Math.random()*12);
+        var check = true;
         for (var i=0; i<this.options.dimension[0]; i++) {
             for (var j=0; j<this.options.rowCount; j++) {
                 if (!this.slotMap[i])
                     this.slotMap[i]=[];
                 if (this.slotMap[i][j+this.options.rowCount-this.options.dimension[1]] !== undefined) {
                     this.slotMap[i][j] = this.slotMap[i][j+this.options.rowCount-this.options.dimension[1]];
-                } else if (j == winningRow) {
-                    this.slotMap[i][j] = winningFruit;
+//                } else if (j == winningRow) {
+//                    this.slotMap[i][j] = winningFruit;
                 } else
                     this.slotMap[i][j] = Math.floor(Math.random()*12);
+                oneRowJackpot.call(this, i, j)
             }
         }
-        checkMap.call(this, winningRow, winningFruit);
-        soundEffect.paysoff.play();
+//        checkMap.call(this, winningRow, winningFruit);
+        soundEffect.slot.play();
     }
+
+    function oneRowJackpot(i,j) {
+        var winningRow = this.options.rowCount-1-Math.floor(Math.random()*this.options.dimension[1]);
+        var winningFruit = Math.floor(Math.random()*12);
+
+        if (j == winningRow) {
+            this.slotMap[i][j] = winningFruit;
+        }
+    }
+
+
 
     function checkMap(row, fruit) {
         for (var j = (this.options.rowCount-this.options.dimension[1]); j<this.options.rowCount; j++) {
