@@ -19,7 +19,7 @@ define(function(require, exports, module) {
         },
 
         update: function() {
-            var icon = 'icon'+this.options.map[this.options.column][this.options.row];
+            var icon = 'iconS'+this.options.map[this.options.column][this.options.row];
             this.setContent('<div class="slotIcon ' + icon + '">'+this.options.map[this.options.column][this.options.row]+'</div>');
         }
 
