@@ -5,7 +5,7 @@ define(function(require, exports, module) {
 
     var mainContext = Engine.createContext();
 
-    var slotGame = require('js/src/models/slotGame');
+    var slotGame = require('js/models/slotGame');
 
     var slotMachine = new SlotMachine({
         size: [window.innerWidth*.8,window.innerHeight*.8],
