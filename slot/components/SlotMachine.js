@@ -62,10 +62,13 @@ define(function(require, exports, module) {
                 if (this.slotMap[i][j+this.options.rowCount-this.options.dimension[1]] !== undefined) {
                     this.slotMap[i][j] = this.slotMap[i][j+this.options.rowCount-this.options.dimension[1]];
                 } else if (winning.row.indexOf(j) != -1) {
-                    if (winCode == 1 || winCode == 2) {
-                        rowJackpot.call(this, i, j, winning);
-                    } else if (winCode == 3) {
-                        console.log('win 3 lines')
+                    switch(winCode) {
+                        case 1:
+                        case 2:
+                            rowJackpot.call(this, i, j, winning);
+                            break;
+                        default:
+                            break;
                     }
                 } else
                     this.slotMap[i][j] = chooseFruit.call(this);
