@@ -27,7 +27,7 @@ define(function(require, exports, module) {
                         fontSize: '30px',
                         color: "#000099",
                         textAlign: 'center',
-                        border: 'solid 1px #000'
+                        borderTop: 'solid 1px #000'
                     },
                     map: options.map
                 });
