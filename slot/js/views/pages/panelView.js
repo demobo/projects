@@ -48,9 +48,8 @@ define(function(require, exports, module) {
             origin: [ratio, 0.8],
             align: [ratio, 0.8]
         });
-//        this.setButtonEvent(button, index);
+        this.setButtonEvent(button, index);
         this.add(buttonMod).add(button);
-        console.log(button)
     };
 
     PanelView.prototype.setButtonEvent = function(button, index){
