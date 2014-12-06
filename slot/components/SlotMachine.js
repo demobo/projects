@@ -8,6 +8,7 @@ define(function(require, exports, module) {
     var UIElement           = require('core/UIElement');
     var Engine              = require('famous/core/Engine');
     var SlotColumn          = require('components/SlotColumn');
+    var soundEffect         = require('components/SoundEffect');
 
     function SlotMachine(options) {
         ContainerSurface.apply(this, arguments);
@@ -50,21 +51,41 @@ define(function(require, exports, module) {
     }
 
     function generate() {
-        var winningRow = this.options.rowCount-1-Math.floor(Math.random()*this.options.dimension[1]);
-        var winningFruit = Math.floor(Math.random()*12);
+//        var winningRow = this.options.rowCount-1-Math.floor(Math.random()*this.options.dimension[1]);
+//        var winningFruit = Math.floor(Math.random()*12);
+        var winCode = 1;
+        var winning = chooseWinning.call(this, winCode);
+        console.log(winning);
+
         for (var i=0; i<this.options.dimension[0]; i++) {
             for (var j=0; j<this.options.rowCount; j++) {
                 if (!this.slotMap[i])
                     this.slotMap[i]=[];
                 if (this.slotMap[i][j+this.options.rowCount-this.options.dimension[1]] !== undefined) {
                     this.slotMap[i][j] = this.slotMap[i][j+this.options.rowCount-this.options.dimension[1]];
-                } else if (j == winningRow) {
-                    this.slotMap[i][j] = winningFruit;
+//                } else if (j == winningRow) {
+//                    this.slotMap[i][j] = winningFruit;
+                } else if (winCode == 1 && j == winning.row) {
+                    oneRowJackpot.call(this, i, j, winning);
                 } else
                     this.slotMap[i][j] = Math.floor(Math.random()*12);
             }
         }
-        checkMap.call(this, winningRow, winningFruit);
+//        checkMap.call(this, winningRow, winningFruit);
+        soundEffect.slot.play();
+    }
+
+    function oneRowJackpot(i,j, winning) {
+        this.slotMap[i][j] = winning.fruit;
+    }
+
+    function chooseWinning(winCode){
+        if (winCode == 1) {
+            return {
+                row: this.options.rowCount-1-Math.floor(Math.random()*this.options.dimension[1]),
+                fruit: Math.floor(Math.random()*12)
+            }
+        }
     }
 
     function checkMap(row, fruit) {
