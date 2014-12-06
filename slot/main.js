@@ -20,7 +20,19 @@ define(function(require, exports, module) {
     mainContext.add(slotMod).add(slotMachine);
     mainContext.setPerspective(1000);
 
-    slotGame.on('change',function(model, value){
+    slotGame.on('change:button0',function(model, value){
         console.log(model, value)
+    }.bind(this));
+
+    slotGame.on('change:button1',function(model, value){
+        console.log(model, value)
+    }.bind(this));
+
+    slotGame.on('change:button2',function(model, value){
+        console.log(model, value)
+    }.bind(this));
+
+    slotGame.on('change:button3',function(model, value){
+        slotMachine.spin();
     }.bind(this));
 });

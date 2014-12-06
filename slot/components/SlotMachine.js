@@ -42,13 +42,15 @@ define(function(require, exports, module) {
     }
 
     function _setListeners() {
-        Engine.on('click', function(){
-            generate.call(this);
-            this.columns.map(function(c, i){
-                c.spin(500*i+1000);
-            });
-        }.bind(this));
+        Engine.on('click', this.spin.bind(this));
     }
+
+    SlotMachine.prototype.spin = _.debounce(function() {
+        generate.call(this);
+        this.columns.map(function(c, i){
+            c.spin(500*i+1000);
+        });
+    },1000, true);
 
     function generate() {
         var winCode = 2;
