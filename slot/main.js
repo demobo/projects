@@ -5,6 +5,8 @@ define(function(require, exports, module) {
 
     var mainContext = Engine.createContext();
 
+    var slotGame = require('js/src/models/slotGame');
+
     var slotMachine = new SlotMachine({
         size: [window.innerWidth*.8,window.innerHeight*.8],
         dimension: [5, 4],
@@ -17,4 +19,8 @@ define(function(require, exports, module) {
 
     mainContext.add(slotMod).add(slotMachine);
     mainContext.setPerspective(1000);
+
+    slotGame.on('change',function(model, value){
+        console.log(model, value)
+    }.bind(this));
 });

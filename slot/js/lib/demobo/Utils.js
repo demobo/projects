@@ -30,11 +30,7 @@ var demobo = demobo || {};
 
         isIOS: _.memoize(function () {
             return navigator.userAgent.match(/(iPhone|iPod|iPad)/);
-        }),
-
-        generateCode: function(number) {
-            return Math.random().toString(36).substr(2, number);
-        }
+        })
     };
 
     demobo.Utils = u;

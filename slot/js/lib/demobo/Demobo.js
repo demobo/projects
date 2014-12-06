@@ -6,11 +6,12 @@ var demobo = demobo || {};
         Object.apply(this, arguments);
         demobo.discovery = new demobo.Discovery(options);
         demobo.discovery.search(function(channelObj){
+            console.log(channelObj)
             if (channelObj.channelID && channelObj.connectionID && channelObj.layers.length) {
                 demobo.communicationLayer.add(channelObj,demobo.discovery.onSuccess, demobo.discovery.onFailure);
             } else {
                 demobo.discovery.onFailure();
-                console.log("Connection failed: no channecl/layer available.");
+                console.log("Connection failed: no channel/layer available.");
             }
         }.bind(this), function(err){
             demobo.discovery.onFailure();
@@ -38,10 +39,11 @@ DemoboWebsocket.prototype.init = function(){
     this.socket.onmessage = this.socketonmessage;
     this.socket.onopen = this.socketonopen;
     this.socket.onclose = this.socketonclose;
+    this.socket.onerror = this.socketonerror;
 };
 
 DemoboWebsocket.prototype.send = function(message){
-    this.socket.send(JSON.stringify(message));
+    if (this.socket) this.socket.send(JSON.stringify(message));
 };
 DemoboWebsocket.prototype.onMessage = function(callback){
     this.socketonmessage = function(evt) {

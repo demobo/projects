@@ -23,7 +23,9 @@ var demobo = demobo || {};
     }
     CommunicationLayer.prototype = Object.create(Object.prototype);
     CommunicationLayer.prototype.constructor = CommunicationLayer;
-    CommunicationLayer.DEFAULT_OPTIONS = {};
+    CommunicationLayer.DEFAULT_OPTIONS = {
+        timeout: 3000
+    };
 
     CommunicationLayer.prototype.add = function(channelObj,onSuccess,onFailure) {
         var onFailure = onFailure || function(){};
@@ -92,13 +94,15 @@ var demobo = demobo || {};
                 if (demobo.discovery.isHost()) this.syncSet();
                 onSuccess();
             }.bind(this);
-            setTimeout(function() {
-                if (!target.state) {
-                    delete demobo.discovery.deviceInfo.port;
-                    channelObj.layers.shift();
-                    this.add(channelObj,onSuccess,onFailure);
-                }
-            }.bind(this), demobo.discovery.options.layerTimeout);
+            if (this.options.timeout) {
+                setTimeout(function() {
+                    if (!target.state) {
+                        delete demobo.discovery.deviceInfo.port;
+                        channelObj.layers.shift();
+                        this.add(channelObj,onSuccess,onFailure);
+                    }
+                }.bind(this), this.options.timeout);
+            }
         }
         else {
             console.log("Communication Layer set up fails");
@@ -176,6 +180,9 @@ var demobo = demobo || {};
     CommunicationLayerGeneric.prototype.isHost = function() {
         return demobo.discovery.isHost();
     };
+    CommunicationLayerGeneric.prototype.isSyncHost = function() {
+        return demobo.discovery.isSyncHost();
+    };
     CommunicationLayerGeneric.prototype.ping = function ping() {
         setTimeout(function() {
             this.postMessage({method: "ping", key: this.key, from: this.guid});
@@ -225,7 +232,7 @@ var demobo = demobo || {};
         this.target.onDisconnect().remove();
         setTimeout(function() {
             if (this.onConnect) this.onConnect.call(this);
-            if (!this.isHost()) {
+            if (!this.isSyncHost()) {
                 this.rpc("_remoteSync", []);
             }
         }.bind(this), 50);
@@ -257,20 +264,30 @@ var demobo = demobo || {};
         CommunicationLayerGeneric.apply(this, arguments);
         var ip = demobo.discovery.getHostIPAddress();
         var port = options.port;
-        this.target = new DemoboWebsocket({
-            channel: this.channel,
-            id: this.guid,
-            isHost: this.isHost(),
-            internalIP: ip,
-            port: port
-        });
-        if (this.isHost()) demobo.discovery.deviceInfo.port = port;
-        this.target.socketonopen = function() {
-            if (this.onConnect) this.onConnect.call(this);
-            if (!this.isHost()) {
-                this.rpc("_remoteSync", []);
-            }
+        var connectTarget = function() {
+            this.target = new DemoboWebsocket({
+                channel: this.channel,
+                id: this.guid,
+                isHost: this.isHost(),
+                internalIP: ip,
+                port: port
+            });
+            this.target.socketonopen = function() {
+                if (this.onConnect) this.onConnect.call(this);
+                if (!this.isSyncHost()) {
+                    this.rpc("_remoteSync", []);
+                }
+            }.bind(this);
+            this.target.socketonclose = function() {
+
+            }.bind(this);
+            this.target.socketonerror = function() {
+                console.log('socket error')
+                if (this.onFailure) this.onFailure.call(this);
+            }.bind(this);
         }.bind(this);
+        connectTarget();
+        if (this.isHost()) demobo.discovery.deviceInfo.port = port;
     }
 
     CommunicationLayerWebsocket.prototype = Object.create(CommunicationLayerGeneric.prototype);
@@ -303,7 +320,7 @@ var demobo = demobo || {};
         });
         setTimeout(function() {
             if (this.onConnect) this.onConnect.call(this);
-            if (!this.isHost()) {
+            if (!this.isSyncHost()) {
                 this.rpc("_remoteSync", []);
             }
         }.bind(this), 1500);
@@ -333,7 +350,7 @@ var demobo = demobo || {};
         this.target = window.parent;
         setTimeout(function() {
             if (this.onConnect) this.onConnect.call(this);
-            if (!this.isHost()) {
+            if (!this.isSyncHost()) {
                 this.rpc("_remoteSync", []);
             }
         }.bind(this), 0);
@@ -372,7 +389,7 @@ var demobo = demobo || {};
         this.target.emit('create', this.channel);
         setTimeout(function() {
             if (this.onConnect) this.onConnect.call(this);
-            if (!this.isHost()) {
+            if (!this.isSyncHost()) {
                 this.rpc("_remoteSync", []);
             }
         }.bind(this), 50);
@@ -405,7 +422,7 @@ var demobo = demobo || {};
         });
         this.target.onOpen = function() {
             if (this.onConnect) this.onConnect.call(this);
-            if (!this.isHost()) {
+            if (!this.isSyncHost()) {
                 this.rpc("_remoteSync", []);
             }
         }.bind(this);
@@ -425,6 +442,9 @@ var demobo = demobo || {};
     };
     CommunicationLayerWebrtc.prototype.offMessage = function() {
         delete this.target.messageCallback;
+    };
+    CommunicationLayerWebrtc.prototype.set = function set(key, value) {
+        // do not support set in webrtc yet, buggy
     };
 
     demobo.CommunicationLayer = CommunicationLayer;

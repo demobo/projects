@@ -7,6 +7,7 @@ var demobo = demobo || {};
         Object.apply(this, arguments);
         _.defaults(options, Discovery.DEFAULT_OPTIONS);
         this.options = options;
+        if (this.options.isSyncHost == undefined) this.options.isSyncHost=this.options.isHost;
         _init.call(this);
         this.initDeviceInfo.call(this);
         _createHandlers.call(this);
@@ -23,8 +24,7 @@ var demobo = demobo || {};
         mode: "conference",
         isHost: false,
         method: "bump",
-        timeout: 6000,
-        layerTimeout: 3000
+        timeout: 6000
     };
 
     function _debug(){
@@ -392,6 +392,10 @@ var demobo = demobo || {};
         return layers;
     };
 
+    Discovery.prototype.isSyncHost = function(){
+        return this.options.isSyncHost;
+    };
+
     Discovery.prototype.isHost = function(){
         return this.getDeviceInfo().isHost;
     };
@@ -461,7 +465,14 @@ var demobo = demobo || {};
         var roomURL = this.pairingUrl + this.getRoomID();
         this.pairingRef = new Firebase(roomURL);
         if (this.isMobile()) {
-            this.enterCode(Math.random().toString(36).substr(2, 4));
+            var code = this.options.code || Math.random().toString(36).substr(2, 4);
+            this.pairingRef.on('value', function (allSnapshot){
+                allSnapshot.forEach(function (snapshot) {
+                    if (snapshot.val().code==code)
+                        snapshot.ref.remove();
+                });
+                this.enterCode(code);
+            }.bind(this));
         }
     };
 
@@ -472,6 +483,31 @@ var demobo = demobo || {};
     Discovery.prototype.enterCode = function(code){
         this.deviceInfo.code = code;
         this.onPairingTrigger();
+    };
+
+    Discovery.prototype.connectWIFI = function(internalIP) {
+        if (!configs.dev) {
+            var channelObj = {
+                "channelID":"1ae5d720-6a9f-bb3a-24b4-086811a42d7c",
+                "connectionID":"a4e79935-ee0f-8766-da06-6c06d510492e",
+                "host":"mobile",
+                "hostInfo":{
+                    "internalIP":internalIP
+                },
+                "layers":["websocket:8020"],
+                "guest":"web",
+                "roomId":"web"
+            };
+            demobo.communicationLayer.remove(channelObj);
+            this.getDeviceInfo().roomId = channelObj.roomId;
+            this.getDeviceInfo().host = channelObj.host;
+            this.getDeviceInfo().channelID = channelObj.channelID;
+            this.getDeviceInfo().hostInfo = channelObj.hostInfo;
+
+            demobo.communicationLayer.options.timeout = null;
+            demobo.communicationLayer.add(channelObj, this.onSuccess, this.onFailure);
+            console.log('connectWIFI');
+        }
     };
 
     //----------------- End of Code Pairing Methods -----------------//
