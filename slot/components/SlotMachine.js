@@ -51,20 +51,14 @@ define(function(require, exports, module) {
     }
 
     function generate() {
-//        var winningRow = this.options.rowCount-1-Math.floor(Math.random()*this.options.dimension[1]);
-//        var winningFruit = Math.floor(Math.random()*12);
         var winCode = 1;
         var winning = chooseWinning.call(this, winCode);
-        console.log(winning);
-
         for (var i=0; i<this.options.dimension[0]; i++) {
             for (var j=0; j<this.options.rowCount; j++) {
                 if (!this.slotMap[i])
                     this.slotMap[i]=[];
                 if (this.slotMap[i][j+this.options.rowCount-this.options.dimension[1]] !== undefined) {
                     this.slotMap[i][j] = this.slotMap[i][j+this.options.rowCount-this.options.dimension[1]];
-//                } else if (j == winningRow) {
-//                    this.slotMap[i][j] = winningFruit;
                 } else if (winCode == 1 && j == winning.row) {
                     oneRowJackpot.call(this, i, j, winning);
                 } else
@@ -85,6 +79,8 @@ define(function(require, exports, module) {
                 row: this.options.rowCount-1-Math.floor(Math.random()*this.options.dimension[1]),
                 fruit: Math.floor(Math.random()*12)
             }
+        } else {
+            return {}
         }
     }
 
