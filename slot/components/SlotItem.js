@@ -3,11 +3,6 @@ define(function(require, exports, module) {
     var UIElement           = require('core/UIElement');
     var UIContainer         = require('containers/UIContainer');
 
-    var imageArray = [
-        '',
-
-    ];
-
     var SlotItem = UIElement.extend({
         constructor:function(options) {
             this._callSuper(UIElement, 'constructor', options);
