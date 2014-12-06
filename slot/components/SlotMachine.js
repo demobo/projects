@@ -68,7 +68,7 @@ define(function(require, exports, module) {
                         console.log('win 3 lines')
                     }
                 } else
-                    this.slotMap[i][j] = Math.floor(Math.random()*12);
+                    this.slotMap[i][j] = chooseFruit.call(this);
             }
         }
 //        checkMap.call(this, winningRow, winningFruit);
@@ -81,29 +81,43 @@ define(function(require, exports, module) {
     }
 
     function chooseWinning(winCode){
-        var row1 = this.options.rowCount-1-Math.floor(Math.random()*this.options.dimension[1]);
-        var row2 = this.options.rowCount-1-Math.floor(Math.random()*this.options.dimension[1]);
+        var row1 = chooseRow.call(this);
+        var row2 = chooseRow.call(this);
         while (row1 == row2) {
-            row2 = this.options.rowCount-1-Math.floor(Math.random()*this.options.dimension[1]);
+            row2 = chooseRow.call(this);
+        }
+        var row3 = chooseRow.call(this);
+        while (row3 == row1 || row3 == row2) {
+            row3 = chooseRow.call(this);
         }
 
-        var fruit1 = Math.floor(Math.random()*12);
-        var fruit2 = Math.floor(Math.random()*12)
+        var fruit1 = chooseFruit.call(this);
+        var fruit2 = chooseFruit.call(this);
 
-        if (winCode == 1) {
-            return {
-                row: [row1],
-                fruit: [fruit1]
-            }
-        } else if (winCode == 2) {
-
-            return {
-                row: [row1, row2],
-                fruit: [fruit1, fruit2]
-            }
-        } else {
-            return {}
+        switch(winCode) {
+            case 1:
+                return {
+                    row: [row1],
+                    fruit: [fruit1]
+                }
+                break;
+            case 2:
+                return {
+                    row: [row1, row2],
+                    fruit: [fruit1, fruit2]
+                }
+                break;
+            default:
+                return {}
         }
+    }
+
+    function chooseRow() {
+        return this.options.rowCount-1-Math.floor(Math.random()*this.options.dimension[1]);
+    }
+
+    function chooseFruit() {
+        return Math.floor(Math.random()*12);
     }
 
     function checkMap(row, fruit) {
