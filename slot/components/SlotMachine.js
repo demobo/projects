@@ -8,6 +8,7 @@ define(function(require, exports, module) {
     var UIElement           = require('core/UIElement');
     var Engine              = require('famous/core/Engine');
     var SlotColumn          = require('components/SlotColumn');
+    var soundEffect         = require('components/SoundEffect');
 
     function SlotMachine(options) {
         ContainerSurface.apply(this, arguments);
@@ -65,6 +66,7 @@ define(function(require, exports, module) {
             }
         }
         checkMap.call(this, winningRow, winningFruit);
+        soundEffect.slot.play();
     }
 
     function checkMap(row, fruit) {
