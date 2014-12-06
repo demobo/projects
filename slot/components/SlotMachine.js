@@ -51,16 +51,20 @@ define(function(require, exports, module) {
     }
 
     function generate() {
-        var winCode = 1;
-        var winning = chooseWinning.call(this, winCode);
+        var winCode = 2;
+        var winning = chooseWinning.call(this, winCode); console.log(winning.fruit, winning.row);
         for (var i=0; i<this.options.dimension[0]; i++) {
             for (var j=0; j<this.options.rowCount; j++) {
                 if (!this.slotMap[i])
                     this.slotMap[i]=[];
                 if (this.slotMap[i][j+this.options.rowCount-this.options.dimension[1]] !== undefined) {
                     this.slotMap[i][j] = this.slotMap[i][j+this.options.rowCount-this.options.dimension[1]];
-                } else if (winCode == 1 && j == winning.row) {
-                    oneRowJackpot.call(this, i, j, winning);
+                } else if (winning.row.indexOf(j) != -1) {
+                    if (winCode == 1 || winCode == 2) {
+                        rowJackpot.call(this, i, j, winning);
+                    } else if (winCode == 3) {
+                        console.log('win 3 lines')
+                    }
                 } else
                     this.slotMap[i][j] = Math.floor(Math.random()*12);
             }
@@ -69,15 +73,31 @@ define(function(require, exports, module) {
         soundEffect.slot.play();
     }
 
-    function oneRowJackpot(i,j, winning) {
-        this.slotMap[i][j] = winning.fruit;
+    function rowJackpot(i,j, winning) {
+        var index = winning.row.indexOf(j);
+        this.slotMap[i][j] = winning.fruit[index];
     }
 
     function chooseWinning(winCode){
+        var row1 = this.options.rowCount-1-Math.floor(Math.random()*this.options.dimension[1]);
+        var row2 = this.options.rowCount-1-Math.floor(Math.random()*this.options.dimension[1]);
+        while (row1 == row2) {
+            row2 = this.options.rowCount-1-Math.floor(Math.random()*this.options.dimension[1]);
+        }
+
+        var fruit1 = Math.floor(Math.random()*12);
+        var fruit2 = Math.floor(Math.random()*12)
+
         if (winCode == 1) {
             return {
-                row: this.options.rowCount-1-Math.floor(Math.random()*this.options.dimension[1]),
-                fruit: Math.floor(Math.random()*12)
+                row: [row1],
+                fruit: [fruit1]
+            }
+        } else if (winCode == 2) {
+
+            return {
+                row: [row1, row2],
+                fruit: [fruit1, fruit2]
             }
         } else {
             return {}
