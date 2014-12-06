@@ -66,7 +66,7 @@ define(function(require, exports, module) {
             }
         }
         checkMap.call(this, winningRow, winningFruit);
-        soundEffect.slot.play();
+        soundEffect.paysoff.play();
     }
 
     function checkMap(row, fruit) {
