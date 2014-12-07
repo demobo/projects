@@ -14,6 +14,7 @@ define(function(require, exports, module) {
     var winChart = [0, 1, 10, 100, 1000, 10000];
     var payLines = [];
     var badLines = [];
+    var winAmt = 0;
 
     function SlotMachine(options) {
         ContainerSurface.apply(this, arguments);
@@ -60,13 +61,22 @@ define(function(require, exports, module) {
     SlotMachine.prototype.spin = _.debounce(function() {
         var storePayLines = payLines;
         var storeBadLines = badLines;
+        var storeWinAmt = winAmt;
         var winLines = winPercent.call(this);
         generate.call(this, winLines);
+        this.columns.map(function(c, i){
+            c.spin(500*i+1000);
+        });
         soundEffect.slot.play();
         
         if (storePayLines.length == 5) {
             slotGame.save('jackpot', Date.now());
         }
+
+        _.delay(function() {
+            slotGame.save('credit', slotGame.get('credit')+storeWinAmt);
+        }, 3000);
+
         console.log('----storePayLines--', storePayLines)
 
 //        if (storePayLines.length) {
@@ -82,9 +92,6 @@ define(function(require, exports, module) {
 //
 //        }
 
-        this.columns.map(function(c, i){
-            c.spin(500*i+1000);
-        });
     },1000, true);
 
     SlotMachine.prototype.animateLine = function(line, bad) {
@@ -103,9 +110,9 @@ define(function(require, exports, module) {
         var winNum = Math.floor(Math.random()*100);
         if (winNum%5 == 0) return 1;
         else if (winNum%7 == 0) return 2;
-        else if (winNum%9 == 0) return 3;
+        else if (winNum%11 == 0) return 3;
         else if (winNum%16 == 0) return 4;
-        else if (winNum%2 == 0) return 5;
+        else if (winNum%3 == 0) return 5;
         else return 0;
     }
 
@@ -309,8 +316,6 @@ define(function(require, exports, module) {
     function checkWin(line) {
         var user = slotGame.get('lines');
         if (user == undefined) user = 5;
-        var credit = slotGame.get('credit');
-        if (credit == undefined) credit = 0;
 
         switch (user) {
             case 1: var userLines = [0]; break;
@@ -327,10 +332,7 @@ define(function(require, exports, module) {
             else badLines.push(line[i]);
         }
 
-        var winAmt = winChart[payLines.length];
-        slotGame.save('credit', credit+winAmt);
-
-//        console.log(winAmt, credit);
+        winAmt = winChart[payLines.length];
     }
 
     module.exports = SlotMachine;
