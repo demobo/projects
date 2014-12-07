@@ -65,3 +65,19 @@ body.panel {
 .icon11 {
     background-image: url('assets/slot11.png');
 }
+
+.good {
+    -webkit-box-shadow:0 0 20px #fff;
+    -moz-box-shadow: 0 0 20px #fff;
+    box-shadow:0 0 20px #fff;
+    -webkit-filter: brightness(1.2);
+    filter: brightness(1.2);
+}
+
+.bad {
+    -webkit-box-shadow:0 0 20px red;
+    -moz-box-shadow: 0 0 20px red;
+    box-shadow:0 0 20px red;
+    -webkit-filter: sepia(1);
+    filter: sepia(1);
+}

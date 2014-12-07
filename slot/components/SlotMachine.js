@@ -9,6 +9,9 @@ define(function(require, exports, module) {
     var Engine              = require('famous/core/Engine');
     var SlotColumn          = require('components/SlotColumn');
     var soundEffect         = require('components/SoundEffect');
+    var slotGame            = require('js/models/slotGame.js');
+
+    var winChart = [0, 1, 10, 100, 1000, 10000];
 
     function SlotMachine(options) {
         ContainerSurface.apply(this, arguments);
@@ -59,13 +62,16 @@ define(function(require, exports, module) {
         });
     },1000, true);
 
-    SlotMachine.prototype.animateLine = function(line) {
+    SlotMachine.prototype.animateLine = function(line, bad) {
         this.columns.map(function(c, i){
             c.rows.map(function(r, i){
-                r.animateLine(line);
+                r.animateLine(line,bad);
             });
         });
-        soundEffect.line.play()
+        if (bad)
+            soundEffect.badline.play()
+        else
+            soundEffect.line.play()
     };
 
     function winPercent() {
@@ -94,7 +100,7 @@ define(function(require, exports, module) {
                 break;
         }
 
-        var winning = chooseWinning.call(this, winCode); console.log(winning.line);
+        var winning = chooseWinning.call(this, winCode);
         for (var i=0; i<this.options.dimension[0]; i++) {
             for (var j=0; j<this.options.rowCount; j++) {
                 if (!this.slotMap[i])
@@ -276,6 +282,38 @@ define(function(require, exports, module) {
     }
 
     function checkWin(line) {
+        var user = slotGame.get('lines');
+        if (user == undefined) user = 5;
+        var credit = slotGame.get('credit');
+        if (credit == undefined) credit = 100;
+
+        switch (user) {
+            case 1: var userLines = [0]; break;
+            case 3: userLines = [0, 1, 2]; break;
+            case 5: userLines = [0, 1, 2, 3, 4]; break;
+            default: userLines = [0]; break;
+        }
+
+        var payLines = [];
+        var badLines = [];
+
+        for (var i = 0; i < line.length; i++) {
+            if (userLines.indexOf(line[i]) != -1) payLines.push(line[i]);
+            else badLines.push(line[i]);
+        }
+
+        var winAmt = winChart[payLines.length];
+        slotGame.save('credit', credit+winAmt);
+
+//        for (var i = 0; i < payLines.length; i++) {
+//            this.payIndex = 1;
+//            setTimeout(function() {
+//                this.animateLine(payLines[this.payIndex], true);
+//            }.bind(this), 1000);
+//
+//        }
+
+        console.log(line, user, payLines, badLines, winAmt);
 
     }
 

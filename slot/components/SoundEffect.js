@@ -16,7 +16,7 @@ define(function(require, exports, module) {
                 loop: true,
                 volume: 0.1
             }),
-            stopsound: new Howl({
+            stopspin: new Howl({
                 urls: ['assets/audio/beep.mp3'],
                 volume: 0.1
             }),
@@ -42,7 +42,11 @@ define(function(require, exports, module) {
             }),
             line: new Howl({
                 urls: ['assets/audio/line.mp3'],
-                volume: 0.1
+                volume: 0.2
+            }),
+            badline: new Howl({
+                urls: ['assets/audio/badline.mp3'],
+                volume: 0.2
             })
 
         };

@@ -23,7 +23,11 @@ define(function(require, exports, module) {
             this.setContent('<div class="slotIcon ' + icon + '"></div>');
         },
 
-        animate: function() {
+        animate: function(bad) {
+            if (bad)
+                this.setClasses(['bad']);
+            else
+                this.setClasses(['good']);
             this.setScale([1.15,1.15,1], {
                 duration: 400,
                 curve: 'spring'
@@ -32,35 +36,36 @@ define(function(require, exports, module) {
                     this.setScale([1,1,1], {
                         method: 'snap'
                     });
+                    this.setClasses([]);
                 }.bind(this),600);
             }.bind(this));
         },
 
-        animateLine: function(line) {
+        animateLine: function(line, bad) {
             if (line===0 && this.options.row==1) {
-                this.animate();
+                this.animate(bad);
             }
             else if (line===1 && this.options.row==2) {
-                this.animate();
+                this.animate(bad);
             }
             else if (line===2 && this.options.row==0) {
-                this.animate();
+                this.animate(bad);
             }
             else if (line===3) {
                 if (this.options.row==2 && this.options.column==0)
-                    this.animate();
+                    this.animate(bad);
                 else if (this.options.row==1 && this.options.column!=0 && this.options.column!=4)
-                    this.animate();
+                    this.animate(bad);
                 else if (this.options.row==0 && this.options.column==4)
-                    this.animate();
+                    this.animate(bad);
             }
             else if (line===4) {
                 if (this.options.row==2 && this.options.column==4)
-                    this.animate();
+                    this.animate(bad);
                 else if (this.options.row==1 && this.options.column!=0 && this.options.column!=4)
-                    this.animate();
+                    this.animate(bad);
                 else if (this.options.row==0 && this.options.column==0)
-                    this.animate();
+                    this.animate(bad);
             }
         }
 
