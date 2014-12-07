@@ -59,13 +59,16 @@ define(function(require, exports, module) {
         });
     },1000, true);
 
-    SlotMachine.prototype.animateLine = function(line) {
+    SlotMachine.prototype.animateLine = function(line, bad) {
         this.columns.map(function(c, i){
             c.rows.map(function(r, i){
-                r.animateLine(line);
+                r.animateLine(line,bad);
             });
         });
-        soundEffect.line.play()
+        if (bad)
+            soundEffect.line.play()
+        else
+            soundEffect.line.play()
     };
 
     function winPercent() {
