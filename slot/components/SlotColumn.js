@@ -3,6 +3,8 @@ define(function(require, exports, module) {
     var UIElement           = require('core/UIElement');
     var UIContainer         = require('containers/UIContainer');
     var SlotItem          = require('components/SlotItem');
+    var soundEffect         = require('components/SoundEffect');
+
 
     var SlotColumn = UIContainer.extend({
         constructor:function(options) {
@@ -51,6 +53,7 @@ define(function(require, exports, module) {
                 duration: duration,
                 curve: 'easeIn'
             }, function() {
+                soundEffect.stopspin.play();
                 this.setPosition(0,this.rowHeight*(this.rowCount-this.options.dimension[1]),0, {
                     method: 'snap'
                 }, function() {
