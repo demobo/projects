@@ -137,6 +137,19 @@ define(function(require, exports, module) {
         this.add(button4Mod).add(button4);
         this.setButtonEvent(button5, 4);
         this.add(button5Mod).add(button5);
+
+        this.moneyIsertBox = new Surface({
+            size: [280, 10],
+            properties: {
+                background: 'black'
+            }
+        });
+        this.moneyIsertBoxMod = new Modifier({
+            origin: [1, 0],
+            align: [1, 0],
+            transform: Transform.translate(0,0,11)
+        });
+        this.add(this.moneyIsertBoxMod).add(this.moneyIsertBox);
     }
 
     function _setupEvents(){
