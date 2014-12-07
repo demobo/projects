@@ -12,6 +12,8 @@ define(function(require, exports, module) {
     var slotGame            = require('js/models/slotGame.js');
 
     var winChart = [0, 1, 10, 100, 1000, 10000];
+    var payLines = [];
+    var badLines = [];
 
     function SlotMachine(options) {
         ContainerSurface.apply(this, arguments);
@@ -24,6 +26,8 @@ define(function(require, exports, module) {
         _setListeners.call(this);
         window.slotMachine = this;
     }
+
+    window.slotMachine = SlotMachine;
 
     SlotMachine.prototype = Object.create(ContainerSurface.prototype);
     SlotMachine.prototype.constructor = SlotMachine;
@@ -56,7 +60,7 @@ define(function(require, exports, module) {
 
     SlotMachine.prototype.spin = _.debounce(function() {
         var winLines = winPercent.call(this);
-        generate.call(this, winLines);
+        generate.call(this, winLines); console.log(payLines, badLines);
         this.columns.map(function(c, i){
             c.spin(500*i+1000);
         });
@@ -294,8 +298,8 @@ define(function(require, exports, module) {
             default: userLines = [0]; break;
         }
 
-        var payLines = [];
-        var badLines = [];
+        payLines = [];
+        badLines = [];
 
         for (var i = 0; i < line.length; i++) {
             if (userLines.indexOf(line[i]) != -1) payLines.push(line[i]);
@@ -305,17 +309,10 @@ define(function(require, exports, module) {
         var winAmt = winChart[payLines.length];
         slotGame.save('credit', credit+winAmt);
 
-//        for (var i = 0; i < payLines.length; i++) {
-//            this.payIndex = 1;
-//            setTimeout(function() {
-//                this.animateLine(payLines[this.payIndex], true);
-//            }.bind(this), 1000);
-//
-//        }
-
-        console.log(line, user, payLines, badLines, winAmt);
-
+        console.log(winAmt, credit);
     }
+
+
 
     module.exports = SlotMachine;
 });
