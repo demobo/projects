@@ -53,9 +53,8 @@ define(function(require, exports, module) {
     };
 
     PanelView.prototype.setButtonEvent = function(button, index){
-        var numberOfClick = 0;
         button.on('click', function(){
-            slotGame.save('button' + index, numberOfClick++)
+            slotGame.save('button' + index, Date.now())
         }.bind(this))
     };
 
