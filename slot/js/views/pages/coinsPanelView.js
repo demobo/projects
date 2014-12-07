@@ -37,7 +37,7 @@ define(function(require, exports, module) {
     CoinsPanelView.DEFAULT_OPTIONS = {
         coinDiameter: 100,
         wallRestitution: 1,
-        collisionRestitution: 0
+        collisionRestitution: 0.9
     };
 
     function _init(){
@@ -61,7 +61,7 @@ define(function(require, exports, module) {
         });
         this.drag = new Drag({
             forceFunction: Drag.FORCE_FUNCTIONS.QUADRATIC,
-            strength: 0.0001
+            strength: 0.0005
         });
         this.friction = new Drag({
             forceFunction: Drag.FORCE_FUNCTIONS.LINEAR,
@@ -71,8 +71,7 @@ define(function(require, exports, module) {
 
     function _setupCollision(){
         this.collision = new Collision({
-            restitution : this.options.collisionRestitution,
-            drift: 1
+            restitution : this.options.collisionRestitution
         });
     }
 
@@ -90,29 +89,32 @@ define(function(require, exports, module) {
             normal: [-1,0,0],
             distance: window.innerWidth,
             restitution: 0.2,
-            drift:0,
             onContact: Wall.ON_CONTACT.REFLECT
         });
         this.wallLeft = new Wall({
             normal: [1,0,0],
             distance: 0,
             restitution: 0.2,
-            drift:0,
+            onContact: Wall.ON_CONTACT.REFLECT
+        });
+        this.wallTop = new Wall({
+            normal: [0,1,0],
+            distance: 0,
+            restitution: 0.2,
             onContact: Wall.ON_CONTACT.REFLECT
         });
         this.wallBottom = new Wall({
             normal: [0,-1,0],
             distance: window.innerHeight,
-            restitution: 0,
-            drift: 1,
+            restitution: 0.2,
             onContact: Wall.ON_CONTACT.REFLECT
         });
-        this.walls = [this.wallLeft, this.wallRight];
+        this.walls = [this.wallLeft, this.wallRight, this.wallTop];
     };
 
     CoinsPanelView.prototype.applyForces = function(){
         this.physicsEngine.attach(this.walls, _.last(this.coins));
-        this.physicsEngine.attach(this.gravity, _.last(this.coins));
+//        this.physicsEngine.attach(this.gravity, _.last(this.coins));
         this.physicsEngine.attach(this.drag, _.last(this.coins));
         this.physicsEngine.attach(this.friction, _.last(this.coins));
         if (this.coins.length <= 1) return;
@@ -124,7 +126,7 @@ define(function(require, exports, module) {
     CoinsPanelView.prototype.addCoin = function(positionX, velocity){
         var coinComponent = new Coin(this, this.physicsEngine, this.walls,{
             size:[this.options.coinDiameter,this.options.coinDiameter],
-            position: [positionX, 0],
+            position: [positionX, (Math.random()*0.6+0.2)*window.innerHeight],
             velocity: velocity
         });
         coinComponent.coin.pipe(this._eventOutput);
@@ -134,9 +136,11 @@ define(function(require, exports, module) {
 
         var collectCoin = _.once(function(){
             this.physicsEngine.detach(wallBottomID);
+            coinComponent.particle.applyForce(new Vector(0,0.05,0));
             Timer.setTimeout(function(){
                 coinComponent.hideCoin();
-                this.physicsEngine.removeBody(coinComponent.particle)
+                this.physicsEngine.removeBody(coinComponent.particle);
+                this.coins = [];
             }.bind(this), 2000)
         }.bind(this));
 

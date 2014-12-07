@@ -32,7 +32,7 @@ define(function(require, exports, module) {
     CoinsMainView.prototype.constructor = CoinsMainView;
 
     CoinsMainView.DEFAULT_OPTIONS = {
-        numberOfCoins: 5,
+        numberOfCoins: 15,
         coinDiameter: 100,
         wallRestitution: 1
     };
