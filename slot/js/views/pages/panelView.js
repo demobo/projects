@@ -33,7 +33,8 @@ define(function(require, exports, module) {
         //    this.addButton(i);
         //}
         var button1Mod = new StateModifier({
-            transform: Transform.translate(200, 200, 0)
+            align: [0.2,0.35],
+            origin:[0.5,0.5]
         });
 
         var button1 = new Surface({
@@ -43,6 +44,7 @@ define(function(require, exports, module) {
                 fontSize:'25px',
                 color:'black',
                 textAlign:'center',
+                padding:'40px',
                 backgroundImage:'url(assets/white-button.png)',
                 backgroundRepeat:'no-repeat',
                 backgroundSize:'100%'
@@ -50,7 +52,8 @@ define(function(require, exports, module) {
         });
 
         var button2Mod = new StateModifier({
-            transform: Transform.translate(700, 200, 0)
+            align: [0.45,0.35],
+            origin:[0.5,0.5]
         });
 
         var button2 = new Surface({
@@ -60,6 +63,7 @@ define(function(require, exports, module) {
                 fontSize:'25px',
                 color:'black',
                 textAlign:'center',
+                padding:'40px',
                 backgroundImage:'url(assets/white-button.png)',
                 backgroundRepeat:'no-repeat',
                 backgroundSize:'100%'
@@ -67,7 +71,8 @@ define(function(require, exports, module) {
         });
 
         var button3Mod = new StateModifier({
-            transform: Transform.translate(1150, 200, 0)
+            align: [0.7,0.35],
+            origin:[0.5,0.5]
         });
 
         var button3 = new Surface({
@@ -77,6 +82,7 @@ define(function(require, exports, module) {
                 fontSize:'25px',
                 color:'black',
                 textAlign:'center',
+                padding:'40px',
                 backgroundImage:'url(assets/white-button.png)',
                 backgroundRepeat:'no-repeat',
                 backgroundSize:'100%'
