@@ -80,6 +80,11 @@ define(function(require, exports, module) {
                         this.animateLine(line, false);
                     }.bind(this), index*1000);
                 }.bind(this));
+                storeBadLines.map(function(line, index){
+                    setTimeout(function() {
+                        this.animateLine(line, true);
+                    }.bind(this), (storePayLines.length+index)*1000);
+                }.bind(this));
             }.bind(this), 3000);
         }
 
@@ -310,7 +315,7 @@ define(function(require, exports, module) {
 
     function checkWin(line) {
         var user = slotGame.get('lines');
-        if (user == undefined) user = 5;
+        if (user == undefined) user = 1;
 
         switch (user) {
             case 1: var userLines = [0]; break;
