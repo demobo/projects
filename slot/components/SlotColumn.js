@@ -9,8 +9,8 @@ define(function(require, exports, module) {
             this._callSuper(UIContainer, 'constructor', options);
             this.options = options;
             this.rowCount = options.rowCount;
-            var columnWidth = window.innerWidth*.8/options.dimension[0];
-            var columnHeight = this.rowCount*window.innerHeight*.8/options.dimension[1];
+            var columnWidth = window.innerWidth*.66/options.dimension[0];
+            var columnHeight = this.rowCount*window.innerHeight*.7/options.dimension[1];
             this.rowHeight = columnHeight/this.rowCount;
             this.rows = [];
             for (var i=0; i<this.rowCount; i++) {
@@ -27,7 +27,7 @@ define(function(require, exports, module) {
                         fontSize: '30px',
                         color: "#000099",
                         textAlign: 'center',
-                        borderTop: 'solid 1px #000'
+//                        borderTop: 'solid 1px #000'
                     },
                     map: options.map
                 });

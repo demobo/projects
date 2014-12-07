@@ -1,3 +1,8 @@
+body.panel {
+    background-image: url('assets/panel.jpg');
+    background-size: 100%;
+}
+
 .slotIcon {
     height:100%;
     width:auto;

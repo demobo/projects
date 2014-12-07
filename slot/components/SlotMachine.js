@@ -14,11 +14,13 @@ define(function(require, exports, module) {
         ContainerSurface.apply(this, arguments);
         this.slotMap = [];
         this.options = options;
+        this.winningRows = [];
         this.setProperties({
             overflow: 'hidden'
         });
         _createViews.call(this);
         _setListeners.call(this);
+        window.slotMachine = this;
     }
 
     SlotMachine.prototype = Object.create(ContainerSurface.prototype);
@@ -52,8 +54,16 @@ define(function(require, exports, module) {
         });
     },1000, true);
 
+    SlotMachine.prototype.animateLine = function(line) {
+        this.columns.map(function(c, i){
+            c.rows.map(function(r, i){
+                r.animateLine(line);
+            });
+        });
+    };
+
     function generate() {
-        var winCode = 2;
+        var winCode = 1;
         var winning = chooseWinning.call(this, winCode); console.log(winning.fruit, winning.row);
         for (var i=0; i<this.options.dimension[0]; i++) {
             for (var j=0; j<this.options.rowCount; j++) {
@@ -65,7 +75,16 @@ define(function(require, exports, module) {
                     switch(winCode) {
                         case 1:
                         case 2:
+                        case 3:
                             rowJackpot.call(this, i, j, winning);
+                            break;
+                        case 4:
+                        case 5:
+                            jaggedJackpot.call(this, i, j, winning);
+                            break;
+                        case 6:
+                        case 7:
+                            comboJackpot.call(this, i, j, winning);
                             break;
                         default:
                             break;
@@ -78,9 +97,28 @@ define(function(require, exports, module) {
         soundEffect.slot.play();
     }
 
-    function rowJackpot(i,j, winning) {
-        var index = winning.row.indexOf(j);
-        this.slotMap[i][j] = winning.fruit[index];
+    function rowJackpot(i, j, winning) {
+            var index = winning.row.indexOf(j);
+            this.slotMap[i][j] = winning.fruit[index];
+    }
+
+    function jaggedJackpot(i, j, winning) {
+        if (i == 0 && j == winning.row[0]) {
+            this.slotMap[i][j] = winning.fruit;
+        } else if (i == this.options.dimension[0]-1 && j == winning.row[2]) {
+            this.slotMap[i][j] = winning.fruit;
+        } else if (i > 0 && i < this.options.dimension[0]-1 && j == winning.row[1]) {
+            this.slotMap[i][j] = winning.fruit;
+        } else {
+            this.slotMap[i][j] = chooseFruit.call(this);
+        }
+    }
+
+    function comboJackpot(i, j, winning) {
+        jaggedJackpot.call(this, i, j, winning);
+        if (j == winning.row[3]) {
+            this.slotMap[i][j] = winning.fruit;
+        }
     }
 
     function chooseWinning(winCode){
@@ -94,8 +132,19 @@ define(function(require, exports, module) {
             row3 = chooseRow.call(this);
         }
 
+        var jaggedUp = chooseRow.call(this);
+        while (jaggedUp+2 >= this.options.rowCount) {
+            jaggedUp = chooseRow.call(this);
+        }
+
+        var jaggedDown = chooseRow.call(this);
+        while (jaggedDown-2 < this.options.rowCount-this.options.dimension[1]) {
+            jaggedDown = chooseRow.call(this);
+        }
+
         var fruit1 = chooseFruit.call(this);
         var fruit2 = chooseFruit.call(this);
+        var fruit3 = chooseFruit.call(this);
 
         switch(winCode) {
             case 1:
@@ -108,6 +157,36 @@ define(function(require, exports, module) {
                 return {
                     row: [row1, row2],
                     fruit: [fruit1, fruit2]
+                }
+                break;
+            case 3:
+                return {
+                row: [row1, row2, row3],
+                fruit: [fruit1, fruit2, fruit3]
+                }
+                break;
+            case 4:
+                return {
+                    row: [jaggedUp, jaggedUp+1, jaggedUp+2],
+                    fruit: [fruit1]
+                }
+                break;
+            case 5:
+                return {
+                    row: [jaggedDown, jaggedDown-1, jaggedDown-2],
+                    fruit: [fruit1]
+                }
+                break;
+            case 6:
+                return {
+                    row: [jaggedUp, jaggedUp+1, jaggedUp+2, row1],
+                    fruit: [fruit1]
+                }
+                break;
+            case 7:
+                return {
+                    row: [jaggedDown, jaggedDown-1, jaggedDown-2, row1],
+                    fruit: [fruit1]
                 }
                 break;
             default:
