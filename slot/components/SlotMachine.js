@@ -53,7 +53,7 @@ define(function(require, exports, module) {
     },1000, true);
 
     function generate() {
-        var winCode = 5;
+        var winCode = 1;
         var winning = chooseWinning.call(this, winCode); console.log(winning.fruit, winning.row);
         for (var i=0; i<this.options.dimension[0]; i++) {
             for (var j=0; j<this.options.rowCount; j++) {
@@ -72,6 +72,9 @@ define(function(require, exports, module) {
                         case 5:
                             jaggedJackpot.call(this, i, j, winning);
                             break;
+//                        case 6:
+//                            comboJackpot.call(this, i, j, winning);
+//                            break;
                         default:
                             break;
                     }
@@ -100,6 +103,15 @@ define(function(require, exports, module) {
         }
     }
 
+    function comboJackpot(i, j, winning) {
+        jaggedJackpot.call(this, i, j, winning);
+        var rowWinning = {
+            row: [winning.row[3]],
+            fruit: [winning.fruit]
+        }
+        rowJackpot.call(this, i, j, rowWinning)
+    }
+
     function chooseWinning(winCode){
         var row1 = chooseRow.call(this);
         var row2 = chooseRow.call(this);
@@ -113,6 +125,11 @@ define(function(require, exports, module) {
 
         var jaggedUp = chooseRow.call(this);
         while (jaggedUp+2 >= this.options.rowCount) {
+            jaggedUp = chooseRow.call(this);
+        }
+
+        var jaggedUp2 = chooseRow.call(this);
+        while (jaggedUp2+2 >= this.options.rowCount || jaggedUp2 == jaggedUp) {
             jaggedUp = chooseRow.call(this);
         }
 
@@ -153,6 +170,12 @@ define(function(require, exports, module) {
             case 5:
                 return {
                     row: [jaggedDown, jaggedDown-1, jaggedDown-2],
+                    fruit: [fruit1]
+                }
+                break;
+            case 6:
+                return {
+                    row: [jaggedUp, jaggedUp+1, jaggedUp+2, row1],
                     fruit: [fruit1]
                 }
 
