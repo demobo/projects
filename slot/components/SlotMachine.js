@@ -53,31 +53,31 @@ define(function(require, exports, module) {
     },1000, true);
 
     function generate() {
-        var winCode = 1;
-        var winning = chooseWinning.call(this, winCode); console.log(winning.fruit, winning.row);
+//        var winCode = 1;
+//        var winning = chooseWinning.call(this, winCode); console.log(winning.fruit, winning.row);
         for (var i=0; i<this.options.dimension[0]; i++) {
             for (var j=0; j<this.options.rowCount; j++) {
                 if (!this.slotMap[i])
                     this.slotMap[i]=[];
                 if (this.slotMap[i][j+this.options.rowCount-this.options.dimension[1]] !== undefined) {
                     this.slotMap[i][j] = this.slotMap[i][j+this.options.rowCount-this.options.dimension[1]];
-                } else if (winning.row.indexOf(j) != -1) {
-                    switch(winCode) {
-                        case 1:
-                        case 2:
-                        case 3:
-                            rowJackpot.call(this, i, j, winning);
-                            break;
-                        case 4:
-                        case 5:
-                            jaggedJackpot.call(this, i, j, winning);
-                            break;
-//                        case 6:
-//                            comboJackpot.call(this, i, j, winning);
+//                } else if (winning.row.indexOf(j) != -1) {
+//                    switch(winCode) {
+//                        case 1:
+//                        case 2:
+//                        case 3:
+//                            rowJackpot.call(this, i, j, winning);
 //                            break;
-                        default:
-                            break;
-                    }
+//                        case 4:
+//                        case 5:
+//                            jaggedJackpot.call(this, i, j, winning);
+//                            break;
+////                        case 6:
+////                            comboJackpot.call(this, i, j, winning);
+////                            break;
+//                        default:
+//                            break;
+//                    }
                 } else
                     this.slotMap[i][j] = chooseFruit.call(this);
             }
@@ -103,14 +103,14 @@ define(function(require, exports, module) {
         }
     }
 
-    function comboJackpot(i, j, winning) {
-        jaggedJackpot.call(this, i, j, winning);
-        var rowWinning = {
-            row: [winning.row[3]],
-            fruit: [winning.fruit]
-        }
-        rowJackpot.call(this, i, j, rowWinning)
-    }
+//    function comboJackpot(i, j, winning) {
+//        jaggedJackpot.call(this, i, j, winning);
+//        var rowWinning = {
+//            row: [winning.row[3]],
+//            fruit: [winning.fruit]
+//        }
+//        rowJackpot.call(this, i, j, rowWinning)
+//    }
 
     function chooseWinning(winCode){
         var row1 = chooseRow.call(this);
