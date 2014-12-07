@@ -14,6 +14,7 @@ define(function(require, exports, module) {
         ContainerSurface.apply(this, arguments);
         this.slotMap = [];
         this.options = options;
+        this.winningRows = [];
         this.setProperties({
             overflow: 'hidden'
         });
@@ -53,31 +54,32 @@ define(function(require, exports, module) {
     },1000, true);
 
     function generate() {
-//        var winCode = 1;
-//        var winning = chooseWinning.call(this, winCode); console.log(winning.fruit, winning.row);
+        var winCode = 1;
+        var winning = chooseWinning.call(this, winCode); console.log(winning.fruit, winning.row);
         for (var i=0; i<this.options.dimension[0]; i++) {
             for (var j=0; j<this.options.rowCount; j++) {
                 if (!this.slotMap[i])
                     this.slotMap[i]=[];
                 if (this.slotMap[i][j+this.options.rowCount-this.options.dimension[1]] !== undefined) {
                     this.slotMap[i][j] = this.slotMap[i][j+this.options.rowCount-this.options.dimension[1]];
-//                } else if (winning.row.indexOf(j) != -1) {
-//                    switch(winCode) {
-//                        case 1:
-//                        case 2:
-//                        case 3:
-//                            rowJackpot.call(this, i, j, winning);
-//                            break;
-//                        case 4:
-//                        case 5:
-//                            jaggedJackpot.call(this, i, j, winning);
-//                            break;
-////                        case 6:
-////                            comboJackpot.call(this, i, j, winning);
-////                            break;
-//                        default:
-//                            break;
-//                    }
+                } else if (winning.row.indexOf(j) != -1) {
+                    switch(winCode) {
+                        case 1:
+                        case 2:
+                        case 3:
+                            rowJackpot.call(this, i, j, winning);
+                            break;
+                        case 4:
+                        case 5:
+                            jaggedJackpot.call(this, i, j, winning);
+                            break;
+                        case 6:
+                        case 7:
+                            comboJackpot.call(this, i, j, winning);
+                            break;
+                        default:
+                            break;
+                    }
                 } else
                     this.slotMap[i][j] = chooseFruit.call(this);
             }
@@ -87,8 +89,8 @@ define(function(require, exports, module) {
     }
 
     function rowJackpot(i, j, winning) {
-        var index = winning.row.indexOf(j);
-        this.slotMap[i][j] = winning.fruit[index];
+            var index = winning.row.indexOf(j);
+            this.slotMap[i][j] = winning.fruit[index];
     }
 
     function jaggedJackpot(i, j, winning) {
@@ -103,14 +105,12 @@ define(function(require, exports, module) {
         }
     }
 
-//    function comboJackpot(i, j, winning) {
-//        jaggedJackpot.call(this, i, j, winning);
-//        var rowWinning = {
-//            row: [winning.row[3]],
-//            fruit: [winning.fruit]
-//        }
-//        rowJackpot.call(this, i, j, rowWinning)
-//    }
+    function comboJackpot(i, j, winning) {
+        jaggedJackpot.call(this, i, j, winning);
+        if (j == winning.row[3]) {
+            this.slotMap[i][j] = winning.fruit;
+        }
+    }
 
     function chooseWinning(winCode){
         var row1 = chooseRow.call(this);
@@ -125,11 +125,6 @@ define(function(require, exports, module) {
 
         var jaggedUp = chooseRow.call(this);
         while (jaggedUp+2 >= this.options.rowCount) {
-            jaggedUp = chooseRow.call(this);
-        }
-
-        var jaggedUp2 = chooseRow.call(this);
-        while (jaggedUp2+2 >= this.options.rowCount || jaggedUp2 == jaggedUp) {
             jaggedUp = chooseRow.call(this);
         }
 
@@ -178,7 +173,13 @@ define(function(require, exports, module) {
                     row: [jaggedUp, jaggedUp+1, jaggedUp+2, row1],
                     fruit: [fruit1]
                 }
-
+                break;
+            case 7:
+                return {
+                    row: [jaggedDown, jaggedDown-1, jaggedDown-2, row1],
+                    fruit: [fruit1]
+                }
+                break;
             default:
                 return {}
         }
