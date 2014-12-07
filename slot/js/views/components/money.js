@@ -20,7 +20,7 @@ define(function(require, exports, module) {
 
     var slotGame = require('js/models/slotGame');
 
-    var high = 600;
+    var high = 600*0.7;
     var width = high/614*261;
 
     function Money(options) {
