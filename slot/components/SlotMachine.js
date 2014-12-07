@@ -69,7 +69,7 @@ define(function(require, exports, module) {
             });
         });
         if (bad)
-            soundEffect.line.play()
+            soundEffect.badline.play()
         else
             soundEffect.line.play()
     };
