@@ -85,7 +85,9 @@ define(function(require, exports, module) {
                 break;
             case 3: winCode = 7;
                 break;
-            case 5: winCode = 8;
+            case 4: winCode = 8;
+                break;
+            case 5: winCode = 9;
                 break;
             default:
                 break;
@@ -117,6 +119,14 @@ define(function(require, exports, module) {
                             break;
                     }
                 } else if (winCode == 8) {
+                    this.slotMap[i][j] = winning.fruit;
+                    if (j == 39 && (i == 1 || i == 2 || i == 3)) {
+                        this.slotMap[i][j] = chooseFruit.call(this);
+                        while (this.slotMap[i][j] == winning.fruit){
+                            this.slotMap[i][j] = chooseFruit.call(this);
+                        }
+                    }
+                } else if (winCode == 9) {
                     this.slotMap[i][j] = winning.fruit;
                 } else
                     this.slotMap[i][j] = chooseFruit.call(this);
@@ -222,20 +232,26 @@ define(function(require, exports, module) {
                 return {
                     row: [jaggedUp, jaggedUp+1, jaggedUp+2, row1],
                     fruit: [fruit1],
-                    line: [line1, 4]
+                    line: [line1, 3]
                 }
                 break;
             case 6:
                 return {
                     row: [jaggedDown, jaggedDown-1, jaggedDown-2, row1],
                     fruit: [fruit1],
-                    line: [line1, 5]
+                    line: [line1, 4]
                 }
                 break;
             case 8:
                 return {
-                    row: [], fruit: [fruit1]
+                    row: [], fruit: [fruit1], line: [0, 2, 3, 4]
                 }
+                break;
+            case 9:
+                return {
+                    row: [], fruit: [fruit1], line: [0, 1, 2, 3, 4]
+                }
+                break;
             default:
                 return {
                     row: [], fruit: []
