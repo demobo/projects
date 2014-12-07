@@ -91,7 +91,7 @@ define(function(require, exports, module) {
                 break;
         }
 
-        var winning = chooseWinning.call(this, winCode); console.log(winLines, winCode, winning.fruit, winning.row, winning.line);
+        var winning = chooseWinning.call(this, winCode); console.log(winning.line);
         for (var i=0; i<this.options.dimension[0]; i++) {
             for (var j=0; j<this.options.rowCount; j++) {
                 if (!this.slotMap[i])
@@ -207,25 +207,29 @@ define(function(require, exports, module) {
             case 2:
                 return {
                     row: [jaggedUp, jaggedUp+1, jaggedUp+2],
-                    fruit: [fruit1]
+                    fruit: [fruit1],
+                    line: [4]
                 }
                 break;
             case 3:
                 return {
                     row: [jaggedDown, jaggedDown-1, jaggedDown-2],
-                    fruit: [fruit1]
+                    fruit: [fruit1],
+                    line: [5]
                 }
                 break;
             case 5:
                 return {
                     row: [jaggedUp, jaggedUp+1, jaggedUp+2, row1],
-                    fruit: [fruit1]
+                    fruit: [fruit1],
+                    line: [line1, 4]
                 }
                 break;
             case 6:
                 return {
                     row: [jaggedDown, jaggedDown-1, jaggedDown-2, row1],
-                    fruit: [fruit1]
+                    fruit: [fruit1],
+                    line: [line1, 5]
                 }
                 break;
             case 8:
