@@ -21,7 +21,7 @@ define(function(require, exports, module) {
         origin: [.5,.5]
     });
 
-//    mainContext.add(slotMod).add(slotMachine);
+    mainContext.add(slotMod).add(slotMachine);
     mainContext.setPerspective(1000);
 
     slotGame.on('change:button0',function(model, value){
