@@ -42,7 +42,6 @@ define(function(require, exports, module) {
         this.coinMod = new Modifier({
 //            transform:Transform.translate(-this.size[0]/2,-this.size[0]/2,0)
         });
-
         this.particle = new Circle({
             mass : 1,
             radius : this.size[0]/2,

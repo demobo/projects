@@ -67,17 +67,6 @@ define(function(require, exports, module) {
                 this.generateCoins()
             }
         }.bind(this));
-        this.wallBottom.on('preCollision', function(data){
-            var msg = {
-                'position': coin.particle.position.x,
-                'velocity': [coin.particle.velocity.x, coin.particle.velocity.y]
-            };
-            slotGame.save('coins', JSON.stringify(msg));
-            this.physicsEngine.removeBody(data.particle)
-        }.bind(this));
-        slotGame.on('change:coins',function(model, value){
-            console.log(model, value)
-        }.bind(this));
 
     }
 
@@ -87,8 +76,9 @@ define(function(require, exports, module) {
             setTimeout(this.generateCoins.bind(this), 200);
             this.coinsNumber++;
         } else {
-            this.coinsNumber = 0;
-            Timer.setTimeout(this.removeCoins.bind(this), 2000)
+            Timer.setTimeout(function(){
+                this.coinsNumber = 0;
+            }.bind(this), 1000)
         }
     };
 
@@ -118,12 +108,12 @@ define(function(require, exports, module) {
         });
         this.wallBottom = new Wall({
             normal: [0,-1,0],
-            distance: window.innerHeight+this.options.coinDiameter,
+            distance: window.innerHeight,
             restitution: 0,
             drift:0,
             onContact: Wall.ON_CONTACT.SILENT
         });
-        this.walls = [this.wallLeft, this.wallRight, this.wallBottom];
+        this.walls = [this.wallLeft, this.wallRight];
     };
 
     CoinsMainView.prototype.applyForces = function(){
@@ -143,6 +133,28 @@ define(function(require, exports, module) {
         this.coins.push(coinComponent.particle);
         this.coinsViews.push(coinComponent);
         this.applyForces();
+
+        var wallBottomID = this.physicsEngine.attach(this.wallBottom, _.last(this.coins));
+
+        var onCollision = _.once(function(data){
+            Timer.setTimeout(function(){
+                this.physicsEngine.detach(wallBottomID);
+                var msg = {
+                    'position': data.particle.position.x,
+                    'velocity': [data.particle.velocity.x, data.particle.velocity.y]
+                };
+                slotGame.save('coins', JSON.stringify(msg));
+                coinComponent.hideCoin();
+                this.physicsEngine.removeBody(coinComponent.particle);
+            }.bind(this), 1000);
+        }.bind(this));
+
+        this.wallBottom.on('preCollision', function(data){
+            if (data.particle == coinComponent.particle){
+                onCollision(data);
+            }
+        }.bind(this))
+
     };
 
 
