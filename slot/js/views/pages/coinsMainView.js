@@ -9,6 +9,7 @@ define(function(require, exports, module) {
     var ContainerSurface = require("famous/surfaces/ContainerSurface");
     var Vector = require('famous/math/Vector');
     var Timer = require('famous/utilities/Timer');
+    var soundEffect = require('components/SoundEffect');
 
     var Coin = require('js/views/components/Coin');
 
@@ -65,6 +66,7 @@ define(function(require, exports, module) {
         Engine.on('keypress',function(e){
             if (e.keyCode == 32){
                 this.generateCoins()
+                soundEffect.paysoff.pay()
             }
         }.bind(this));
 

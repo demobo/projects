@@ -8,6 +8,7 @@ define(function(require, exports, module) {
     var Circle = require('famous/physics/bodies/Circle');
     var Vector = require('famous/math/Vector');
 
+
     function Coin(context, physicsEngine, walls, options){
 
         //TODO Bon

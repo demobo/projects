@@ -14,7 +14,7 @@ define(function(require, exports, module) {
                 urls: ['assets/audio/backGroundmusic.mp3'],
                 //autoplay: true,
                 loop: true,
-                volume: 0
+                volume: 0.1
             }),
             stopspin: new Howl({
                 urls: ['assets/audio/beep.mp3'],

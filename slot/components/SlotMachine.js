@@ -53,7 +53,6 @@ define(function(require, exports, module) {
     function _setListeners() {
         Engine.on('click', function() {
             this.spin();
-            soundEffect.slot.play();
         }.bind(this));
 
     }
@@ -61,6 +60,7 @@ define(function(require, exports, module) {
     SlotMachine.prototype.spin = _.debounce(function() {
         var winLines = winPercent.call(this);
         generate.call(this, winLines); console.log(payLines, badLines);
+        soundEffect.slot.play();
         this.columns.map(function(c, i){
             c.spin(500*i+1000);
         });
