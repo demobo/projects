@@ -15,16 +15,21 @@ chrome.app.runtime.onLaunched.addListener(function() {
                 appWin.resizeTo(screen.width-100, screen.height-100);
                 setTimeout(function(){
                     appWin.resizeTo(screen.width, screen.height);
+                    setTimeout(function () {
+                        appWin.fullscreen();
+                    }, 5000);
                 },500);
             },500);
         }
     );
 
+	var w = 1024;
+	var h = 768;
     chrome.app.window.create(
         'app2.html',
         {
-            width: screen.width,
-            height: screen.height,
+            width: w,
+            height: h,
 //            state: "fullscreen",
             frame: 'chrome',
 //            frame: 'none',
@@ -33,14 +38,21 @@ chrome.app.runtime.onLaunched.addListener(function() {
         function(win) {
             app2Win = win;
             setTimeout(function(){
-                app2Win.resizeTo(screen.width-100, screen.height-100);
+                app2Win.resizeTo(w-100, h-100);
                 setTimeout(function(){
-                    app2Win.resizeTo(screen.width, screen.height);
+                    app2Win.resizeTo(w, h);
                     setTimeout(function(){
-                        app2Win.moveTo(0,screen.height);
+                        app2Win.moveTo(0, screen.height);
+                        //ap2pWin.fullscreen();
                     },500);
-                },500);
-            },500);
+                },5000);
+            }, 500);
+            app2Win.onClosed.addListener(function () {
+                console.log('closed')
+                if (appWin) appWin.close();
+            });
         }
     );
+
+    
 });
