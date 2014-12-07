@@ -130,7 +130,7 @@ define(function(require, exports, module) {
             size:[this.options.coinDiameter,this.options.coinDiameter],
             model: coinModel,
             position: [0.5 * window.innerWidth, 0.95*window.innerHeight],
-            velocity: new Vector(Math.cos(angle), Math.sin(angle)*(-1), 0)
+            velocity: new Vector(Math.cos(angle), Math.sin(angle)*(-1), Math.random()*0.2)
         });
         this.coins.push(coinComponent.particle);
         this.coinsViews.push(coinComponent);
