@@ -109,6 +109,7 @@ define(function(require, exports, module) {
         this.money.setContent('<div><img height="'+high+'" width="'+width+'" src=' + image + ' /></div>')
     };
 
+    window.soundEffect = soundEffect;
     module.exports = Money;
 
 });

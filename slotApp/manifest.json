@@ -20,7 +20,8 @@
         "<all_urls>",
         "fileSystem",
         "webview",
-        "http://localhost:3000/*"
+        "http://localhost:3000/*",
+        "http://www.demobo.com/*"
     ],
     "sandbox":{
         "pages":["index.html", "panel.html"]

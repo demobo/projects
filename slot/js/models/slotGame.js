@@ -3,7 +3,7 @@ define(function(require, exports, module) {
     var SlotGame = Backbone.DemoboStorage.Model.extend({
         demoboID: id,
         defaults: {
-            credit: 100
+            credit: 0
         }
     });
 

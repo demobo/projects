@@ -12,7 +12,7 @@ define(function(require, exports, module) {
     var Timer = require('famous/utilities/Timer');
 
     var Walls = require('js/views/components/Walls');
-    var Coin = require('js/views/components/Coin');
+    var Coin = require('js/views/components/coin');
 
     var slotGame = require('js/models/slotGame');
 
@@ -149,6 +149,10 @@ define(function(require, exports, module) {
                 collectCoin()
             }
         }.bind(this))
+
+        slotGame.on('change:button4',function(model, value){
+            collectCoin();
+        }.bind(this));
 
     };
 
