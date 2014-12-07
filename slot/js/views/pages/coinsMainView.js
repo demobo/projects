@@ -73,13 +73,13 @@ define(function(require, exports, module) {
         Engine.on('keypress',function(e){
             if (e.keyCode == 32){
                 this.generateCoins();
-                soundEffect.paysoff.play();
             }
         }.bind(this));
 
     }
 
     CoinsMainView.prototype.generateCoins = function(){
+        soundEffect.paysoff.play();
         if (this.coinsNumber < this.options.numberOfCoins){
             this.addCoin();
             setTimeout(this.generateCoins.bind(this), 200);

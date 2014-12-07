@@ -83,7 +83,6 @@ define(function(require, exports, module) {
             }.bind(this), 3000);
         }
 
-
         _.delay(function() {
             slotGame.save('credit', slotGame.get('credit')+storeWinAmt);
         }, 4000);
@@ -108,7 +107,7 @@ define(function(require, exports, module) {
         else if (winNum%7 == 0) return 2;
         else if (winNum%11 == 0) return 3;
         else if (winNum%16 == 0) return 4;
-        else if (winNum%23 == 0) return 5;
+        else if (winNum%6 == 0) return 5;
         else return 0;
     }
 
