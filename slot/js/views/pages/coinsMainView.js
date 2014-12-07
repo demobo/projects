@@ -11,7 +11,7 @@ define(function(require, exports, module) {
     var Timer = require('famous/utilities/Timer');
     var soundEffect = require('components/SoundEffect');
 
-    var Coin = require('js/views/components/Coin');
+    var Coin = require('js/views/components/coin');
 
     var slotGame = require('js/models/slotGame');
 

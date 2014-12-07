@@ -25,7 +25,7 @@ define(function(require, exports, module) {
                 var content = '<div>' + this.credit + '</div>';
                 this.creditNumber.setContent(content);
             }.bind(this));
-//            slotGame.save('credit',100);
+            slotGame.save('credit',100);
         },
 
         add: function(n) {
