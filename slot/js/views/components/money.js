@@ -50,7 +50,7 @@ define(function(require, exports, module) {
             }
         });
 
-        this.pos = new Transitionable([0,0]);
+        this.pos = new Transitionable([(window.innerWidth-width)*0.5,(window.innerHeight-high)*0.5]);
         this.insert = new Transitionable(0);
 
         this.moneyMod = new Modifier({
@@ -81,7 +81,7 @@ define(function(require, exports, module) {
         }.bind(this));
 
         this.sync.on('end', function(data) {
-            if (this.pos.get()[1]< -1/3*high && this.pos.get()[0]>window.innerWidth-280){
+            if (this.pos.get()[1]< -1/4*high && this.pos.get()[0]>window.innerWidth-280){
                 this.hide()
             }
         }.bind(this));

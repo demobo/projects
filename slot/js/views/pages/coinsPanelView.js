@@ -136,7 +136,7 @@ define(function(require, exports, module) {
 
         var collectCoin = _.once(function(){
             this.physicsEngine.detach(wallBottomID);
-            coinComponent.particle.applyForce(new Vector(0,0.05,0));
+            coinComponent.particle.applyForce(new Vector(0,0.07,0));
             Timer.setTimeout(function(){
                 coinComponent.hideCoin();
                 this.physicsEngine.removeBody(coinComponent.particle);
