@@ -65,6 +65,7 @@ define(function(require, exports, module) {
                 r.animateLine(line);
             });
         });
+        soundEffect.line.play()
     };
 
     function winPercent() {
