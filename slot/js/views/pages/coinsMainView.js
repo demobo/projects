@@ -146,14 +146,14 @@ define(function(require, exports, module) {
         var wallBottomID = this.physicsEngine.attach(this.wallBottom, _.last(this.coins));
 
         var onCollision = _.once(function(data){
+            this.physicsEngine.detach(wallBottomID);
+            var msg = {
+                'position': data.particle.position.x,
+                'velocity': [data.particle.velocity.x, data.particle.velocity.y]
+            };
+            slotGame.save('coins', JSON.stringify(msg));
+            coinComponent.hideCoin();
             Timer.setTimeout(function(){
-                this.physicsEngine.detach(wallBottomID);
-                var msg = {
-                    'position': data.particle.position.x,
-                    'velocity': [data.particle.velocity.x, data.particle.velocity.y]
-                };
-                slotGame.save('coins', JSON.stringify(msg));
-                coinComponent.hideCoin();
                 this.physicsEngine.removeBody(coinComponent.particle);
             }.bind(this), 1000);
         }.bind(this));
