@@ -68,29 +68,28 @@ define(function(require, exports, module) {
             c.spin(500*i+1000);
         });
         soundEffect.slot.play();
-        
+
         if (storePayLines.length == 5) {
             slotGame.save('jackpot', Date.now());
         }
 
+        console.log('----storePayLines--', storePayLines);
+
+        if (storePayLines.length) {
+            console.log('paylines----',storePayLines);
+            _.delay(function() {
+                storePayLines.map(function(line, index){
+                    setTimeout(function() {
+                        this.animateLine(line, false);
+                    }.bind(this), index*1000);
+                }.bind(this));
+            }.bind(this), 3000);
+        }
+
+
         _.delay(function() {
             slotGame.save('credit', slotGame.get('credit')+storeWinAmt);
         }, 3000);
-
-        console.log('----storePayLines--', storePayLines)
-
-//        if (storePayLines.length) {
-//            _.delay(function() {
-//                this.animateLine(storePayLines[0], false)
-//            }.bind(this), 2000);
-//        }
-//        for (var i = 0; i < storePayLines.length; i++) {
-//            this.index = i;
-//            setTimeout(function(){
-//                this.animateLine(storePayLines[this.index], false);
-//            }.bind(this) ,1000);
-//
-//        }
 
     },1000, true);
 
@@ -112,7 +111,7 @@ define(function(require, exports, module) {
         else if (winNum%7 == 0) return 2;
         else if (winNum%11 == 0) return 3;
         else if (winNum%16 == 0) return 4;
-        else if (winNum%3 == 0) return 5;
+        else if (winNum%23 == 0) return 5;
         else return 0;
     }
 
