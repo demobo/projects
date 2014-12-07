@@ -33,24 +33,24 @@ define(function(require, exports, module) {
         //    this.addButton(i);
         //}
         var button1Mod = new StateModifier({
-            transform: Transform.translate(200, 250, 0)
+            transform: Transform.translate(200, 200, 0)
         });
 
         var button1 = new Surface({
             size: [400, 250],
             content:'<h3>WIN 1 Line</h3>',
             properties: {
-                fontSize:'25px',
-                color:'white',
+                fontSize:'15px',
+                color:'black',
                 textAlign:'center',
-                backgroundImage:'url(assets/yellow-button.png)',
+                backgroundImage:'url(assets/white-button.png)',
                 backgroundRepeat:'no-repeat',
                 backgroundSize:'100%'
             }
         });
 
         var button2Mod = new StateModifier({
-            transform: Transform.translate(700, 250, 0)
+            transform: Transform.translate(700, 200, 0)
         });
 
         var button2 = new Surface({
@@ -58,16 +58,16 @@ define(function(require, exports, module) {
             content:'<h3>WIN 3 Lines</h3>',
             properties: {
                 fontSize:'25px',
-                color:'white',
+                color:'black',
                 textAlign:'center',
-                backgroundImage:'url(assets/light-blue-button.png)',
+                backgroundImage:'url(assets/white-button.png)',
                 backgroundRepeat:'no-repeat',
                 backgroundSize:'100%'
             }
         });
 
         var button3Mod = new StateModifier({
-            transform: Transform.translate(1150, 250, 0)
+            transform: Transform.translate(1150, 200, 0)
         });
 
         var button3 = new Surface({
@@ -75,9 +75,9 @@ define(function(require, exports, module) {
             content:'<h3>WIN 5 Lines</h3>',
             properties: {
                 fontSize:'25px',
-                color:'white',
+                color:'black',
                 textAlign:'center',
-                backgroundImage:'url(assets/purple-button.png)',
+                backgroundImage:'url(assets/white-button.png)',
                 backgroundRepeat:'no-repeat',
                 backgroundSize:'100%'
             }
@@ -159,9 +159,6 @@ define(function(require, exports, module) {
     };
 
     module.exports = PanelView;
-
-
-
 
 
 });
