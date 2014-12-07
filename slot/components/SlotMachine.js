@@ -73,10 +73,7 @@ define(function(require, exports, module) {
             slotGame.save('jackpot', Date.now());
         }
 
-        console.log('----storePayLines--', storePayLines);
-
         if (storePayLines.length) {
-            console.log('paylines----',storePayLines);
             _.delay(function() {
                 storePayLines.map(function(line, index){
                     setTimeout(function() {
@@ -89,7 +86,7 @@ define(function(require, exports, module) {
 
         _.delay(function() {
             slotGame.save('credit', slotGame.get('credit')+storeWinAmt);
-        }, 3000);
+        }, 4000);
 
     },1000, true);
 
