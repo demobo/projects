@@ -9,7 +9,6 @@ define(function(require, exports, module) {
     var StateModifier = require('famous/modifiers/StateModifier');
 
 
-
     function PanelView(options){
 
         //TODO Bon
@@ -34,8 +33,7 @@ define(function(require, exports, module) {
         //    this.addButton(i);
         //}
         var button1Mod = new StateModifier({
-            align: [0.2,0.35],
-            origin:[0.5,0.5]
+            transform: Transform.translate(200, 250, 0)
         });
 
         var button1 = new Surface({
@@ -43,18 +41,16 @@ define(function(require, exports, module) {
             content:'<h3>WIN 1 Line</h3>',
             properties: {
                 fontSize:'25px',
-                color:'black',
+                color:'white',
                 textAlign:'center',
-                padding:'40px',
-                backgroundImage:'url(assets/white-button.png)',
+                backgroundImage:'url(assets/yellow-button.png)',
                 backgroundRepeat:'no-repeat',
                 backgroundSize:'100%'
             }
         });
 
         var button2Mod = new StateModifier({
-            align: [0.45,0.35],
-            origin:[0.5,0.5]
+            transform: Transform.translate(700, 250, 0)
         });
 
         var button2 = new Surface({
@@ -62,18 +58,16 @@ define(function(require, exports, module) {
             content:'<h3>WIN 3 Lines</h3>',
             properties: {
                 fontSize:'25px',
-                color:'black',
+                color:'white',
                 textAlign:'center',
-                padding:'40px',
-                backgroundImage:'url(assets/white-button.png)',
+                backgroundImage:'url(assets/light-blue-button.png)',
                 backgroundRepeat:'no-repeat',
                 backgroundSize:'100%'
             }
         });
 
         var button3Mod = new StateModifier({
-            align: [0.7,0.35],
-            origin:[0.5,0.5]
+            transform: Transform.translate(1150, 250, 0)
         });
 
         var button3 = new Surface({
@@ -81,10 +75,9 @@ define(function(require, exports, module) {
             content:'<h3>WIN 5 Lines</h3>',
             properties: {
                 fontSize:'25px',
-                color:'black',
+                color:'white',
                 textAlign:'center',
-                padding:'40px',
-                backgroundImage:'url(assets/white-button.png)',
+                backgroundImage:'url(assets/purple-button.png)',
                 backgroundRepeat:'no-repeat',
                 backgroundSize:'100%'
             }
@@ -166,6 +159,9 @@ define(function(require, exports, module) {
     };
 
     module.exports = PanelView;
+
+
+
 
 
 });
