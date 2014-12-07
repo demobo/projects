@@ -120,15 +120,31 @@ define(function(require, exports, module) {
                 padding:'30px',
                 backgroundImage:'url(assets/green-button.png)',
                 backgroundRepeat:'no-repeat',
-                backgroundSize:'100%'
+                backgroundSize:'100%'}
+            });
+
+        var button6Mod = new StateModifier({
+                align: [0,0.8],
+                origin:[0.5,0.5]
+            });
+
+        var button6 = new Surface({
+            size: [400, 250],
+            properties: {
+                backgroundColor:'transparent'
+
             }
         });
+
 
         this.add(button1Mod).add(button1);
         this.add(button2Mod).add(button2);
         this.add(button3Mod).add(button3);
         this.add(button4Mod).add(button4);
         this.add(button5Mod).add(button5);
+        this.add(button6Mod).add(button6);
+
+
         button1.on('click', function(){
             slotGame.save('button0', Date.now())
             soundEffect.tap.play();
@@ -148,6 +164,10 @@ define(function(require, exports, module) {
         button5.on('click', function(){
             slotGame.save('button4', Date.now())
             soundEffect.cashout.play()
+        }.bind(this))
+        button6.on('click', function(){
+        slotGame.save('button5', Date.now())
+        soundEffect.cashout.play()
         }.bind(this))
 
         this.moneyIsertBox = new Surface({
