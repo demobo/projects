@@ -48,7 +48,8 @@ define(function(require, exports, module) {
     }
 
     SlotMachine.prototype.spin = _.debounce(function() {
-        generate.call(this);
+        var winLines = winCode.call(this);
+        generate.call(this, winLines);
         this.columns.map(function(c, i){
             c.spin(500*i+1000);
         });
@@ -62,9 +63,18 @@ define(function(require, exports, module) {
         });
     };
 
-    function generate() {
-        var winCode = 1;
-        var winning = chooseWinning.call(this, winCode); console.log(winning.fruit, winning.row);
+    function winCode() {
+        var winNum = Math.floor(Math.random()*100);
+        if (winNum%5 == 0) return 1;
+        else if (winNum%7 == 0) return 2;
+        else if (winNum%9 == 0) return 3;
+        else if (winNum%16 == 0) return 4;
+        else if (winNum%22 == 0) return 5;
+    }
+
+    function generate(winLines) {
+        var winCode = winLines;
+        var winning = chooseWinning.call(this, winCode); console.log(winning.fruit, winning.row, winning.line);
         for (var i=0; i<this.options.dimension[0]; i++) {
             for (var j=0; j<this.options.rowCount; j++) {
                 if (!this.slotMap[i])
@@ -142,6 +152,11 @@ define(function(require, exports, module) {
             jaggedDown = chooseRow.call(this);
         }
 
+        var line1 = findWinLine.call(this, row1);
+        var line2 = findWinLine.call(this, row2);
+        var line3 = findWinLine.call(this, row3);
+
+
         var fruit1 = chooseFruit.call(this);
         var fruit2 = chooseFruit.call(this);
         var fruit3 = chooseFruit.call(this);
@@ -150,19 +165,22 @@ define(function(require, exports, module) {
             case 1:
                 return {
                     row: [row1],
-                    fruit: [fruit1]
+                    fruit: [fruit1],
+                    line: [line1]
                 }
                 break;
             case 2:
                 return {
                     row: [row1, row2],
-                    fruit: [fruit1, fruit2]
+                    fruit: [fruit1, fruit2],
+                    line: [line1, line2]
                 }
                 break;
             case 3:
                 return {
                 row: [row1, row2, row3],
-                fruit: [fruit1, fruit2, fruit3]
+                fruit: [fruit1, fruit2, fruit3],
+                line: [line1, line2, line3]
                 }
                 break;
             case 4:
@@ -190,7 +208,9 @@ define(function(require, exports, module) {
                 }
                 break;
             default:
-                return {}
+                return {
+                    row: [], fruit: []
+                }
         }
     }
 
@@ -200,6 +220,12 @@ define(function(require, exports, module) {
 
     function chooseFruit() {
         return Math.floor(Math.random()*12);
+    }
+
+    function findWinLine(row) {
+        var lineMap = [this.options.rowCount-2, this.options.rowCount-1, this.options.rowCount-3];
+        var line = lineMap.indexOf(row);
+        return line
     }
 
     function checkMap(row, fruit) {
