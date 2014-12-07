@@ -34,7 +34,7 @@ define(function(require, exports, module) {
             }),
             bill: new Howl({
                 urls: ['assets/audio/billInsert.mp3'],
-                volume: 0.2
+                volume: 1
             }),
             line: new Howl({
                 urls: ['assets/audio/line.mp3'],

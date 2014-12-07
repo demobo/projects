@@ -173,6 +173,7 @@ define(function(require, exports, module) {
             console.log('click', index)
             slotGame.save('button' + index, Date.now())
         }.bind(this))
+
     };
 
     window.slotGame = slotGame;

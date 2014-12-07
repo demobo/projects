@@ -11,6 +11,7 @@ define(function(require, exports, module) {
     var Easing          = require('famous/transitions/Easing');
     var RenderController = require('famous/views/RenderController');
     var RenderNode = require("famous/core/RenderNode");
+    var soundEffect = require('components/SoundEffect');
 
     GenericSync.register({
         mouse : MouseSync,
@@ -93,6 +94,7 @@ define(function(require, exports, module) {
     };
 
     Money.prototype.hide = function(){
+        soundEffect.bill.play()
         this.insert.set(-this.money.getSize()[1], {duration: 500, curve: Easing.easeOut}, function(){
             this.renderController.hide();
             this.increaseCredit(100);
