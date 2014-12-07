@@ -84,7 +84,8 @@ define(function(require, exports, module) {
         });
 
         var button4Mod = new StateModifier({
-            transform: Transform.translate(1250, 500, 0)
+            align: [0.7,0.7],
+            origin:[0.5,0.5]
         });
 
         var button4 = new Surface({
@@ -102,7 +103,8 @@ define(function(require, exports, module) {
         });
 
         var button5Mod = new StateModifier({
-            transform: Transform.translate(300, 500, 0)
+            align: [0.25,0.7],
+            origin:[0.5,0.5]
         });
 
         var button5 = new Surface({
