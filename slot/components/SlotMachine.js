@@ -31,6 +31,7 @@ define(function(require, exports, module) {
     function _createViews() {
         this.columns = [];
         generate.call(this);
+        soundEffect.backgroundmusic.play();
         for (var i = 0; i<this.options.dimension[0]; i++) {
             var c = new SlotColumn({
                 rowCount: this.options.rowCount,
@@ -44,7 +45,11 @@ define(function(require, exports, module) {
     }
 
     function _setListeners() {
-        Engine.on('click', this.spin.bind(this));
+        Engine.on('click', function() {
+            this.spin();
+            soundEffect.slot.play();
+        }.bind(this));
+
     }
 
     SlotMachine.prototype.spin = _.debounce(function() {
@@ -104,7 +109,6 @@ define(function(require, exports, module) {
             }
         }
 //        checkMap.call(this, winningRow, winningFruit);
-        soundEffect.slot.play();
     }
 
     function rowJackpot(i, j, winning) {
