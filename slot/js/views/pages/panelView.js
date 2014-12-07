@@ -9,6 +9,7 @@ define(function(require, exports, module) {
     var StateModifier = require('famous/modifiers/StateModifier');
 
 
+
     function PanelView(options){
 
         //TODO Bon
