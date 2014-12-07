@@ -8,12 +8,12 @@ define(function(require, exports, module) {
     var slotGame = require('js/models/slotGame');
 
     var slotMachine = new SlotMachine({
-        size: [window.innerWidth*.84,window.innerHeight*.7],
+        size: [window.innerWidth*.7,window.innerHeight*.7],
         dimension: [5, 3],
         rowCount: 40
     });
     var slotMod = new StateModifier({
-        align: [.5,.5],
+        align: [.505,.55],
         origin: [.5,.5]
     });
     var creditBox = new CreditBox({

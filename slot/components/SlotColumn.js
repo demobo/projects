@@ -9,7 +9,7 @@ define(function(require, exports, module) {
             this._callSuper(UIContainer, 'constructor', options);
             this.options = options;
             this.rowCount = options.rowCount;
-            var columnWidth = window.innerWidth*.84/options.dimension[0];
+            var columnWidth = window.innerWidth*.66/options.dimension[0];
             var columnHeight = this.rowCount*window.innerHeight*.7/options.dimension[1];
             this.rowHeight = columnHeight/this.rowCount;
             this.rows = [];
