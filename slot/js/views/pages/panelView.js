@@ -12,61 +12,76 @@ define(function(require, exports, module) {
     var mainContext = Engine.createContext();
 
     var button1Mod = new StateModifier({
-        transform: Transform.translate(450, 100, 0)
+        transform: Transform.translate(400, 200, 0)
     });
 
     var button1 = new Surface({
-        size: [100, 100],
-        content:'Line1',
+        size: [200, 150],
+        content:'<h3>WIN</h3><p>1 Line</p>',
         properties: {
+            fontSize:'25px',
+            textAlign:'center',
+            padding:'0px',
             backgroundColor: '#FA5C4F'
         }
     });
 
     var button2Mod = new StateModifier({
-        transform: Transform.translate(750, 100, 0)
+        transform: Transform.translate(750, 200, 0)
     });
 
     var button2 = new Surface({
-        size: [100, 100],
-        content:'Line3',
+        size: [200, 150],
+        content:'<h3>WIN</h3><p>3 Lines</p>',
         properties: {
+            fontSize:'25px',
+            textAlign:'center',
+            padding:'0px',
             backgroundColor: '#FA5C4F'
         }
     });
 
     var button3Mod = new StateModifier({
-        transform: Transform.translate(1050, 100, 0)
+        transform: Transform.translate(1100, 200, 0)
     });
 
     var button3 = new Surface({
-        size: [100, 100],
-        content:'Line5',
+        size: [200, 150],
+        content:'<h3>WIN</h3><p>5 Lines</p>',
         properties: {
+            fontSize:'25px',
+            textAlign:'center',
+            padding:'0px',
             backgroundColor: '#FA5C4F'
         }
     });
 
     var button4Mod = new StateModifier({
-        transform: Transform.translate(1450, 400, 0)
+        transform: Transform.translate(1250, 500, 0)
     });
 
     var button4 = new Surface({
-        size: [100, 100],
-        content:'SPIN',
+        size: [350, 350],
+        content:'<h3>SPIN</h3>',
         properties: {
+            fontSize:'60px',
+            textAlign:'center',
+            padding:'60px',
             backgroundColor: '#FA5C4F'
         }
     });
 
     var button5Mod = new StateModifier({
-        transform: Transform.translate(100, 400, 0)
+        transform: Transform.translate(300, 500, 0)
     });
 
     var button5 = new Surface({
-        size: [100, 100],
-        content:'Cash Out',
+        size: [250, 250],
+        content:'<h3>Cash Out</h3>',
         properties: {
+            fontSize:'40px',
+            textAlign:'center',
+            padding:'30px',
             backgroundColor: '#FA5C4F'
         }
     });
@@ -95,7 +110,7 @@ define(function(require, exports, module) {
     PanelView.prototype.constructor = PanelView;
 
     PanelView.DEFAULT_OPTIONS = {
-        numberOfButtons: 3,
+       numberOfButtons: 3,
         buttonSize: [100, 100]
     };
 
