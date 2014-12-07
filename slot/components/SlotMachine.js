@@ -20,6 +20,7 @@ define(function(require, exports, module) {
         });
         _createViews.call(this);
         _setListeners.call(this);
+        window.slotMachine = this;
     }
 
     SlotMachine.prototype = Object.create(ContainerSurface.prototype);
@@ -52,6 +53,14 @@ define(function(require, exports, module) {
             c.spin(500*i+1000);
         });
     },1000, true);
+
+    SlotMachine.prototype.animateLine = function(line) {
+        this.columns.map(function(c, i){
+            c.rows.map(function(r, i){
+                r.animateLine(line);
+            });
+        });
+    };
 
     function generate() {
         var winCode = 1;

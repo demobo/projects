@@ -20,7 +20,7 @@ define(function(require, exports, module) {
 
     });
     var creditBoxMod = new StateModifier({
-        size: [100,60],
+        size: [200,60],
         align: [1,1],
         origin: [1,1]
     });
