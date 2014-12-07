@@ -48,7 +48,7 @@ define(function(require, exports, module) {
     }
 
     SlotMachine.prototype.spin = _.debounce(function() {
-        var winLines = winCode.call(this);
+        var winLines = winPercent.call(this);
         generate.call(this, winLines);
         this.columns.map(function(c, i){
             c.spin(500*i+1000);
@@ -63,7 +63,7 @@ define(function(require, exports, module) {
         });
     };
 
-    function winCode() {
+    function winPercent() {
         var winNum = Math.floor(Math.random()*100);
         if (winNum%5 == 0) return 1;
         else if (winNum%7 == 0) return 2;
