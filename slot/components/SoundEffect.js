@@ -7,8 +7,8 @@ define(function(require, exports, module) {
                 volume: 0.2
             }),
             paysoff: new Howl({
-                urls: ['assets/audio/paysOff.mp3'],
-                volume: 0.5
+                urls: ['assets/audio/paysOff2.mp3'],
+                volume: 0.4
             }),
             backgroundmusic: new Howl({
                 urls: ['assets/audio/backGroundmusic.mp3'],
