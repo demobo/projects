@@ -30,7 +30,7 @@ define(function(require, exports, module) {
             }),
             tap: new Howl({
                 urls: ['assets/audio/tap.aiff'],
-                volume: 0.1
+                volume: 0.2
             }),
             credit: new Howl({
                 urls: ['assets/audio/smallPayoutB.mp3'],
