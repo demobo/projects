@@ -161,10 +161,6 @@ define(function(require, exports, module) {
     module.exports = PanelView;
 
 
-    var button1= new Surface({
-        content:'line1',
-        size: [100,100]
-    })
 
 
 
