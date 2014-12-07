@@ -19,6 +19,9 @@ define(function(require, exports, module) {
 
     var slotGame = require('js/models/slotGame');
 
+    var high = 600;
+    var width = high/614*261;
+
     function Money(options) {
 
         // TODO: Bon
@@ -77,6 +80,9 @@ define(function(require, exports, module) {
         }.bind(this));
 
         this.sync.on('end', function(data) {
+            if (this.pos.get()[1]< -1/3*high && this.pos.get()[0]>window.innerWidth-280){
+                this.hide()
+            }
         }.bind(this));
 
     }
@@ -89,6 +95,7 @@ define(function(require, exports, module) {
     Money.prototype.hide = function(){
         this.insert.set(-this.money.getSize()[1], {duration: 500, curve: Easing.easeOut}, function(){
             this.renderController.hide();
+            this.increaseCredit(100);
         }.bind(this));
     };
 
@@ -97,8 +104,6 @@ define(function(require, exports, module) {
     };
 
     Money.prototype.setMoneyImage = function(image){
-        var high = 614;
-        var width = high/614*261;
         this.money.setContent('<div><img height="'+high+'" width="'+width+'" src=' + image + ' /></div>')
     };
 
