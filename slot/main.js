@@ -8,7 +8,7 @@ define(function(require, exports, module) {
     var slotGame = require('js/models/slotGame');
 
     var slotMachine = new SlotMachine({
-        size: [window.innerWidth*.8,window.innerHeight*.8],
+        size: [window.innerWidth*.84,window.innerHeight*.7],
         dimension: [5, 3],
         rowCount: 40
     });
