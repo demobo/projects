@@ -19,10 +19,11 @@ define(function(require, exports, module) {
         this.renderController.show(this.renderNode);
         this.physicsEngine = physicsEngine;
         this.walls = walls;
-        this.model = options.model;
-        this.size = options.size;
 
-        this.coinVector = new Vector([1,0,0]);
+        this.model = options.model;
+        this.size = options.size || [100, 100];
+        this.velocity = options.velocity || new Vector([1,0,0]);
+        this.position = options.position || new Vector(Math.random() * window.innerWidth, Math.random() * window.innerHeight,0)
 
         _initParticle.call(this);
         _syncEvent.call(this);
@@ -45,8 +46,8 @@ define(function(require, exports, module) {
         this.particle = new Circle({
             mass : 1,
             radius : this.size[0]/2,
-            position : new Vector(Math.random() * window.innerWidth, Math.random() * window.innerHeight,0),
-            velocity : this.coinVector,
+            position : this.position,
+            velocity : this.velocity,
             model: this.model
         });
         this.physicsEngine.addBody(this.particle);
@@ -56,6 +57,10 @@ define(function(require, exports, module) {
     function _syncEvent(){
 
     }
+
+    Coin.prototype.hideCoin = function(){
+        this.renderController.hide()
+    };
 
     module.exports = Coin;
 

@@ -2,10 +2,14 @@ define(function(require, exports, module) {
     var Engine              = require('famous/core/Engine');
     var SlotMachine = require('./components/SlotMachine');
     var StateModifier = require('famous/modifiers/StateModifier');
+    var CoinsMainView = require('js/views/pages/coinsMainView');
 
     var mainContext = Engine.createContext();
 
     var slotGame = require('js/models/slotGame');
+
+    var coinsMainView = new CoinsMainView();
+    mainContext.add(coinsMainView);
 
     var slotMachine = new SlotMachine({
         size: [window.innerWidth*.8,window.innerHeight*.8],
@@ -17,7 +21,7 @@ define(function(require, exports, module) {
         origin: [.5,.5]
     });
 
-    mainContext.add(slotMod).add(slotMachine);
+//    mainContext.add(slotMod).add(slotMachine);
     mainContext.setPerspective(1000);
 
     slotGame.on('change:button0',function(model, value){
