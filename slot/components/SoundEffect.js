@@ -47,6 +47,10 @@ define(function(require, exports, module) {
             badline: new Howl({
                 urls: ['assets/audio/badline.mp3'],
                 volume: 0.2
+            }),
+            jackpot: new Howl({
+                urls: ['assets/audio/jackpot.wav'],
+                volume: 0.3
             })
 
         };
