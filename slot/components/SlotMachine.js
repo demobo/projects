@@ -132,7 +132,8 @@ define(function(require, exports, module) {
                     this.slotMap[i][j] = chooseFruit.call(this);
             }
         }
-//        checkMap.call(this, winningRow, winningFruit);
+
+        checkWin.call(this, winning.line);
     }
 
     function rowJackpot(i, j, winning) {
@@ -254,7 +255,7 @@ define(function(require, exports, module) {
                 break;
             default:
                 return {
-                    row: [], fruit: []
+                    row: [], fruit: [], line: []
                 }
         }
     }
@@ -273,17 +274,8 @@ define(function(require, exports, module) {
         return line
     }
 
-    function checkMap(row, fruit) {
-        for (var j = (this.options.rowCount-this.options.dimension[1]); j<this.options.rowCount; j++) {
-            if (j != row) {
-                if (this.slotMap[this.options.dimension[0]-1][j] == this.slotMap[this.options.dimension[0]-2][j]) {
-                    do {
-                        var newFruit = Math.floor(Math.random()*12)
-                    } while (newFruit == this.slotMap[this.options.dimension[0]-2][j])
-                    this.slotMap[this.options.dimension[0]-1][j] = newFruit;
-                }
-            }
-        }
+    function checkWin(line) {
+
     }
 
     module.exports = SlotMachine;
