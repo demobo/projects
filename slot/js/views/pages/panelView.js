@@ -8,6 +8,7 @@ define(function(require, exports, module) {
     var Transform = require('famous/core/Transform');
     var StateModifier = require('famous/modifiers/StateModifier');
 
+
     function PanelView(options){
 
         //TODO Bon
