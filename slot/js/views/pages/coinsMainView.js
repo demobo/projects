@@ -65,8 +65,8 @@ define(function(require, exports, module) {
 
         Engine.on('keypress',function(e){
             if (e.keyCode == 32){
-                this.generateCoins()
-                soundEffect.paysoff.pay()
+                this.generateCoins();
+                soundEffect.paysoff.play();
             }
         }.bind(this));
 
