@@ -11,7 +11,7 @@ define(function(require, exports, module) {
                 volume: 0.1
             }),
             backgroundmusic: new Howl({
-                urls: ['assets/audio/backGroundmusicO.mp3'],
+                urls: ['assets/audio/backGroundmusic.mp3'],
                 autoplay: true,
                 loop: true,
                 volume: 0.1

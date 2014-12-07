@@ -289,7 +289,7 @@ define(function(require, exports, module) {
         var user = slotGame.get('lines');
         if (user == undefined) user = 5;
         var credit = slotGame.get('credit');
-        if (credit == undefined) credit = 100;
+        if (credit == undefined) credit = 0;
 
         switch (user) {
             case 1: var userLines = [0]; break;
@@ -311,8 +311,6 @@ define(function(require, exports, module) {
 
         console.log(winAmt, credit);
     }
-
-
 
     module.exports = SlotMachine;
 });
