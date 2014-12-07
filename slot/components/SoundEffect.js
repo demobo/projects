@@ -6,7 +6,7 @@ define(function(require, exports, module) {
                 volume: 0.1
             }),
             paysoff: new Howl({
-                urls: ['assets/audio/paysOff.wav'],
+                urls: ['assets/audio/paysOff.mp3'],
                 volume: 0.1
             })
         };
