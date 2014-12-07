@@ -1,11 +1,16 @@
 define(function(require, exports, module) {
     var Engine              = require('famous/core/Engine');
     var StateModifier = require('famous/modifiers/StateModifier');
+    var CoinsMainView = require('js/views/pages/coinsMainView');
+
     var mainContext = Engine.createContext();
 
     var SlotMachine = require('components/SlotMachine');
     var CreditBox = require('components/CreditBox');
     var slotGame = require('js/models/slotGame');
+
+    var coinsMainView = new CoinsMainView();
+    mainContext.add(coinsMainView);
 
     var slotMachine = new SlotMachine({
         size: [window.innerWidth*.7,window.innerHeight*.7],
