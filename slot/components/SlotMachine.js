@@ -58,9 +58,30 @@ define(function(require, exports, module) {
     }
 
     SlotMachine.prototype.spin = _.debounce(function() {
+        var storePayLines = payLines;
+        var storeBadLines = badLines;
         var winLines = winPercent.call(this);
-        generate.call(this, winLines); console.log(payLines, badLines);
+        generate.call(this, winLines);
         soundEffect.slot.play();
+        
+        if (storePayLines.length == 5) {
+            slotGame.save('jackpot', Date.now());
+        }
+        console.log('----storePayLines--', storePayLines)
+
+//        if (storePayLines.length) {
+//            _.delay(function() {
+//                this.animateLine(storePayLines[0], false)
+//            }.bind(this), 2000);
+//        }
+//        for (var i = 0; i < storePayLines.length; i++) {
+//            this.index = i;
+//            setTimeout(function(){
+//                this.animateLine(storePayLines[this.index], false);
+//            }.bind(this) ,1000);
+//
+//        }
+
         this.columns.map(function(c, i){
             c.spin(500*i+1000);
         });
@@ -81,10 +102,10 @@ define(function(require, exports, module) {
     function winPercent() {
         var winNum = Math.floor(Math.random()*100);
         if (winNum%5 == 0) return 1;
-        else if (winNum%2 == 0) return 2;
+        else if (winNum%7 == 0) return 2;
         else if (winNum%9 == 0) return 3;
         else if (winNum%16 == 0) return 4;
-        else if (winNum%22 == 0) return 5;
+        else if (winNum%2 == 0) return 5;
         else return 0;
     }
 
@@ -309,7 +330,7 @@ define(function(require, exports, module) {
         var winAmt = winChart[payLines.length];
         slotGame.save('credit', credit+winAmt);
 
-        console.log(winAmt, credit);
+//        console.log(winAmt, credit);
     }
 
     module.exports = SlotMachine;

@@ -63,6 +63,13 @@ define(function(require, exports, module) {
 
     function _setupEvents(){
 
+        slotGame.on('change:jackpot', function(){
+            console.log('jackpot!');
+            _.delay(function() {
+                this.generateCoins();
+            }.bind(this), 2000);
+        }.bind(this));
+
         Engine.on('keypress',function(e){
             if (e.keyCode == 32){
                 this.generateCoins();
