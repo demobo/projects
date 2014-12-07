@@ -40,7 +40,7 @@ define(function(require, exports, module) {
             size: [400, 250],
             content:'<h3>WIN 1 Line</h3>',
             properties: {
-                fontSize:'15px',
+                fontSize:'25px',
                 color:'black',
                 textAlign:'center',
                 backgroundImage:'url(assets/white-button.png)',
