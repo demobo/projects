@@ -32,7 +32,7 @@ define(function(require, exports, module) {
     CoinsMainView.prototype.constructor = CoinsMainView;
 
     CoinsMainView.DEFAULT_OPTIONS = {
-        numberOfCoins: 50,
+        numberOfCoins: 5,
         coinDiameter: 100,
         wallRestitution: 1
     };
@@ -41,6 +41,7 @@ define(function(require, exports, module) {
 
         this.coins = [];
         this.coinsViews = [];
+        this.coinsNumber = 0;
         this.container = new ContainerSurface({
             size:[undefined,undefined]
         });
@@ -66,17 +67,27 @@ define(function(require, exports, module) {
                 this.generateCoins()
             }
         }.bind(this));
+        this.wallBottom.on('preCollision', function(data){
+            var msg = {
+                'position': coin.particle.position.x,
+                'velocity': [coin.particle.velocity.x, coin.particle.velocity.y]
+            };
+            slotGame.save('coins', JSON.stringify(msg));
+            this.physicsEngine.removeBody(data.particle)
+        }.bind(this));
+        slotGame.on('change:coins',function(model, value){
+            console.log(model, value)
+        }.bind(this));
 
     }
 
-
     CoinsMainView.prototype.generateCoins = function(){
-        if (this.coins.length <= this.options.numberOfCoins){
+        if (this.coinsNumber < this.options.numberOfCoins){
             this.addCoin();
-            console.log('generate coins')
-            setTimeout(this.generateCoins.bind(this), 200)
-        }
-        else {
+            setTimeout(this.generateCoins.bind(this), 200);
+            this.coinsNumber++;
+        } else {
+            this.coinsNumber = 0;
             Timer.setTimeout(this.removeCoins.bind(this), 2000)
         }
     };
@@ -107,8 +118,8 @@ define(function(require, exports, module) {
         });
         this.wallBottom = new Wall({
             normal: [0,-1,0],
-            distance: window.innerHeight,
-            restitution: 1,
+            distance: window.innerHeight+this.options.coinDiameter,
+            restitution: 0,
             drift:0,
             onContact: Wall.ON_CONTACT.SILENT
         });
@@ -127,7 +138,7 @@ define(function(require, exports, module) {
             size:[this.options.coinDiameter,this.options.coinDiameter],
             model: coinModel,
             position: [0.5 * window.innerWidth, 0.95*window.innerHeight],
-            velocity: new Vector(Math.cos(angle), Math.sin(angle)*(-1), 0.1*Math.random()+0.1)
+            velocity: new Vector(Math.cos(angle), Math.sin(angle)*(-1), 0)
         });
         this.coins.push(coinComponent.particle);
         this.coinsViews.push(coinComponent);
