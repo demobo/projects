@@ -12,47 +12,53 @@ define(function(require, exports, module) {
     var mainContext = Engine.createContext();
 
     var button1Mod = new StateModifier({
-        transform: Transform.translate(400, 200, 0)
+        transform: Transform.translate(200, 250, 0)
     });
 
     var button1 = new Surface({
-        size: [200, 150],
-        content:'<h3>WIN</h3><p>1 Line</p>',
+        size: [400, 250],
+        content:'<h3>WIN 1 Line</h3>',
         properties: {
             fontSize:'25px',
+            color:'white',
             textAlign:'center',
-            padding:'0px',
-            backgroundColor: '#FA5C4F'
+            backgroundImage:'url(assets/yellow-button.png)',
+            backgroundRepeat:'no-repeat',
+            backgroundSize:'100%'
         }
     });
 
     var button2Mod = new StateModifier({
-        transform: Transform.translate(750, 200, 0)
+        transform: Transform.translate(700, 250, 0)
     });
 
     var button2 = new Surface({
-        size: [200, 150],
-        content:'<h3>WIN</h3><p>3 Lines</p>',
+        size: [400, 250],
+        content:'<h3>WIN 3 Lines</h3>',
         properties: {
             fontSize:'25px',
+            color:'white',
             textAlign:'center',
-            padding:'0px',
-            backgroundColor: '#FA5C4F'
+            backgroundImage:'url(assets/light-blue-button.png)',
+            backgroundRepeat:'no-repeat',
+            backgroundSize:'100%'
         }
     });
 
     var button3Mod = new StateModifier({
-        transform: Transform.translate(1100, 200, 0)
+        transform: Transform.translate(1150, 250, 0)
     });
 
     var button3 = new Surface({
-        size: [200, 150],
-        content:'<h3>WIN</h3><p>5 Lines</p>',
+        size: [400, 250],
+        content:'<h3>WIN 5 Lines</h3>',
         properties: {
             fontSize:'25px',
+            color:'white',
             textAlign:'center',
-            padding:'0px',
-            backgroundColor: '#FA5C4F'
+            backgroundImage:'url(assets/purple-button.png)',
+            backgroundRepeat:'no-repeat',
+            backgroundSize:'100%'
         }
     });
 
@@ -64,10 +70,13 @@ define(function(require, exports, module) {
         size: [350, 350],
         content:'<h3>SPIN</h3>',
         properties: {
+            color: 'white',
             fontSize:'60px',
             textAlign:'center',
-            padding:'60px',
-            backgroundColor: '#FA5C4F'
+            padding:'50px',
+            backgroundImage:'url(assets/push-button-glossy-red-md.png)',
+            backgroundRepeat:'no-repeat',
+            backgroundSize:'100%'
         }
     });
 
@@ -79,10 +88,13 @@ define(function(require, exports, module) {
         size: [250, 250],
         content:'<h3>Cash Out</h3>',
         properties: {
+            color:'white',
             fontSize:'40px',
             textAlign:'center',
             padding:'30px',
-            backgroundColor: '#FA5C4F'
+            backgroundImage:'url(assets/green-button.png)',
+            backgroundRepeat:'no-repeat',
+            backgroundSize:'100%'
         }
     });
 
