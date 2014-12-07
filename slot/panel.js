@@ -8,6 +8,7 @@ define(function(require, exports, module) {
 
     var coinsPanelView = new CoinsPanelView();
     var panelView = new PanelView();
+
     mainContext.add(panelView);
     mainContext.add(coinsPanelView)
 

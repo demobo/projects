@@ -3,8 +3,82 @@ define(function(require, exports, module) {
     var Engine = require('famous/core/Engine');
     var Surface = require('famous/core/Surface');
     var Modifier = require('famous/core/Modifier');
-
     var slotGame = require('js/models/slotGame');
+
+    var Transform = require('famous/core/Transform');
+    var StateModifier = require('famous/modifiers/StateModifier');
+
+
+    var mainContext = Engine.createContext();
+
+    var button1Mod = new StateModifier({
+        transform: Transform.translate(450, 100, 0)
+    });
+
+    var button1 = new Surface({
+        size: [100, 100],
+        content:'Line1',
+        properties: {
+            backgroundColor: '#FA5C4F'
+        }
+    });
+
+    var button2Mod = new StateModifier({
+        transform: Transform.translate(750, 100, 0)
+    });
+
+    var button2 = new Surface({
+        size: [100, 100],
+        content:'Line3',
+        properties: {
+            backgroundColor: '#FA5C4F'
+        }
+    });
+
+    var button3Mod = new StateModifier({
+        transform: Transform.translate(1050, 100, 0)
+    });
+
+    var button3 = new Surface({
+        size: [100, 100],
+        content:'Line5',
+        properties: {
+            backgroundColor: '#FA5C4F'
+        }
+    });
+
+    var button4Mod = new StateModifier({
+        transform: Transform.translate(1450, 400, 0)
+    });
+
+    var button4 = new Surface({
+        size: [100, 100],
+        content:'SPIN',
+        properties: {
+            backgroundColor: '#FA5C4F'
+        }
+    });
+
+    var button5Mod = new StateModifier({
+        transform: Transform.translate(100, 400, 0)
+    });
+
+    var button5 = new Surface({
+        size: [100, 100],
+        content:'Cash Out',
+        properties: {
+            backgroundColor: '#FA5C4F'
+        }
+    });
+
+
+
+    mainContext.add(button1Mod).add(button1);
+    mainContext.add(button2Mod).add(button2);
+    mainContext.add(button3Mod).add(button3);
+    mainContext.add(button4Mod).add(button4);
+    mainContext.add(button5Mod).add(button5);
+
 
     function PanelView(options){
 
@@ -21,12 +95,12 @@ define(function(require, exports, module) {
     PanelView.prototype.constructor = PanelView;
 
     PanelView.DEFAULT_OPTIONS = {
-        numberOfButtons: 4,
+        numberOfButtons: 3,
         buttonSize: [100, 100]
     };
 
     function _init(){
-        for (var i = 0; i < 4; i++){
+        for (var i = 0; i < 3; i++){
             this.addButton(i);
         }
     }
@@ -45,8 +119,8 @@ define(function(require, exports, module) {
             }
         });
         var buttonMod = new Modifier({
-            origin: [ratio, 0.8],
-            align: [ratio, 0.8]
+            origin: [ratio, 0.5],
+            align: [ratio, 0.3]
         });
         this.setButtonEvent(button, index);
         this.add(buttonMod).add(button);
@@ -59,5 +133,13 @@ define(function(require, exports, module) {
     };
 
     module.exports = PanelView;
+
+
+    var button1= new Surface({
+        content:'line1',
+        size: [100,100]
+    })
+
+
 
 });
