@@ -1,0 +1,64 @@
+html {
+  background: #fff;
+  font-family: Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.button.background {
+    background: #4285f4;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+
+.button.text {
+    color: #fff;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.button.ripple {
+    background: #fff;
+}
+
+.thumb-not-toggle {
+    border-radius: 50%;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #9c9c9c;
+    background-color: white;
+}
+
+
+.bar-not-toggle {
+    background-color: #9c9c9c;
+}
+
+.thumb-toggle {
+    background-color: #0f9d58;
+    border-radius: 50%;
+    border-style: solid;
+    border-width: 0px;
+    border-color: #9c9c9c;
+    color: red;
+}
+
+.bar-toggle {
+    background-color: #0f9d58
+}
+
+input {
+    background-color: transparent;
+    border-color: transparent;
+    line-height: normal;
+    outline: 0;
+    vertical-align: bottom;
+    display: block;
+    overflow: hidden;
+    resize: none;
+    white-space: nowrap;
+}
+
+.highlightUnderline {
+    position: absolute;
+    overflow: visible;
+}

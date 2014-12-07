@@ -1,0 +1,13 @@
+{
+  "name": "famous",
+  "homepage": "https://github.com/alexanderGugel/famous",
+  "_release": "d28f17dc94",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "d28f17dc94e5d7b0a1f0e2ba5df3938ff29d9900"
+  },
+  "_source": "https://github.com/alexanderGugel/famous.git",
+  "_target": "master",
+  "_originalSource": "https://github.com/alexanderGugel/famous.git"
+}

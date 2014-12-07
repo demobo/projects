@@ -20,6 +20,9 @@ chrome.app.runtime.onLaunched.addListener(function() {
                     }, 5000);
                 },500);
             },500);
+            appWin.onClosed.addListener(function () {
+                if (app2Win) app2Win.close();
+            });
         }
     );
 
@@ -48,7 +51,6 @@ chrome.app.runtime.onLaunched.addListener(function() {
                 },5000);
             }, 500);
             app2Win.onClosed.addListener(function () {
-                console.log('closed')
                 if (appWin) appWin.close();
             });
         }
