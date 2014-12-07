@@ -24,6 +24,11 @@ define(function(require, exports, module) {
     mainContext.add(panelView);
     mainContext.add(coinsPanelView);
 
+    slotGame.on('change:button5',function(model, value){
+        var money = new Money();
+        mainContext.add(money);
+    }.bind(this));
+
     Engine.on('keypress', function(e){
         if (e.keyCode == 61){
             var money = new Money();
