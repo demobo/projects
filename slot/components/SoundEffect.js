@@ -18,7 +18,7 @@ define(function(require, exports, module) {
             }),
             stopspin: new Howl({
                 urls: ['assets/audio/beep.mp3'],
-                volume: 0.1
+                volume: 0.2
             }),
             cashout: new Howl({
                 urls: ['assets/audio/cashOut.mp3'],
