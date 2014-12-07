@@ -3,10 +3,12 @@ define(function(require, exports, module) {
     var Engine = require('famous/core/Engine');
     var Surface = require('famous/core/Surface');
     var Modifier = require('famous/core/Modifier');
+    var soundEffect = require('components/SoundEffect');
     var slotGame = require('js/models/slotGame');
 
     var Transform = require('famous/core/Transform');
     var StateModifier = require('famous/modifiers/StateModifier');
+
 
 
     function PanelView(options){
@@ -157,6 +159,8 @@ define(function(require, exports, module) {
     PanelView.prototype.setButtonEvent = function(button, index){
         button.on('click', function(){
             slotGame.save('button' + index, Date.now())
+            if (index==4) soundEffect.cashout.play()
+            else soundEffect.tap.play();
         }.bind(this))
     };
 
