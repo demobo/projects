@@ -12,25 +12,21 @@ define(function(require, exports, module) {
             }),
             backgroundmusic: new Howl({
                 urls: ['assets/audio/backGroundmusic.mp3'],
-                autoplay: true,
+                //autoplay: true,
                 loop: true,
-                volume: 0.1
+                volume: 0
             }),
             stopspin: new Howl({
                 urls: ['assets/audio/beep.mp3'],
                 volume: 0.2
             }),
             cashout: new Howl({
-                urls: ['assets/audio/cashOut.mp3'],
-                volume: 0.1
-            }),
-            insertcoin: new Howl({
                 urls: ['assets/audio/insertCoin.mp3'],
-                volume: 0.1
+                volume: 0.6
             }),
             tap: new Howl({
-                urls: ['assets/audio/tap.aiff'],
-                volume: 0.2
+                urls: ['assets/audio/tap.mp3'],
+                volume: 0.5
             }),
             credit: new Howl({
                 urls: ['assets/audio/smallPayoutB.mp3'],
