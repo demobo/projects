@@ -1,8 +1,9 @@
 define(function(require, exports, module) {
-    var id = "slotGame";
+    var id = "gameState";
     var SlotGame = Backbone.DemoboStorage.Model.extend({
         demoboID: id,
         defaults: {
+            credit: 100
         }
     });
 

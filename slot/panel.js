@@ -3,6 +3,17 @@ define(function(require, exports, module) {
     var PanelView = require('js/views/pages/panelView');
     var CoinsPanelView = require('js/views/pages/coinsPanelView');
     var Money = require('js/views/components/money');
+
+
+//    demobo_r="1234";
+//    demobo_guid = "mobile";
+//    demobo.init({
+//        isHost: false,
+//        appName: "slotMachine",
+//        alwaysOn: true,
+//        layers: ["websocket:8010", "firebase"]
+//    });
+
     var mainContext = Engine.createContext();
 
     mainContext.setPerspective(1000);

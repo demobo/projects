@@ -1,0 +1,28 @@
+{
+    "name": "Slot Machine",
+    "description": "Slot Machine",
+    "short_name": "Slot Machine",
+    "version": "1.0.0",
+	"manifest_version": 2,
+	"minimum_chrome_version": "23",
+    "offline_enabled": true,
+	"app": {
+		"background": {
+			"scripts": ["background.js"]
+		}
+	},
+	"icons": {
+		"128": "assets/icon_128.png"
+	},
+	"permissions": [
+        "fullscreen",
+        "storage",
+        "<all_urls>",
+        "fileSystem",
+        "webview",
+        "http://localhost:3000/*"
+    ],
+    "sandbox":{
+        "pages":["index.html", "panel.html"]
+    }
+}

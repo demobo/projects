@@ -9,6 +9,16 @@ define(function(require, exports, module) {
     var CreditBox = require('components/CreditBox');
     var slotGame = require('js/models/slotGame');
 
+//    demobo_r="1234";
+//    demobo_guid = "web";
+//    var layers = ["websocket:8010"];
+//    demobo.init({
+//        isHost: true,
+//        appName: "slotMachine",
+//        method: "code",
+//        layers: layers
+//    });
+
     var coinsMainView = new CoinsMainView();
     mainContext.add(coinsMainView);
 
@@ -35,6 +45,7 @@ define(function(require, exports, module) {
     mainContext.setPerspective(1000);
 
     slotGame.on('change:button0',function(model, value){
+        console.log(model, value)
         if (value<Date.now()-3000) return;
         slotGame.save('lines',1);
         spin.call(this);
@@ -65,4 +76,6 @@ define(function(require, exports, module) {
             slotGame.save('credit',credit);
         }
     }
+
+    window.slotGame = slotGame;
 });

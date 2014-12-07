@@ -9,7 +9,7 @@ define(function(require, exports, module) {
     var Engine              = require('famous/core/Engine');
     var SlotColumn          = require('components/SlotColumn');
     var soundEffect         = require('components/SoundEffect');
-    var slotGame            = require('js/models/slotGame.js');
+    var slotGame            = require('js/models/slotGame');
 
     var winChart = [0, 1, 10, 100, 1000, 10000];
     var payLines = [];
