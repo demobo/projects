@@ -74,7 +74,7 @@ define(function(require, exports, module) {
 
         var button3 = new Surface({
             size: [400, 250],
-            content:'<h3>BET 5 Lines</h3>',
+            content:'<h3>BET` 5 Lines</h3>',
             properties: {
                 fontSize:'25px',
                 color:'black',
