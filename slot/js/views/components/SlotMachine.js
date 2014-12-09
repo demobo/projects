@@ -7,7 +7,7 @@ define(function(require, exports, module) {
     var StateModifier = require('famous/modifiers/StateModifier');
     var UIElement           = require('core/UIElement');
     var Engine              = require('famous/core/Engine');
-    var SlotColumn          = require('components/SlotColumn');
+    var SlotColumn          = require('js/views/components/SlotColumn');
     var soundEffect         = require('components/SoundEffect');
     var slotGame            = require('js/models/slotGame');
 

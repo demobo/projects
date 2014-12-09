@@ -2,7 +2,7 @@ define(function(require, exports, module) {
     var UIComponent         = require('core/UIComponent');
     var UIElement           = require('core/UIElement');
     var UIContainer         = require('containers/UIContainer');
-    var SlotItem          = require('components/SlotItem');
+    var SlotItem          = require('js/views/components/SlotItem');
     var soundEffect         = require('components/SoundEffect');
 
 
