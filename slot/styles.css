@@ -1,12 +1,10 @@
 body {
     background-image: url('assets/imgs/bg1.jpg');
-    background-size: 100%;
     background-repeat: no-repeat;
 }
 
 body.panel {
     background-image: url('assets/imgs/panel.jpg');
-    background-size: 100%;
 }
 
 .slotIcon {
