@@ -1,10 +1,11 @@
 body {
-    background-image: url('assets/bg1.jpg');
-
+    background-image: url('assets/imgs/bg1.jpg');
+    background-size: 100%;
+    background-repeat: no-repeat;
 }
 
 body.panel {
-    background-image: url('assets/panel.jpg');
+    background-image: url('assets/imgs/panel.jpg');
     background-size: 100%;
 }
 
@@ -14,56 +15,55 @@ body.panel {
     background: center;
     background-repeat: no-repeat;
     background-color:rgba(50,150,0,0.4);
-
 }
 
 .icon0 {
-    background-image: url('assets/slot0.png');
+    background-image: url('assets/imgs/slot0.png');
 
 }
 
 .icon1 {
-    background-image: url('assets/slot1.png');
+    background-image: url('assets/imgs/slot1.png');
 }
 
 .icon2 {
-    background-image: url('assets/slot2.png');
+    background-image: url('assets/imgs/slot2.png');
 }
 
 .icon3 {
-    background-image: url('assets/slot3.png');
+    background-image: url('assets/imgs/slot3.png');
 }
 
 .icon4 {
-    background-image: url('assets/slot4.png');
+    background-image: url('assets/imgs/slot4.png');
 }
 
 .icon5 {
-    background-image: url('assets/slot5.png');
+    background-image: url('assets/imgs/slot5.png');
 }
 
 .icon6 {
-    background-image: url('assets/slot6.png');
+    background-image: url('assets/imgs/slot6.png');
 }
 
 .icon7 {
-    background-image: url('assets/slot7.png');
+    background-image: url('assets/imgs/slot7.png');
 }
 
 .icon8 {
-    background-image: url('assets/slot8.png');
+    background-image: url('assets/imgs/slot8.png');
 }
 
 .icon9 {
-    background-image: url('assets/slot9.png');
+    background-image: url('assets/imgs/slot9.png');
 }
 
 .icon10 {
-    background-image: url('assets/slot10.png');
+    background-image: url('assets/imgs/slot10.png');
 }
 
 .icon11 {
-    background-image: url('assets/slot11.png');
+    background-image: url('assets/imgs/slot11.png');
 }
 
 .good {

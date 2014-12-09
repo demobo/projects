@@ -36,13 +36,13 @@ define(function(require, exports, module) {
 
         var button1 = new Surface({
             size: [400, 250],
-            content:'<h3>WIN 1 Line</h3>',
+            content:'<h3>BET 1 Line</h3>',
             properties: {
                 fontSize:'25px',
                 color:'black',
                 textAlign:'center',
                 padding:'40px',
-                backgroundImage:'url(assets/white-button.png)',
+                backgroundImage:'url(assets/imgs/white-button.png)',
                 backgroundRepeat:'no-repeat',
                 backgroundSize:'100%'
             }
@@ -55,13 +55,13 @@ define(function(require, exports, module) {
 
         var button2 = new Surface({
             size: [400, 250],
-            content:'<h3>WIN 3 Lines</h3>',
+            content:'<h3>BET 3 Lines</h3>',
             properties: {
                 fontSize:'25px',
                 color:'black',
                 textAlign:'center',
                 padding:'40px',
-                backgroundImage:'url(assets/white-button.png)',
+                backgroundImage:'url(assets/imgs/white-button.png)',
                 backgroundRepeat:'no-repeat',
                 backgroundSize:'100%'
             }
@@ -74,13 +74,13 @@ define(function(require, exports, module) {
 
         var button3 = new Surface({
             size: [400, 250],
-            content:'<h3>WIN 5 Lines</h3>',
+            content:'<h3>BET 5 Lines</h3>',
             properties: {
                 fontSize:'25px',
                 color:'black',
                 textAlign:'center',
                 padding:'40px',
-                backgroundImage:'url(assets/white-button.png)',
+                backgroundImage:'url(assets/imgs/white-button.png)',
                 backgroundRepeat:'no-repeat',
                 backgroundSize:'100%'
             }
@@ -99,7 +99,7 @@ define(function(require, exports, module) {
                 fontSize:'60px',
                 textAlign:'center',
                 padding:'50px',
-                backgroundImage:'url(assets/push-button-glossy-red-md.png)',
+                backgroundImage:'url(assets/imgs/push-button-glossy-red-md.png)',
                 backgroundRepeat:'no-repeat',
                 backgroundSize:'100%'
             }
@@ -118,7 +118,7 @@ define(function(require, exports, module) {
                 fontSize:'40px',
                 textAlign:'center',
                 padding:'30px',
-                backgroundImage:'url(assets/green-button.png)',
+                backgroundImage:'url(assets/imgs/green-button.png)',
                 backgroundRepeat:'no-repeat',
                 backgroundSize:'100%'}
             });
