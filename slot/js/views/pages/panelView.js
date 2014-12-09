@@ -36,15 +36,10 @@ define(function(require, exports, module) {
 
         var button1 = new Surface({
             size: [400, 250],
+            classes: ['betButton'],
             content:'<h3>BET 1 Line</h3>',
             properties: {
-                fontSize:'25px',
-                color:'black',
-                textAlign:'center',
-                padding:'40px',
-                backgroundImage:'url(assets/imgs/white-button.png)',
-                backgroundRepeat:'no-repeat',
-                backgroundSize:'100%'
+                backgroundImage:'url(assets/imgs/white-button.png)'
             }
         });
 
@@ -55,15 +50,10 @@ define(function(require, exports, module) {
 
         var button2 = new Surface({
             size: [400, 250],
+            classes: ['betButton'],
             content:'<h3>BET 3 Lines</h3>',
             properties: {
-                fontSize:'25px',
-                color:'black',
-                textAlign:'center',
-                padding:'40px',
-                backgroundImage:'url(assets/imgs/white-button.png)',
-                backgroundRepeat:'no-repeat',
-                backgroundSize:'100%'
+                backgroundImage:'url(assets/imgs/white-button.png)'
             }
         });
 
@@ -74,15 +64,10 @@ define(function(require, exports, module) {
 
         var button3 = new Surface({
             size: [400, 250],
+            classes: ['betButton'],
             content:'<h3>BET` 5 Lines</h3>',
             properties: {
-                fontSize:'25px',
-                color:'black',
-                textAlign:'center',
-                padding:'40px',
-                backgroundImage:'url(assets/imgs/white-button.png)',
-                backgroundRepeat:'no-repeat',
-                backgroundSize:'100%'
+                backgroundImage:'url(assets/imgs/white-button.png)'
             }
         });
 

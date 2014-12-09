@@ -81,3 +81,12 @@ body.panel {
     -webkit-filter: sepia(1);
     filter: sepia(1);
 }
+
+.betButton {
+    font-size: 25px;
+    color: black;
+    text-align: center;
+    padding: 40px;
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
