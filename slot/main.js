@@ -6,7 +6,7 @@ define(function(require, exports, module) {
     var mainContext = Engine.createContext();
 
     var SlotMachine = require('components/SlotMachine');
-    var CreditBox = require('components/CreditBox');
+    var CreditBox = require('js/views/components/CreditBox');
     var slotGame = require('js/models/slotGame');
 
 //    demobo_r="1234";
