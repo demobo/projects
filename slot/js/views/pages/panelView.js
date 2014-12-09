@@ -65,7 +65,7 @@ define(function(require, exports, module) {
         var button3 = new Surface({
             size: [400, 250],
             classes: ['betButton'],
-            content:'<h3>BET` 5 Lines</h3>',
+            content:'<h3>BET 5 Lines</h3>',
             properties: {
                 backgroundImage:'url(assets/imgs/white-button.png)'
             }
