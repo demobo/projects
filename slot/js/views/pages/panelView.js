@@ -39,7 +39,7 @@ define(function(require, exports, module) {
             classes: ['betButton'],
             content:'<h3>BET 1 Line</h3>',
             properties: {
-                backgroundImage:'url(assets/imgs/white-button.png)'
+                //backgroundImage:'url(assets/imgs/white-button.png)'
             }
         });
 
