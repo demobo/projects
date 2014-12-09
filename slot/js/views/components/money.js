@@ -11,7 +11,7 @@ define(function(require, exports, module) {
     var Easing          = require('famous/transitions/Easing');
     var RenderController = require('famous/views/RenderController');
     var RenderNode = require("famous/core/RenderNode");
-    var soundEffect = require('components/SoundEffect');
+    var soundEffect = require('js/configs/SoundEffect');
 
     GenericSync.register({
         mouse : MouseSync,

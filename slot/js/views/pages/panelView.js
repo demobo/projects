@@ -3,7 +3,7 @@ define(function(require, exports, module) {
     var Engine = require('famous/core/Engine');
     var Surface = require('famous/core/Surface');
     var Modifier = require('famous/core/Modifier');
-    var soundEffect = require('components/SoundEffect');
+    var soundEffect = require('js/configs/SoundEffect');
     var slotGame = require('js/models/slotGame');
 
     var Transform = require('famous/core/Transform');

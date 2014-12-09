@@ -3,7 +3,7 @@ define(function(require, exports, module) {
     var UIElement           = require('core/UIElement');
     var UIContainer         = require('containers/UIContainer');
     var slotGame            = require('js/models/slotGame');
-    var soundEffect         = require('components/SoundEffect');
+    var soundEffect         = require('js/configs/SoundEffect');
 
     var CreditBox = UIContainer.extend({
         constructor:function(options) {

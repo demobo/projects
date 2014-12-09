@@ -9,7 +9,7 @@ define(function(require, exports, module) {
     var ContainerSurface = require("famous/surfaces/ContainerSurface");
     var Vector = require('famous/math/Vector');
     var Timer = require('famous/utilities/Timer');
-    var soundEffect = require('components/SoundEffect');
+    var soundEffect = require('js/configs/SoundEffect');
 
     var Coin = require('js/views/components/coin');
 
