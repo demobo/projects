@@ -9,181 +9,57 @@ define(function(require, exports, module) {
     var Transform = require('famous/core/Transform');
     var StateModifier = require('famous/modifiers/StateModifier');
 
-    function PanelView(options){
+    function TestPanelView(options){
 
         //TODO Bon
         window.panel = this;
 
         View.apply(this, arguments);
         _init.call(this);
-        _setupEvents.call(this);
+        _setListeners.call(this);
 
     }
 
-    PanelView.prototype = Object.create(View.prototype);
-    PanelView.prototype.constructor = PanelView;
+    TestPanelView.prototype = Object.create(View.prototype);
+    TestPanelView.prototype.constructor = TestPanelView;
 
-    PanelView.DEFAULT_OPTIONS = {
-       numberOfButtons: 3,
+    TestPanelView.DEFAULT_OPTIONS = {
+        numberOfButtons: 3,
         buttonSize: [100, 100]
     };
 
     function _init(){
-        var button1Mod = new StateModifier({
-            align: [0.2,0.35],
-            origin:[0.5,0.5]
+
+        this.button = new UIElement({
+            //define align, origin, size, style
+            //use image in content
+
+        });
+        //add button to this
+
+        this.buttonShadow = new UIElement({
+            //define with same align origin etc (put in front of button);
+            //make the size same as the red part
+            //make it have transparent background, no content
+            //apply shadow
         });
 
-        var button1 = new Surface({
-            size: [400, 250],
-            classes: ['betButton'],
-            content:'<h3>TEST</h3>',
-            properties: {
-                backgroundImage:'url(assets/imgs/white-button.png)'
-            }
+        this.surface = new Surface({
+           //define size, align in center
         });
-
-        var button2Mod = new StateModifier({
-            align: [0.45,0.35],
-            origin:[0.5,0.5]
-        });
-
-        var button2 = new Surface({
-            size: [400, 250],
-            classes: ['betButton'],
-            content:'<h3>TEST</h3>',
-            properties: {
-                backgroundImage:'url(assets/imgs/white-button.png)'
-            }
-        });
-
-        var button3Mod = new StateModifier({
-            align: [0.7,0.35],
-            origin:[0.5,0.5]
-        });
-
-        var button3 = new Surface({
-            size: [400, 250],
-            classes: ['betButton'],
-            content:'<h3>TEST</h3>',
-            properties: {
-                backgroundImage:'url(assets/imgs/white-button.png)'
-            }
-        });
-
-        var button4Mod = new StateModifier({
-            align: [0.7,0.7],
-            origin:[0.5,0.5]
-        });
-
-        var button4 = new Surface({
-            size: [350, 350],
-            content:'<h3>SPIN</h3>',
-            properties: {
-                color: 'white',
-                fontSize:'60px',
-                textAlign:'center',
-                padding:'50px',
-                backgroundImage:'url(assets/imgs/push-button-glossy-red-md.png)',
-                backgroundRepeat:'no-repeat',
-                backgroundSize:'100%'
-            }
-        });
-
-        var button5Mod = new StateModifier({
-            align: [0.25,0.7],
-            origin:[0.5,0.5]
-        });
-
-        var button5 = new Surface({
-            size: [250, 250],
-            content:'<h3>Cash Out</h3>',
-            properties: {
-                color:'white',
-                fontSize:'40px',
-                textAlign:'center',
-                padding:'30px',
-                backgroundImage:'url(assets/imgs/green-button.png)',
-                backgroundRepeat:'no-repeat',
-                backgroundSize:'100%'}
-            });
-
-        var button6Mod = new StateModifier({
-                align: [0,0.8],
-                origin:[0.5,0.5]
-            });
-
-        var button6 = new Surface({
-            size: [400, 250],
-            properties: {
-                backgroundColor:'transparent'
-
-            }
-        });
-
-
-        this.add(button1Mod).add(button1);
-        this.add(button2Mod).add(button2);
-        this.add(button3Mod).add(button3);
-        this.add(button4Mod).add(button4);
-        this.add(button5Mod).add(button5);
-        this.add(button6Mod).add(button6);
-
-
-        button1.on('click', function(){
-            slotGame.save('button0', Date.now())
-            soundEffect.tap.play();
-        }.bind(this))
-        button2.on('click', function(){
-            slotGame.save('button1', Date.now())
-            soundEffect.tap.play();
-        }.bind(this))
-        button3.on('click', function(){
-            slotGame.save('button2', Date.now())
-            soundEffect.tap.play();
-        }.bind(this))
-        button4.on('click', function(){
-            slotGame.save('button3', Date.now())
-            soundEffect.tap.play();
-        }.bind(this))
-        button5.on('click', function(){
-            slotGame.save('button4', Date.now())
-            soundEffect.cashout.play()
-        }.bind(this))
-        button6.on('click', function(){
-        slotGame.save('button5', Date.now())
-        soundEffect.cashout.play()
-        }.bind(this))
-
-        this.moneyIsertBox = new Surface({
-            size: [280, 10],
-            properties: {
-                background: 'black'
-            }
-        });
-        this.moneyIsertBoxMod = new Modifier({
-            origin: [1, 0],
-            align: [1, 0],
-            transform: Transform.translate(0,0,11)
-        });
-        this.add(this.moneyIsertBoxMod).add(this.moneyIsertBox);
-    }
-
-    function _setupEvents(){
 
     }
 
-    PanelView.prototype.setButtonEvent = function(button, index){
-        button.on('click', function(){
-            console.log('click', index)
-            slotGame.save('button' + index, Date.now())
-        }.bind(this))
+    function _setListeners(){
+        this.buttonShadow.on('click', function(){
+            //make shadow change
+        });
 
-    };
+        this.surface.on('click', function(){
+            //make surface turn around
+        });
+    }
 
-    window.slotGame = slotGame;
-
-    module.exports = PanelView;
-
+    module.exports = TestPanelView;
 
 });
