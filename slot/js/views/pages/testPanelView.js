@@ -56,7 +56,7 @@ define(function(require, exports, module) {
         });
 
         this.surface.on('click', function(){
-            //make surface turn around
+            //make surface turn around`
         });
     }
 
