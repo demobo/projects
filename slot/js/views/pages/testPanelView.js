@@ -121,9 +121,6 @@ define(function(require, exports, module) {
                 color: 'white',
                 background: 'url(assets/imgs/start-button.png)',
                 backgroundRepeat:'no-repeat'
-
-
-
             }
         });
 
@@ -148,8 +145,6 @@ define(function(require, exports, module) {
 
         this.flipper.setBack(this.backSurface);
         this.flipper.setFront(this.frontSurface);
-
-
         this.add(this.centerModifier).add(this.flipper);
 
 
@@ -163,6 +158,27 @@ define(function(require, exports, module) {
         //this.surface.on('click', function(){
         //    make surface turn around
         //});
+
+        var toggle = false;
+        Engine.on('click', function(){
+            var angle = toggle ? 0 : Math.PI;
+            if (toggle) {
+                this.backSurface.setScale(1, 1, 1, {method: 'spring'},function(){
+                    this.flipper.setAngle(angle, {curve: Easing.inQuad, duration : 1000});
+                }.bind(this));
+            } else {
+                this.flipper.setAngle(angle, {curve: Easing.inQuad, duration : 1000}, function(){
+                    this.backSurface.setScale(1.5, 1.5, 1, {
+                        method: 'spring'
+                    });
+                }.bind(this));
+            }
+            toggle = !toggle;
+        }.bind(this));
+
+    }
+
+
     //}
 
     module.exports = TestPanelView;

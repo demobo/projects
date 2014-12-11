@@ -30,7 +30,7 @@ define(function(require, exports, module) {
         children: [
             new UIElement({
                     style: {
-                        background: '#333'
+                        background: 'red'
                     }
                 })
         ]
