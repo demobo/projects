@@ -1,13 +1,19 @@
 define(function(require, exports, module) {
     var Engine              = require('famous/core/Engine');
-    var StateModifier = require('famous/modifiers/StateModifier');
-    var CoinsMainView = require('js/views/pages/coinsMainView');
+    var StateModifier       = require('famous/modifiers/StateModifier');
+    var Flipper             = require('famous/views/Flipper');
+    var Easing              = require('famous/transitions/Easing');
+
+    var UIElement           = require('core/UIElement');
+    var CoinsMainView       = require('js/views/pages/coinsMainView');
+    var SlotMachine         = require('js/views/components/SlotMachine');
+    var CreditBox           = require('js/views/components/CreditBox');
+    var slotGame            = require('js/models/slotGame');
+
+
+
 
     var mainContext = Engine.createContext();
-
-    var SlotMachine = require('js/views/components/SlotMachine');
-    var CreditBox = require('js/views/components/CreditBox');
-    var slotGame = require('js/models/slotGame');
 
 //    demobo_r="1234";
 //    demobo_guid = "web";
@@ -21,6 +27,22 @@ define(function(require, exports, module) {
 
     var coinsMainView = new CoinsMainView();
     mainContext.add(coinsMainView);
+
+    var gameStart = new UIElement({
+        origin: [.5,.5],
+        align: [.5,.5],
+        size:[600,200],
+        content : 'Touch to Start',
+        style: {
+            textAlign: 'center',
+            fontSize:'60px',
+            lineHeight: '100px',
+            padding:'50px',
+            color: 'white',
+            background: 'url(assets/imgs/start-button.png)',
+            backgroundRepeat:'no-repeat'
+        }
+    });
 
     var slotMachine = new SlotMachine({
         size: [window.innerWidth*.7,window.innerHeight*.7],
@@ -40,9 +62,36 @@ define(function(require, exports, module) {
         origin: [1,1]
     });
 
-    mainContext.add(slotMod).add(slotMachine);
-    mainContext.add(creditBoxMod).add(creditBox);
-    mainContext.setPerspective(1000);
+    //mainContext.add(slotMod).add(slotMachine);
+    //mainContext.add(creditBoxMod).add(creditBox);
+
+    var centerModifier = new StateModifier({
+        align: [0.5,0.5],
+        origin:[0.5,0.5]
+    });
+
+    var flipper = new Flipper();
+    mainContext.add(centerModifier).add(flipper);
+
+    flipper.setBack(slotMachine);
+    flipper.setFront(gameStart);
+
+    var toggle = false;
+    gameStart.on('click', function(){
+        var angle = toggle ? 0 : Math.PI;
+        if (toggle) {
+                //slotMachine.setScale(1, 1, 1, {method: 'spring'},function(){
+                flipper.setAngle(angle, {curve: Easing.inQuad, duration : 1000});
+            //}.bind(this));
+        } else {
+                flipper.setAngle(angle, {curve: Easing.inQuad, duration : 1000}, function(){
+                //slotMachine.setScale(1.5, 1.5, 1, {
+                //    method: 'spring'
+                //});spring
+            }.bind(this));
+        }
+        toggle = !toggle;
+    }.bind(this));
 
     var spin = _.debounce(function() {
         var lines = slotGame.get('lines');
@@ -77,5 +126,6 @@ define(function(require, exports, module) {
         spin.call(this);
     }.bind(this));
 
+    mainContext.setPerspective(1000);
     window.slotGame = slotGame;
 });
