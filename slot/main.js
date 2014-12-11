@@ -29,19 +29,12 @@ define(function(require, exports, module) {
     mainContext.add(coinsMainView);
 
     var gameStart = new UIElement({
+        classes: ['startButton'],
         origin: [.5,.5],
         align: [.5,.5],
         size:[600,200],
-        content : 'Touch to Start',
-        style: {
-            textAlign: 'center',
-            fontSize:'60px',
-            lineHeight: '100px',
-            padding:'50px',
-            color: 'white',
-            background: 'url(assets/imgs/start-button.png)',
-            backgroundRepeat:'no-repeat'
-        }
+        content : 'Touch to Start'
+
     });
 
     var slotMachine = new SlotMachine({
@@ -63,7 +56,7 @@ define(function(require, exports, module) {
     });
 
     //mainContext.add(slotMod).add(slotMachine);
-    //mainContext.add(creditBoxMod).add(creditBox);
+    mainContext.add(creditBoxMod).add(creditBox);
 
     var centerModifier = new StateModifier({
         align: [0.5,0.5],
