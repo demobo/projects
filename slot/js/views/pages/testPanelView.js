@@ -11,7 +11,12 @@ define(function(require, exports, module) {
 
     var soundEffect = require('js/configs/SoundEffect');
     var slotGame = require('js/models/slotGame');
+    var UIComponent = require('core/UIComponent');
+    var Button = require('controls/UIButton');
 
+    var Transform = require('famous/core/Transform');
+    var StateModifier = require('famous/modifiers/StateModifier');
+    var PushButton = require('js/views/pages/PushButton');
 
     function TestPanelView(options){
 
@@ -20,7 +25,7 @@ define(function(require, exports, module) {
 
         View.apply(this, arguments);
         _init.call(this);
-        _setListeners.call(this);
+        //_setListeners.call(this);
 
     }
 
@@ -34,20 +39,73 @@ define(function(require, exports, module) {
 
     function _init(){
 
-        this.button = new UIElement({
-            //define align, origin, size, style
-            //use image in content
+        this.redButton = new PushButton({
+            content: '<img src="assets/imgs/RedSpinButton.png">',
+            origin: [0.5,0.5],
+            align: [0.5,0.5],
+            position: [275,200,0],
+            size: [300,300],
+            shadowSize: [250,250],
+            boxShadowBefore: '0px 0px 20px',
+            boxShadowAfter: 'inset 0px 7px 150px',
+            borderRadius: '130px'
+        });
+        this.add(this.redButton);
+
+        this.greenButton = new PushButton({
+            content: '<img src="assets/imgs/greenbutton.png">',
+            size: [250,250],
+            shadowSize: [210,210],
+            position: [-300, 200, 0],
+            boxShadowAfter: 'inset 0px 0px 100px',
+            borderRadius: '130px'
 
         });
-        //add button to this
+        this.add(this.greenButton);
 
-        this.buttonShadow = new UIElement({
-            //define with same align origin etc (put in front of button);
-            //make the size same as the red part
-            //make it have transparent background, no content
-            //apply shadow
+        this.lineOne = new PushButton({
+            //classes: ['orangeButton'],
+            align: [0.25,0.25],
+            origin: [0.5,0.5],
+            content: '<img src="assets/imgs/YellowButton2.png">',
+            size: [200,100],
+            shadowSize: [193,92],
+            position: [-100,0,0],
+            //boxShadowBefore: '0px 0px 0px',
+            boxShadowAfter: 'inset 0px 0px 100px',
+            borderRadius: '10px',
+            //backgroundColor: 'teal'
         });
 
+        this.lineTwo = new PushButton({
+            align: [0.25,0.25],
+            origin: [0.5,0.5],
+            content: '<img src="assets/imgs/YellowButton2.png">',
+            size: [200,100],
+            shadowSize: [193,92],
+            position: [300,0,0],
+            boxShadowAfter: 'inset 0px 0px 100px',
+            borderRadius: '10px'
+        });
+        this.lineThree = new PushButton({
+            align: [0.25,0.25],
+            origin: [0.5,0.5],
+            content: '<img src="assets/imgs/YellowButton2.png">',
+            size: [200,100],
+            shadowSize: [193,92],
+            position: [700,0,0],
+            boxShadowAfter: 'inset 0px 0px 100px',
+            borderRadius: '10px'
+        });
+
+        this.add(this.lineOne);
+            this.add(this.lineTwo);
+                this.add(this.lineThree);
+
+
+
+        //this.surface = new Surface({
+           //define size, align in center
         this.flipper = new Flipper();
 
         this.frontSurface = new UIElement({
@@ -97,39 +155,15 @@ define(function(require, exports, module) {
 
     }
 
-
-
-    function _setListeners(){
-        this.buttonShadow.on('click', function(){
-            //make shadow change
-        });
-
-        //this.surface.on('click', function(){
-        //    //make surface turn around`
+    //function _setListeners(){
+    //    this.buttonShadow.on('click', function(){
+    //        make shadow change
         //});
-
-        var toggle = false;
-        Engine.on('click', function(){
-            var angle = toggle ? 0 : Math.PI;
-            if (toggle) {
-                this.backSurface.setScale(1, 1, 1, {method: 'spring'},function(){
-                    this.flipper.setAngle(angle, {curve: Easing.inQuad, duration : 1000});
-                }.bind(this));
-            } else {
-                this.flipper.setAngle(angle, {curve: Easing.inQuad, duration : 1000}, function(){
-                    this.backSurface.setScale(1.5, 1.5, 1, {
-                        method: 'spring'
-                    });
-                }.bind(this));
-            }
-            toggle = !toggle;
-        }.bind(this));
-
-
-
-    }
-
-
+        //
+        //this.surface.on('click', function(){
+        //    make surface turn around
+        //});
+    //}
 
     module.exports = TestPanelView;
 

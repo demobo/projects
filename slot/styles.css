@@ -91,6 +91,11 @@ body.panel {
     background-size: 100%;
 }
 
+.orangeButton img {
+    width: 100%;
+    height: 100%;
+}
+
 .startButton{
     text-align: center;
     font-size: 60px;

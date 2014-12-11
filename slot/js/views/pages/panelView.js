@@ -24,7 +24,7 @@ define(function(require, exports, module) {
     PanelView.prototype.constructor = PanelView;
 
     PanelView.DEFAULT_OPTIONS = {
-       numberOfButtons: 3,
+        numberOfButtons: 3,
         buttonSize: [100, 100]
     };
 
@@ -84,7 +84,7 @@ define(function(require, exports, module) {
                 fontSize:'60px',
                 textAlign:'center',
                 padding:'50px',
-                backgroundImage:'url(assets/imgs/push-button-glossy-red-md.png)',
+                backgroundImage:'url(assets/imgs/RedSpinButton.png)',
                 backgroundRepeat:'no-repeat',
                 backgroundSize:'100%'
             }
@@ -106,12 +106,12 @@ define(function(require, exports, module) {
                 backgroundImage:'url(assets/imgs/green-button.png)',
                 backgroundRepeat:'no-repeat',
                 backgroundSize:'100%'}
-            });
+        });
 
         var button6Mod = new StateModifier({
-                align: [0,0.8],
-                origin:[0.5,0.5]
-            });
+            align: [0,0.8],
+            origin:[0.5,0.5]
+        });
 
         var button6 = new Surface({
             size: [400, 250],
@@ -151,8 +151,8 @@ define(function(require, exports, module) {
             soundEffect.cashout.play()
         }.bind(this))
         button6.on('click', function(){
-        slotGame.save('button5', Date.now())
-        soundEffect.cashout.play()
+            slotGame.save('button5', Date.now())
+            soundEffect.cashout.play()
         }.bind(this))
 
         this.moneyIsertBox = new Surface({
