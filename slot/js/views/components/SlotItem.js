@@ -8,8 +8,12 @@ define(function(require, exports, module) {
             this._callSuper(UIComponent, 'constructor', options);
             this.options = options;
             this.image = new UIElement({});
+            this.image.center();
             this._addChild(this.image);
-            this.frame = new UIElement({});
+            this.frame = new UIElement({
+                size:[options.size[0]*0.9, options.size[1]*0.9]
+            });
+            this.frame.center();
             this._addChild(this.frame);
         },
 
@@ -24,10 +28,10 @@ define(function(require, exports, module) {
             else
                 this.image.setClasses(['good']);
                 this.frame.setClasses(['active']);
-                this.image.setScale([1,1,1], {
+            this.image.setScale([1.2,1.2,1], {
                 duration: 400,
                 curve: 'spring'
-                }, function() {
+            }, function() {
                 setTimeout(function(){
                     this.image.setScale([1,1,1], {
                         method: 'snap'
