@@ -8,6 +8,7 @@ define(function(require, exports, module) {
             this._callSuper(UIComponent, 'constructor', options);
             this.options = options;
             this.image = new UIElement({});
+            this.image.center()
             this._addChild(this.image);
             this.frame = new UIElement({});
             this._addChild(this.frame);
@@ -24,7 +25,7 @@ define(function(require, exports, module) {
             else
                 this.image.setClasses(['good']);
             this.frame.setClasses(['active']);
-            this.image.setScale([1,1,1], {
+            this.image.setScale([1.2,1.2,1], {
                 duration: 400,
                 curve: 'spring'
             }, function() {

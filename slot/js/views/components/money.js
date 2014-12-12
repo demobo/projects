@@ -62,7 +62,7 @@ define(function(require, exports, module) {
         this.renderNode.add(this.moneyMod).add(this.money);
 
         // TODO:Bon: set image
-        this.show('/slot/assets/100usd_new.png')
+        this.show('/slot/assets/imgs/100usd_new.png')
 
     }
 
