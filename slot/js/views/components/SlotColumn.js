@@ -28,7 +28,7 @@ define(function(require, exports, module) {
                         lineHeight: this.rowHeight+'px',
                         fontSize: '30px',
                         color: "#000099",
-                        textAlign: 'center',
+                        textAlign: 'center'
 //                        borderTop: 'solid 1px #000'
                     },
                     map: options.map

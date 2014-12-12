@@ -3,12 +3,14 @@ define(function(require, exports, module) {
     var UIElement           = require('core/UIElement');
     var UIContainer         = require('containers/UIContainer');
 
-    var SlotItem = UIElement.extend({
+    var SlotItem = UIComponent.extend({
         constructor:function(options) {
-            this._callSuper(UIElement, 'constructor', options);
+            this._callSuper(UIComponent, 'constructor', options);
             this.options = options;
-            //this.image = new UIElement
-            //this.frame = new UIElement
+            this.image = new UIElement({});
+            this._addChild(this.image);
+            this.frame = new UIElement({});
+            this._addChild(this.frame);
         },
 
         update: function() {
@@ -18,19 +20,19 @@ define(function(require, exports, module) {
 
         animate: function(bad) {
             if (bad)
-                this.setClasses(['bad']);
+                this.image.setClasses(['bad']);
             else
-                this.setClasses(['good']);
-            //this.frame.setClasses(['active'])
-            this.setScale([1.15,1.15,1], {
+                this.image.setClasses(['good']);
+                this.frame.setClasses(['active']);
+                this.image.setScale([1,1,1], {
                 duration: 400,
                 curve: 'spring'
-            }, function() {
+                }, function() {
                 setTimeout(function(){
-                    this.setScale([1,1,1], {
+                    this.image.setScale([1,1,1], {
                         method: 'snap'
                     });
-                    this.setClasses([]);
+                    this.image.setClasses([]);
                     this.frame.setClasses([])
                 }.bind(this),600);
             }.bind(this));
