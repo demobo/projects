@@ -95,13 +95,3 @@ body.panel {
     width: 100%;
     height: 100%;
 }
-
-.startButton{
-    text-align: center;
-    font-size: 60px;
-    line-height: 100px;
-    padding: 50px;
-    color: white;
-    background-image: url('assets/imgs/start-button.png');
-    background-repeat: no-repeat;
-}

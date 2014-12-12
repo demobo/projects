@@ -1,6 +1,7 @@
 define(function(require, exports, module) {
     var View = require('famous/core/View');
     var UIElement = require('core/UIElement');
+    var soundEffect = require('js/configs/SoundEffect');
 
     function PushButton(options){
 
@@ -36,9 +37,9 @@ define(function(require, exports, module) {
             content: this.options.content,
             size: this.options.size,
             position: this.options.position,
-            //style: {
-            //    backgroundColor: 'teal'
-            //}
+            style: {
+                backgroundColor: 'transparent'
+            }
         });
         this.add(this.button);
 
@@ -66,8 +67,8 @@ define(function(require, exports, module) {
         }.bind(this), 150, true);
 
         this.buttonShadow.on('click', function(){
+            soundEffect.tap.play();
             this.changeShadow();
-            console.log('------clicking shadow')
         }.bind(this));
     }
     module.exports = PushButton;
