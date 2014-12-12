@@ -9,9 +9,7 @@ define(function(require, exports, module) {
     var SlotMachine         = require('js/views/components/SlotMachine');
     var CreditBox           = require('js/views/components/CreditBox');
     var slotGame            = require('js/models/slotGame');
-
-
-
+    var PushButton          = require('js/views/pages/PushButton');
 
     var mainContext = Engine.createContext();
 
@@ -28,13 +26,15 @@ define(function(require, exports, module) {
     var coinsMainView = new CoinsMainView();
     mainContext.add(coinsMainView);
 
-    var gameStart = new UIElement({
-        classes: ['startButton'],
+    var gameStart = new PushButton({
         origin: [.5,.5],
         align: [.5,.5],
-        size:[600,200],
-        content : 'Touch to Start'
-
+        content: '<img src="assets/imgs/start-button.png"/>',
+        size: [600,190],
+        shadowSize: [575,173],
+        position: [0,-70,0],
+        boxShadowAfter: 'inset 0px 0px 100px',
+        borderRadius: '150px'
     });
 
     var slotMachine = new SlotMachine({
@@ -55,7 +55,7 @@ define(function(require, exports, module) {
         origin: [1,1]
     });
 
-    //mainContext.add(slotMod).add(slotMachine);
+    mainContext.add(slotMod).add(slotMachine);
     mainContext.add(creditBoxMod).add(creditBox);
 
     var centerModifier = new StateModifier({
@@ -70,7 +70,7 @@ define(function(require, exports, module) {
     flipper.setFront(gameStart);
 
     var toggle = false;
-    gameStart.on('click', function(){
+    gameStart.buttonShadow.on('click', function(){
         var angle = toggle ? 0 : Math.PI;
         if (toggle) {
                 //slotMachine.setScale(1, 1, 1, {method: 'spring'},function(){
