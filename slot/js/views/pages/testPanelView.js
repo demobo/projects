@@ -69,7 +69,7 @@ define(function(require, exports, module) {
             shadowSize: [193,92],
             position: [-100,0,0],
             //boxShadowBefore: '0px 0px 0px',
-            boxShadowAfter: 'inset 0px 0px 100px',
+            boxShadowAfter: 'inset 0px 0px 75px',
             borderRadius: '10px'
             //backgroundColor: 'teal'
         });
@@ -81,7 +81,7 @@ define(function(require, exports, module) {
             size: [200,100],
             shadowSize: [193,92],
             position: [300,0,0],
-            boxShadowAfter: 'inset 0px 0px 100px',
+            boxShadowAfter: 'inset 0px 0px 75px',
             borderRadius: '10px'
         });
         this.lineThree = new PushButton({
@@ -91,7 +91,7 @@ define(function(require, exports, module) {
             size: [200,100],
             shadowSize: [193,92],
             position: [700,0,0],
-            boxShadowAfter: 'inset 0px 0px 100px',
+            boxShadowAfter: 'inset 0px 0px 75px',
             borderRadius: '10px'
         });
 
