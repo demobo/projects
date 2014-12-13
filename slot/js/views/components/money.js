@@ -20,8 +20,8 @@ define(function(require, exports, module) {
 
     var slotGame = require('js/models/slotGame');
 
-    var high = 600*0.7;
-    var width = high/614*261;
+    var height = 600*0.7;
+    var width = height/614*261;
 
     function Money(options) {
 
@@ -44,13 +44,14 @@ define(function(require, exports, module) {
         this.renderNode = new RenderNode();
 
         this.money = new Surface({
-            size:[true, true],
+            classes:(['money']),
+            size:[width, height],
             properties:{
-                background: 'black'
+
             }
         });
 
-        this.pos = new Transitionable([(window.innerWidth-width)*0.5,(window.innerHeight-high)*0.5]);
+        this.pos = new Transitionable([(window.innerWidth-width)*0.5,(window.innerHeight-height)*0.5]);
         this.insert = new Transitionable(0);
 
         this.moneyMod = new Modifier({
@@ -62,8 +63,7 @@ define(function(require, exports, module) {
         this.renderNode.add(this.moneyMod).add(this.money);
 
         // TODO:Bon: set image
-        this.show('/slot/assets/imgs/100usd_new.png')
-
+        this.show()
     }
 
     function _syncEvent(){
@@ -81,15 +81,15 @@ define(function(require, exports, module) {
         }.bind(this));
 
         this.sync.on('end', function(data) {
-            if (this.pos.get()[1]< -1/4*high && this.pos.get()[0]>window.innerWidth-280){
+            if (this.pos.get()[1]< -1/4*height && this.pos.get()[0]>window.innerWidth-280){
                 this.hide()
             }
         }.bind(this));
 
     }
 
-    Money.prototype.show = function(image){
-        this.setMoneyImage(image);
+    Money.prototype.show = function(){
+        //this.setMoneyImage(image);
         this.renderController.show(this.renderNode);
     };
 
@@ -106,7 +106,7 @@ define(function(require, exports, module) {
     };
 
     Money.prototype.setMoneyImage = function(image){
-        this.money.setContent('<div><img height="'+high+'" width="'+width+'" src=' + image + ' /></div>')
+        this.money.setContent('<div><img height="'+height+'" width="'+width+'" src=' + image + ' /></div>')
     };
 
     window.soundEffect = soundEffect;

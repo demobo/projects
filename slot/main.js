@@ -39,7 +39,7 @@ define(function(require, exports, module) {
 
     var slotMachine = new SlotMachine({
         size: [window.innerWidth*.7,window.innerHeight*.7],
-        dimension: [5, 3],
+        dimension: [3, 3],
         rowCount: 40
     });
     var slotMod = new StateModifier({

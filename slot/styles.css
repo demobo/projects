@@ -65,6 +65,16 @@ body.panel {
     background-image: url('assets/imgs/slot11.png');
 }
 
+.coin {
+    background-image: url('assets/imgs/coin.png');
+}
+
+.money{
+    background-image: url('assets/imgs/100usd_new.png');
+    background-size: 100%;
+}
+
+
 .good {
     /*-webkit-box-shadow:0 0 20px #fff;*/
     /*-moz-box-shadow: 0 0 20px #fff;*/
