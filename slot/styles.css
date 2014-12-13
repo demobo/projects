@@ -113,9 +113,13 @@ body.panel {
 }
 
 @-webkit-keyframes pulsate {
-    0% {  -webkit-box-shadow: 0px 0px 0px #3cdfdf;border:2px aqua inset}
-    25% {  -webkit-box-shadow: 0px 0px 35px #3cdfdf;border:2px aqua inset}
-    50% {  -webkit-box-shadow: 0px 0px 0px white; border:2px white inset}
-    75% {  -webkit-box-shadow: 0px 0px 35px white;border:2px white inset}
-    100%{  -webkit-box-shadow: 0px 0px 0px #3cdfdf;border:2px aqua inset}
-}
+     0% {  -webkit-box-shadow: inset 0px 0px 5px #3cdfdf;border:2px aqua inset}
+     25% {  -webkit-box-shadow: inset 0px 0px 45px #3cdfdf;border:2px aqua inset}
+     50% {  -webkit-box-shadow: inset 0px 0px 5px white; border:2px white inset}
+     75% {  -webkit-box-shadow:inset 0px 0px 45px white;border:2px white inset}
+     100%{  -webkit-box-shadow:inset 0px 0px 5px #3cdfdf;border:2px aqua inset}
+
+
+/*.bill {*/
+    /*background-image: url('assets/imgs/icon_128.png')*/
+/*}*/

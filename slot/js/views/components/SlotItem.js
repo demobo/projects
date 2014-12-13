@@ -3,17 +3,16 @@ define(function(require, exports, module) {
     var UIElement           = require('core/UIElement');
     var UIContainer         = require('containers/UIContainer');
 
-    var SlotItem = UIComponent.extend({
+    var testSlotItem = UIComponent.extend({
         constructor:function(options) {
             this._callSuper(UIComponent, 'constructor', options);
             this.options = options;
             this.image = new UIElement({});
-            this.image.center();
+            this.image.center()
             this._addChild(this.image);
             this.frame = new UIElement({
-                size:[options.size[0]*0.9, options.size[1]*0.9]
+                size:[options.size[0]*0.9, options.size[1]*0.9],
             });
-            this.frame.center();
             this._addChild(this.frame);
         },
 
@@ -27,7 +26,7 @@ define(function(require, exports, module) {
                 this.image.setClasses(['bad']);
             else
                 this.image.setClasses(['good']);
-                this.frame.setClasses(['active']);
+            this.frame.setClasses(['active']);
             this.image.setScale([1.2,1.2,1], {
                 duration: 400,
                 curve: 'spring'
@@ -72,5 +71,5 @@ define(function(require, exports, module) {
 
     });
 
-    module.exports = SlotItem;
+    module.exports = testSlotItem;
 });

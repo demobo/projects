@@ -1,77 +1,43 @@
-define(function(require, exports, module) {
-    var UIComponent         = require('core/UIComponent');
-    var UIElement           = require('core/UIElement');
-    var UIContainer         = require('containers/UIContainer');
-    var soundEffect         = require('js/configs/SoundEffect');
-    var SlotItem          = require('js/views/components/SlotItem');
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Slot Panel</title>
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Roboto" />
+<link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" />
+<link rel="stylesheet" type="text/css" href="lib/famous0.3.1/core/famous.css" />
+<link rel="stylesheet" type="text/css" href="core/styles.css" />
+<link rel="stylesheet" type="text/css" href="controls/styles.css" />
+<link rel="stylesheet" type="text/css" href="styles.css" />
+
+<script src="js/lib/jquery.min.js"></script>
+<script src="js/lib/underscore.js"></script>
+<script src="js/lib/backbone.js"></script>
+
+<script type="text/javascript" src="js/lib/howler.min.js"></script>
+<script src="js/lib/demobo/bumpData.js"></script>
+<script src="js/lib/demobo/CommunicationLayer.js"></script>
+<script src="js/lib/demobo/backbone.DemoboStorage.js"></script>
+<script src="js/lib/demobo/Utils.js"></script>
+<script src="js/lib/demobo/Dollar.js"></script>
+<script src="js/lib/demobo/FireModel.js"></script>
+<script src="js/lib/demobo/SimpleBump.js"></script>
+<script src="js/lib/demobo/Discovery.js"></script>
+<script src="js/lib/demobo/Demobo.js"></script>
+<script type="text/javascript" src="js/lib/firebase.1.0.19.js"></script>
+
+<script type="text/javascript" src="lib/famous-polyfills/functionPrototypeBind.js"></script>
+<script type="text/javascript" src="lib/famous-polyfills/classList.js"></script>
+<script type="text/javascript" src="lib/famous-polyfills/requestAnimationFrame.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
+<script type="text/javascript" src="lib/requirejs/require.js" data-main="panelConfig"></script>
 
 
-    var SlotColumn = UIContainer.extend({
-        constructor:function(options) {
-            this._callSuper(UIContainer, 'constructor', options);
-            this.options = options;
-            this.rowCount = options.rowCount;
-            var columnWidth = window.innerWidth*.66/options.dimension[0];
-            var columnHeight = this.rowCount*window.innerHeight*.7/options.dimension[1];
-            this.rowHeight = columnHeight/this.rowCount;
-            this.rows = [];
-            for (var i=0; i<this.rowCount; i++) {
-                var index = i;
-                var r = new SlotItem({
-                    row: index,
-                    column: options.column,
-                    align: [options.column/options.dimension[0],1],
-                    origin: [0,1],
-                    position: [0, -i*this.rowHeight, 0],
-                    size: [columnWidth,this.rowHeight],
-                    style: {
-                        lineHeight: this.rowHeight+'px',
-                        fontSize: '30px',
-                        color: "#000099",
-                        textAlign: 'center'
-//                        borderTop: 'solid 1px #000'
-                    },
-                    map: options.map
-                });
-                r.update();
-                this.rows.push(r);
-                this._addChild(r);
-            }
-        },
-
-        hide: function() {
-            this.setOpacity(0, {duration: 200, curve: "easeOut"});
-        },
-
-        show: function() {
-            this.halt();
-            this.setOpacity(1, {duration: 200, curve: "easeOut"});
-        },
-
-        spin: function(duration) {
-            this.setPosition(0,this.rowHeight*(this.rowCount-this.options.dimension[1]-1),0, {
-                duration: duration,
-                curve: 'easeIn'
-            }, function() {
-                soundEffect.stopspin.play();
-                this.setPosition(0,this.rowHeight*(this.rowCount-this.options.dimension[1]),0, {
-                    method: 'snap'
-                }, function() {
-                    setTimeout(function(){
-                        this.setPosition(0,0,0);
-                        this.update();
-                    }.bind(this), 500);
-                }.bind(this));
-            }.bind(this));
-        },
-
-        update: function() {
-            _(this.rows).map(function(row){
-                row.update();
-            }.bind(this));
-        }
-
-    });
-
-    module.exports = SlotColumn;
-});
+</head>
+<body class="panel" oncontextmenu="return false">
+</body>
+</html>

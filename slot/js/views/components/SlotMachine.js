@@ -8,7 +8,7 @@ define(function(require, exports, module) {
     var UIElement           = require('core/UIElement');
     var Engine              = require('famous/core/Engine');
     var soundEffect         = require('js/configs/SoundEffect');
-    var SlotColumn          = require('js/views/components/SlotColumn');
+    var testSlotColumn      = require('js/views/components/testSlotColumn');
     var slotGame            = require('js/models/slotGame');
 
     var winChart = [0, 1, 10, 100, 1000, 10000];
@@ -16,7 +16,7 @@ define(function(require, exports, module) {
     var badLines = [];
     var winAmt = 0;
 
-    function SlotMachine(options) {
+    function testSlotMachine(options) {
         ContainerSurface.apply(this, arguments);
         this.slotMap = [];
         this.options = options;
@@ -28,19 +28,19 @@ define(function(require, exports, module) {
         window.slotMachine = this;
     }
 
-    window.slotMachine = SlotMachine;
+    window.slotMachine = testSlotMachine;
 
-    SlotMachine.prototype = Object.create(ContainerSurface.prototype);
-    SlotMachine.prototype.constructor = SlotMachine;
+    testSlotMachine.prototype = Object.create(ContainerSurface.prototype);
+    testSlotMachine.prototype.constructor = testSlotMachine;
 
-    SlotMachine.DEFAULT_OPTIONS = {};
+    testSlotMachine.DEFAULT_OPTIONS = {};
 
     function _createViews() {
         this.columns = [];
         generate.call(this);
         soundEffect.backgroundmusic.play();
         for (var i = 0; i<this.options.dimension[0]; i++) {
-            var c = new SlotColumn({
+            var c = new testSlotColumn({
                 rowCount: this.options.rowCount,
                 column: i,
                 dimension: this.options.dimension,
@@ -58,7 +58,7 @@ define(function(require, exports, module) {
 
     }
 
-    SlotMachine.prototype.spin = _.debounce(function() {
+    testSlotMachine.prototype.spin = _.debounce(function() {
         var storePayLines = payLines;
         var storeBadLines = badLines;
         var storeWinAmt = winAmt;
@@ -94,7 +94,7 @@ define(function(require, exports, module) {
 
     },1000, true);
 
-    SlotMachine.prototype.animateLine = function(line, bad) {
+    testSlotMachine.prototype.animateLine = function(line, bad) {
         this.columns.map(function(c, i){
             c.rows.map(function(r, i){
                 r.animateLine(line,bad);
@@ -176,8 +176,8 @@ define(function(require, exports, module) {
     }
 
     function rowJackpot(i, j, winning) {
-            var index = winning.row.indexOf(j);
-            this.slotMap[i][j] = winning.fruit[index];
+        var index = winning.row.indexOf(j);
+        this.slotMap[i][j] = winning.fruit[index];
     }
 
     function jaggedJackpot(i, j, winning) {
@@ -249,9 +249,9 @@ define(function(require, exports, module) {
                 break;
             case 7:
                 return {
-                row: [row1, row2, row3],
-                fruit: [fruit1, fruit2, fruit3],
-                line: [line1, line2, line3]
+                    row: [row1, row2, row3],
+                    fruit: [fruit1, fruit2, fruit3],
+                    line: [line1, line2, line3]
                 }
                 break;
             case 2:
@@ -335,5 +335,5 @@ define(function(require, exports, module) {
         winAmt = winChart[payLines.length];
     }
 
-    module.exports = SlotMachine;
+    module.exports = testSlotMachine;
 });
