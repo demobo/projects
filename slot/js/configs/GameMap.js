@@ -2,46 +2,51 @@ define(function(require, exports, module){
 
     function GameMap(){
         var gameMap = {
-            length: 8,
+            length: 15,
             0: {
-                weight: 5,
-                line: [0],
-                isDiff: false
+                weight: 1, line: [0], isDiff: false
             },
             1: {
-                weight: 5,
-                line: [1],
-                isDiff: false
+                weight: 1, line: [1], isDiff: false
             },
             2: {
-                weight: 5,
-                line: [2],
-                isDiff: false
+                weight: 1, line: [2], isDiff: false
             },
             3: {
-                weight: 5,
-                line: [3],
-                isDiff: false
+                weight: 1, line: [3], isDiff: false
             },
             4: {
-                weight: 5,
-                line: [4],
-                isDiff: false
+                weight: 1, line: [4], isDiff: false
             },
             5: {
-                weight: 5,
-                line: [0, 1],
-                isDiff: false
+                weight: 5, line: [0, 1], isDiff: false
             },
             6: {
-                weight: 5,
-                line: [0, 2],
-                isDiff: false
+                weight: 5, line: [0, 2], isDiff: false
             },
             7: {
-                weight: 5,
-                line: [1, 2],
-                isDiff: false
+                weight: 5, line: [1, 2], isDiff: false
+            },
+            8: {
+                weight: 5, line: [0, 3], isDiff: false
+            },
+            9: {
+                weight: 5, line: [0, 4], isDiff: false
+            },
+            10: {
+                weight: 5, line: [1, 3], isDiff: false
+            },
+            11: {
+                weight: 5, line: [1, 4], isDiff: false
+            },
+            12: {
+                weight: 5, line: [2, 3], isDiff: false
+            },
+            13: {
+                weight: 5, line: [2, 4], isDiff: false
+            },
+            14: {
+                weight: 5, line: [3, 4], isDiff: false
             }
         }
         return gameMap;

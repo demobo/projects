@@ -74,7 +74,7 @@ define(function(require, exports, module) {
     SlotMachine.prototype.spin = _.debounce(function() {
         var winCombo = generateCombo.call(this);
         var slotItems = generateSlotItems.call(this, this.gameMap[winCombo].line, this.gameMap[winCombo].isDiff);
-        generate.call(this, this.gameMap[winCombo].line, slotItems);
+        generate.call(this, this.gameMap[winCombo].line, slotItems, this.gameMap[winCombo].isDiff);
         this.columns.map(function(c, i){
             c.spin(500*i+1000);
         });
@@ -94,7 +94,7 @@ define(function(require, exports, module) {
     };
 
     function generateCombo() {
-        var combo = 10;
+        var combo = 7;
         var randomNumber = Math.floor(Math.random()*35);
         for (var i = 0; i < this.gameMap.length; i++){
             var inRange = checkRange(this.gameMap[i].range, randomNumber);
@@ -133,8 +133,10 @@ define(function(require, exports, module) {
         return slotItems
     }
 
-    function generate(lines, items) {
-        var lastLine = this.options.rowCount-1; console.log('fruits sh be', items)
+    function generate(lines, items, isDiff) {
+        this.topRow = this.options.rowCount-1; console.log('fruits sh be', items)
+        this.midRow = this.options.rowCount-2;
+        this.bottomRow = this.options.rowCount-3;
 
         for (var i=0; i<this.options.dimension[0]; i++) {
             for (var j=0; j<this.options.rowCount; j++) {
@@ -142,7 +144,7 @@ define(function(require, exports, module) {
                     this.slotMap[i]=[];
                 if (this.slotMap[i][j+this.options.rowCount-this.options.dimension[1]] !== undefined) {
                     this.slotMap[i][j] = this.slotMap[i][j+this.options.rowCount-this.options.dimension[1]];
-                } else if ((j == lastLine || j == lastLine-1 || j == lastLine-2) && lines != undefined) {
+                } else if ((j == this.topRow || j == this.midRow || j == this.bottomRow) && lines != undefined) {
                     for (var k = 0; k < lines.length; k++) {
                         switch(lines[k]) {
                             case 0:
@@ -179,6 +181,57 @@ define(function(require, exports, module) {
                     this.slotMap[i][j] = chooseFruit.call(this);
             }
         }
+
+        verifySlotMap.call(this, lines, items, isDiff);
+    }
+
+    function verifySlotMap(lines, items, isDiff) {
+        var slotLines = [];
+
+        if(items) {
+            if (verifyLine0.call(this, items[0])) slotLines.push(0);
+            if (verifyLine1.call(this, items[0])) slotLines.push(1);
+            if (verifyLine2.call(this, items[0])) slotLines.push(2);
+            if (verifyLine3.call(this, items[0])) slotLines.push(3);
+            if (verifyLine4.call(this, items[0])) slotLines.push(4);
+        }
+
+        if(lines) var same = arraysIdentical(lines, slotLines);
+
+//        if(!same && lines){ generate.call(this, lines, items, isDiff); console.log('had to regenerate map')}
+
+        console.log('verified slotlines', slotLines, same);
+
+    }
+
+    function verifyLine0(item) {
+        return (this.slotMap[0][this.midRow] == item && this.slotMap[1][this.midRow] == item && this.slotMap[2][this.midRow] == item)
+    }
+
+    function verifyLine1(item) {
+        return (this.slotMap[0][this.topRow] == item && this.slotMap[1][this.topRow] == item && this.slotMap[2][this.topRow] == item)
+    }
+
+    function verifyLine2(item) {
+        return (this.slotMap[0][this.bottomRow] == item && this.slotMap[1][this.bottomRow] == item && this.slotMap[2][this.bottomRow] == item)
+    }
+
+    function verifyLine3(item) {
+        return (this.slotMap[0][this.bottomRow] == item && this.slotMap[1][this.midRow] == item && this.slotMap[2][this.topRow] == item)
+    }
+
+    function verifyLine4(item) {
+        return (this.slotMap[0][this.topRow] == item && this.slotMap[1][this.midRow] == item && this.slotMap[2][this.bottomRow] == item)
+    }
+
+    function arraysIdentical(lines, slotLines) {
+            if (lines.length !== slotLines.length) return false;
+            for (var i = 0; i < lines.length; i++){
+                if (lines[i] !== slotLines[i]){
+                    return false;
+                }
+            }
+            return true;
     }
 
     function chooseFruit() {
