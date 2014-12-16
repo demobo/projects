@@ -6,7 +6,7 @@ define(function(require, exports, module) {
 
     var UIElement           = require('core/UIElement');
     var CoinsMainView       = require('js/views/pages/coinsMainView');
-    var testSlotMachine     = require('js/views/components/testSlotMachine');
+    var SlotMachine         = require('js/views/components/SlotMachine');
     var CreditBox           = require('js/views/components/CreditBox');
     var slotGame            = require('js/models/slotGame');
     var PushButton          = require('js/views/pages/PushButton');
@@ -37,7 +37,7 @@ define(function(require, exports, module) {
         borderRadius: '150px'
     });
 
-    var slotMachine = new testSlotMachine({
+    var slotMachine = new SlotMachine({
         size: [window.innerWidth*.7,window.innerHeight*.7],
         dimension: [5, 3],
         rowCount: 40

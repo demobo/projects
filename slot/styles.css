@@ -77,11 +77,28 @@ body.panel {
 
 .good {
     /*-webkit-box-shadow:0 0 20px #fff;*/
-    /*-moz-box-shadow: 0 0 20px #fff;*/
+    /*-moz-box-shadow: 0 0 20px #fff;*/9
     /*box-shadow:0 0 20px #fff;*/
     -webkit-filter: brightness(1.2);
     filter: brightness(1.2);
 }
+
+/*.animated {*/
+    /*-webkit-animation: 300ms pulsate;*/
+    /*-moz-animation: 300ms pulsate;*/
+/*}*/
+
+/*@-webkit-keyframes pulsate {*/
+    /*0% { -webkit-transform: scale(1); }*/
+    /*50% { -webkit-transform: scale(1.3); }*/
+    /*100% { -webkit-transform: scale(1); }*/
+/*}*/
+
+/*@-moz-keyframes pulsate {*/
+    /*0% { -moz-transform: scale(1); }*/
+    /*50% { -moz-transform: scale(1.3); }*/
+    /*100% { -moz-transform: scale(1); }*/
+/*}*/
 
 .bad {
     /*-webkit-box-shadow:0 0 20px red;*/

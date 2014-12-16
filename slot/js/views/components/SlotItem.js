@@ -2,8 +2,9 @@ define(function(require, exports, module) {
     var UIComponent         = require('core/UIComponent');
     var UIElement           = require('core/UIElement');
     var UIContainer         = require('containers/UIContainer');
+    var Easing              = require('famous/transitions/Easing');
 
-    var testSlotItem = UIComponent.extend({
+    var SlotItem = UIComponent.extend({
         constructor:function(options) {
             this._callSuper(UIComponent, 'constructor', options);
             this.options = options;
@@ -13,32 +14,71 @@ define(function(require, exports, module) {
             this.frame = new UIElement({
                 size:[options.size[0]*0.9, options.size[1]*0.9],
             });
-            this._addChild(this.frame);
+            this._addChild(this.frame); window.image = this.image;
         },
 
         update: function() {
-            var icon = 'icon'+this.options.map[this.options.column][this.options.row];
+            icon = 'icon'+this.options.map[this.options.column][this.options.row];
             this.image.setContent('<div class="slotIcon ' + icon + '"></div>');
         },
 
         animate: function(bad) {
-            if (bad)
+            if (bad) {
                 this.image.setClasses(['bad']);
-            else
+            } else {
                 this.image.setClasses(['good']);
-            this.frame.setClasses(['active']);
-            this.image.setScale([1.2,1.2,1], {
-                duration: 400,
-                curve: 'spring'
-            }, function() {
+            }
+            this.frame.setClasses(['active']); console.log(this.options.map[this.options.column][this.options.row]);
+
+            var icon = this.options.map[this.options.column][this.options.row];
+            if (this.image.getClasses() == 'good') {
+                switch (icon) {
+                    case 0: {
+                        //this.image.setClasses(['animated']);
+                        this.image.setRotation(0,0, -Math.PI*2, {duration: 2000, curve: 'easeIn'}, function () {
+                            this.image.setRotation(0, 0, 0, {duration: 1000, curve: 'easeOut'})
+                        }.bind(this));
+                    }
+                        break;
+                    case 1: {
+                        this.image.setRotation(Math.PI*2,0,0, {duration: 1000, curve: Easing.inOutBounce}, function () {
+                            this.image.setRotation(0,0,0, {duration: 1000, curve: Easing.outBounce})
+                        }.bind(this));
+                    }
+                        break;
+                    case 2: {
+                        this.image.setRotation(0,0,Math.PI*2, {duration: 1000, curve: Easing.inBounce},function () {
+                            this.image.setRotation(0,0,0, {duration: 1000, curve: Easing.inOutElastic})
+                        }.bind(this));
+                    }
+                        break;
+                    case 3: {
+                        this.image.setScale([1.5,1.5,1], {duration: 3000,method: 'spring'});
+                    }
+                        break;
+                    default: {
+                        this.image.setRotation(0, 0, Math.PI, {duration: 1000, curve: 'easeIn'}, function () {
+                            this.image.setRotation(0, 0, 0, {duration: 1000, curve: 'easeIn'})
+                        }.bind(this));
+                    }
+                        break;
+                }
+                this.image.setScale([1.2, 1.2, 1], {duration: 400, curve: 'spring'}, function () {
+                    //this.image.setRotation(0, 0, Math.PI * 2, {duration: 1000, curve: 'easeIn'}, function () {
+                    //    this.image.setRotation(0, 0, 0, {duration: 1000, curve: 'easeIn'}, function () {
+                            this.image.setScale([1, 1, 1], {duration: 500, method: 'snap'});
+                            this.image.setClasses([]);
+                            this.frame.setClasses([]);
+                        //}.bind(this));
+                    //}.bind(this));
+                }.bind(this));
+            } else if (this.image.getClasses() == 'bad') {
                 setTimeout(function(){
-                    this.image.setScale([1,1,1], {
-                        method: 'snap'
-                    });
                     this.image.setClasses([]);
-                    this.frame.setClasses([])
-                }.bind(this),600);
-            }.bind(this));
+                    this.frame.setClasses([]);
+                }.bind(this), 1000)
+
+            }
         },
 
         animateLine: function(line, bad) {
@@ -71,5 +111,5 @@ define(function(require, exports, module) {
 
     });
 
-    module.exports = testSlotItem;
+    module.exports = SlotItem;
 });
