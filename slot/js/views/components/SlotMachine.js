@@ -68,13 +68,14 @@ define(function(require, exports, module) {
     }
 
     SlotMachine.prototype.spin = _.debounce(function() {
-        var winCombo = generateCombo.call(this);
-        var lines = this.gameMap[winCombo].line;
-        var isDiff = this.gameMap[winCombo].isDiff; console.log('lines:', lines, 'isDiff:', isDiff);
-        var slotItems = generateSlotItems.call(this, lines, isDiff);
-        generate.call(this, lines, slotItems, isDiff);
-        var verify = verifySlotMap.call(this, lines, slotItems, isDiff); console.log('verify?', verify);
-
+        var results = setVariables.call(this);
+        generate.call(this, results.lines, results.slotItems, results.isDiff);
+        var verify = verifySlotMap.call(this, results.lines, results.slotItems, results.isDiff); //console.log('verify?', verify);
+        while (verify == false) {
+            results = setVariables.call(this)
+            regenerate.call(this, results.lines, results.slotItems, results.isDiff);
+            verify = verifySlotMap.call(this, results.lines, results.slotItems, results.isDiff); //console.log('verify regenerated', verify)
+        }
         this.columns.map(function(c, i){
             c.spin(500*i+1000);
         });
@@ -91,8 +92,17 @@ define(function(require, exports, module) {
         else soundEffect.line.play();
     };
 
+    function setVariables(){
+        var winCombo = generateCombo.call(this);
+        var lines = this.gameMap[winCombo].line;
+        var isDiff = this.gameMap[winCombo].isDiff; console.log('lines:', lines, 'isDiff:', isDiff);
+        var slotItems = generateSlotItems.call(this, lines, isDiff);
+
+        return {lines: lines, isDiff: isDiff, slotItems: slotItems}
+    }
+
     function generateCombo() {
-        var combo = 18;
+        var combo = 17;
         var randomNumber = Math.floor(Math.random()*40);
         for (var i = 0; i < this.gameMap.length; i++){
             var inRange = checkRange(this.gameMap[i].range, randomNumber);
@@ -140,44 +150,56 @@ define(function(require, exports, module) {
                 if (this.slotMap[i][j+this.options.rowCount-this.options.dimension[1]] !== undefined) {
                     this.slotMap[i][j] = this.slotMap[i][j+this.options.rowCount-this.options.dimension[1]];
                 } else if ((j == this.topRow || j == this.midRow || j == this.bottomRow) && lines != undefined) {
-                    if (lines.length == 0) {
-                        this.slotMap[i][j] = chooseFruit.call(this);
-                    } else {
-                        for (var k = 0; k < lines.length; k++) {
-                            switch(lines[k]) {
-                                case 0:
-                                    if(line0[i][this.options.rowCount-j-1]=='x' || items.indexOf(this.slotMap[i][j]) != -1)
-                                        this.slotMap[i][j] = items[k];
-                                    else this.slotMap[i][j] = chooseFruit.call(this);
-                                    break;
-                                case 1:
-                                    if(line1[i][this.options.rowCount-j-1]=='x' || items.indexOf(this.slotMap[i][j]) != -1)
-                                        this.slotMap[i][j] = items[k];
-                                    else this.slotMap[i][j] = chooseFruit.call(this);
-                                    break;
-                                case 2:
-                                    if(line2[i][this.options.rowCount-j-1]=='x' || items.indexOf(this.slotMap[i][j]) != -1)
-                                        this.slotMap[i][j] = items[k];
-                                    else this.slotMap[i][j] = chooseFruit.call(this);
-                                    break;
-                                case 3:
-                                    if(line3[i][this.options.rowCount-j-1]=='x' || items.indexOf(this.slotMap[i][j]) != -1)
-                                        this.slotMap[i][j] = items[k];
-                                    else this.slotMap[i][j] = chooseFruit.call(this);
-                                    break;
-                                case 4:
-                                    if(line4[i][this.options.rowCount-j-1]=='x' || items.indexOf(this.slotMap[i][j]) != -1)
-                                        this.slotMap[i][j] = items[k];
-                                    else this.slotMap[i][j] = chooseFruit.call(this);
-                                    break;                                break;
-                                default:
-                                    this.slotMap[i][j] = chooseFruit.call(this);
-                                    break;
-                            }
-                        }
-                    }
+                    setWinCombo.call(this, i, j, lines, items)
                 } else
                     this.slotMap[i][j] = chooseFruit.call(this);
+            }
+        }
+    }
+
+    function setWinCombo(i, j, lines, items) {
+        if (lines.length == 0) {
+            this.slotMap[i][j] = chooseFruit.call(this);
+        } else {
+            for (var k = 0; k < lines.length; k++) {
+                switch(lines[k]) {
+                    case 0:
+                        if(line0[i][this.options.rowCount-j-1]=='x' || items.indexOf(this.slotMap[i][j]) != -1)
+                            this.slotMap[i][j] = items[k];
+                        else this.slotMap[i][j] = chooseFruit.call(this);
+                        break;
+                    case 1:
+                        if(line1[i][this.options.rowCount-j-1]=='x' || items.indexOf(this.slotMap[i][j]) != -1)
+                            this.slotMap[i][j] = items[k];
+                        else this.slotMap[i][j] = chooseFruit.call(this);
+                        break;
+                    case 2:
+                        if(line2[i][this.options.rowCount-j-1]=='x' || items.indexOf(this.slotMap[i][j]) != -1)
+                            this.slotMap[i][j] = items[k];
+                        else this.slotMap[i][j] = chooseFruit.call(this);
+                        break;
+                    case 3:
+                        if(line3[i][this.options.rowCount-j-1]=='x' || items.indexOf(this.slotMap[i][j]) != -1)
+                            this.slotMap[i][j] = items[k];
+                        else this.slotMap[i][j] = chooseFruit.call(this);
+                        break;
+                    case 4:
+                        if(line4[i][this.options.rowCount-j-1]=='x' || items.indexOf(this.slotMap[i][j]) != -1)
+                            this.slotMap[i][j] = items[k];
+                        else this.slotMap[i][j] = chooseFruit.call(this);
+                        break;                                break;
+                    default:
+                        this.slotMap[i][j] = chooseFruit.call(this);
+                        break;
+                }
+            }
+        }
+    }
+
+    function regenerate(lines, items, isDiff) {
+        for (var i=0; i<this.options.dimension[0]; i++) {
+            for (var j=this.bottomRow; j<this.options.rowCount; j++) {
+                setWinCombo.call(this, i, j, lines, items);
             }
         }
     }
