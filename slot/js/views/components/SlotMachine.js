@@ -1,20 +1,26 @@
 define(function(require, exports, module) {
     var ContainerSurface    = require('famous/surfaces/ContainerSurface');
-    var View = require('famous/core/View');
-    var Surface = require('famous/core/Surface');
-    var Transform = require('famous/core/Transform');
-    var Modifier = require('famous/core/Modifier');
-    var StateModifier = require('famous/modifiers/StateModifier');
+    var View                = require('famous/core/View');
+    var Surface             = require('famous/core/Surface');
+    var Transform           = require('famous/core/Transform');
+    var Modifier            = require('famous/core/Modifier');
+    var StateModifier       = require('famous/modifiers/StateModifier');
     var UIElement           = require('core/UIElement');
     var Engine              = require('famous/core/Engine');
     var soundEffect         = require('js/configs/SoundEffect');
     var SlotColumn          = require('js/views/components/SlotColumn');
+    var GameMap             = require('js/configs/GameMap');
     var slotGame            = require('js/models/slotGame');
 
-    var winChart = [0, 1, 10, 100, 1000, 10000];
-    var payLines = [];
-    var badLines = [];
-    var winAmt = 0;
+    var o = 'o';
+    var x = 'x';
+
+    var line0 = [[o,x,o],[o,x,o],[o,x,o]];
+    var line1 = [[x,o,o],[x,o,o],[x,o,o]];
+    var line2 = [[o,o,x],[o,o,x],[o,o,x]];
+    var line3 = [[o,o,x],[o,x,o],[x,o,o]];
+    var line4 = [[x,o,o],[o,x,o],[o,o,x]];
+
 
     function SlotMachine(options) {
         ContainerSurface.apply(this, arguments);
@@ -38,7 +44,7 @@ define(function(require, exports, module) {
     function _createViews() {
         this.columns = [];
         generate.call(this);
-        soundEffect.backgroundmusic.play();
+//        soundEffect.backgroundmusic.play();
         for (var i = 0; i<this.options.dimension[0]; i++) {
             var c = new SlotColumn({
                 rowCount: this.options.rowCount,
@@ -49,6 +55,13 @@ define(function(require, exports, module) {
             this.columns.push(c);
             this.add(c);
         }
+        this.gameMap = new GameMap({
+
+        }); console.log(this.gameMap);     window.gameMap = this.gameMap;
+        for (var j = 0; j < this.gameMap.length; j++){
+            this.gameMap[j].range = setRange(j); //console.log('gameMap range----- ', this.gameMap[j].range);
+        }
+
     }
 
     function _setListeners() {
@@ -59,39 +72,13 @@ define(function(require, exports, module) {
     }
 
     SlotMachine.prototype.spin = _.debounce(function() {
-        var storePayLines = payLines;
-        var storeBadLines = badLines;
-        var storeWinAmt = winAmt;
-        var winLines = winPercent.call(this);
-        generate.call(this, winLines);
+        var winCombo = generateCombo.call(this);
+        var slotItems = generateSlotItems.call(this, this.gameMap[winCombo].line, this.gameMap[winCombo].isDiff);
+        generate.call(this, this.gameMap[winCombo].line, slotItems);
         this.columns.map(function(c, i){
             c.spin(500*i+1000);
         });
-        soundEffect.slot.play();
-
-        if (storePayLines.length == 5) {
-            slotGame.save('jackpot', Date.now());
-        }
-
-        if (storePayLines.length) {
-            _.delay(function() {
-                storePayLines.map(function(line, index){
-                    setTimeout(function() {
-                        this.animateLine(line, false);
-                    }.bind(this), index*1000);
-                }.bind(this));
-                storeBadLines.map(function(line, index){
-                    setTimeout(function() {
-                        this.animateLine(line, true);
-                    }.bind(this), (storePayLines.length+index)*1000);
-                }.bind(this));
-            }.bind(this), 3000);
-        }
-
-        _.delay(function() {
-            slotGame.save('credit', slotGame.get('credit')+storeWinAmt);
-        }, 4000);
-
+//        soundEffect.slot.play();
     },1000, true);
 
     SlotMachine.prototype.animateLine = function(line, bad) {
@@ -106,234 +93,99 @@ define(function(require, exports, module) {
             soundEffect.line.play()
     };
 
-    function winPercent() {
-        var winNum = Math.floor(Math.random()*100);
-        if (winNum%5 == 0) return 1;
-        else if (winNum%7 == 0) return 2;
-        else if (winNum%11 == 0) return 3;
-        else if (winNum%16 == 0) return 4;
-        else if (winNum%6 == 0) return 5;
-        else return 0;
+    function generateCombo() {
+        var combo = 10;
+        var randomNumber = Math.floor(Math.random()*35);
+        for (var i = 0; i < this.gameMap.length; i++){
+            var inRange = checkRange(this.gameMap[i].range, randomNumber);
+            if (inRange) {
+                combo = i;
+                break;
+            }
+        } console.log('randomnumber----',randomNumber, 'combo----', combo);
+        return combo;
     }
 
-    function generate(winLines) {
-        switch (winLines) {
-            case 1: var winCode = Math.floor(Math.random()*4);
-                break;
-            case 2: winCode = Math.max(4, Math.floor(Math.random()*7));
-                break;
-            case 3: winCode = 7;
-                break;
-            case 4: winCode = 8;
-                break;
-            case 5: winCode = 9;
-                break;
-            default:
-                break;
+    function setRange(index){
+        if (index == 0) {
+            var min = 0;
+            var max = this.gameMap[0].weight-1;
+        } else {
+            min = this.gameMap[index-1].range[1]+1;
+            max = min+this.gameMap[index].weight-1;
         }
+        return [min, max]
+    }
 
-        var winning = chooseWinning.call(this, winCode);
+    function checkRange(range, number){
+        return (number <= range[1] && number >= range[0]);
+    }
+
+    function generateSlotItems(lines, isDiff){
+        var slotItems = []; console.log('lines:', lines);
+        var randomFruit = chooseFruit();
+        for (var i = 0; i < lines.length; i++){
+            if (isDiff) {
+                randomFruit = chooseFruit();
+            }
+            slotItems.push(randomFruit);
+        }
+        return slotItems
+    }
+
+    function generate(lines, items) {
+        var lastLine = this.options.rowCount-1; console.log('fruits sh be', items)
+
         for (var i=0; i<this.options.dimension[0]; i++) {
             for (var j=0; j<this.options.rowCount; j++) {
                 if (!this.slotMap[i])
                     this.slotMap[i]=[];
                 if (this.slotMap[i][j+this.options.rowCount-this.options.dimension[1]] !== undefined) {
                     this.slotMap[i][j] = this.slotMap[i][j+this.options.rowCount-this.options.dimension[1]];
-                } else if (winning.row.indexOf(j) != -1) {
-                    switch(winCode) {
-                        case 1:
-                        case 4:
-                        case 7:
-                            rowJackpot.call(this, i, j, winning);
-                            break;
-                        case 2:
-                        case 3:
-                            jaggedJackpot.call(this, i, j, winning);
-                            break;
-                        case 5:
-                        case 6:
-                            comboJackpot.call(this, i, j, winning);
-                            break;
-                        default:
-                            break;
-                    }
-                } else if (winCode == 8) {
-                    this.slotMap[i][j] = winning.fruit;
-                    if (j == 39 && (i == 1 || i == 2 || i == 3)) {
-                        this.slotMap[i][j] = chooseFruit.call(this);
-                        while (this.slotMap[i][j] == winning.fruit){
-                            this.slotMap[i][j] = chooseFruit.call(this);
+                } else if ((j == lastLine || j == lastLine-1 || j == lastLine-2) && lines != undefined) {
+                    for (var k = 0; k < lines.length; k++) {
+                        switch(lines[k]) {
+                            case 0:
+                                if(line0[i][this.options.rowCount-j-1]=='x' || items.indexOf(this.slotMap[i][j]) != -1)
+                                    this.slotMap[i][j] = items[k];
+                                else this.slotMap[i][j] = chooseFruit.call(this);
+                                break;
+                            case 1:
+                                if(line1[i][this.options.rowCount-j-1]=='x' || items.indexOf(this.slotMap[i][j]) != -1)
+                                    this.slotMap[i][j] = items[k];
+                                else this.slotMap[i][j] = chooseFruit.call(this);
+                                break;
+                            case 2:
+                                if(line2[i][this.options.rowCount-j-1]=='x' || items.indexOf(this.slotMap[i][j]) != -1)
+                                    this.slotMap[i][j] = items[k];
+                                else this.slotMap[i][j] = chooseFruit.call(this);
+                                break;
+                            case 3:
+                                if(line3[i][this.options.rowCount-j-1]=='x' || items.indexOf(this.slotMap[i][j]) != -1)
+                                    this.slotMap[i][j] = items[k];
+                                else this.slotMap[i][j] = chooseFruit.call(this);
+                                break;
+                            case 4:
+                                if(line4[i][this.options.rowCount-j-1]=='x' || items.indexOf(this.slotMap[i][j]) != -1)
+                                    this.slotMap[i][j] = items[k];
+                                else this.slotMap[i][j] = chooseFruit.call(this);
+                                break;                                break;
+                            default:
+                                this.slotMap[i][j] = chooseFruit.call(this);
+                                break;
                         }
                     }
-                } else if (winCode == 9) {
-                    this.slotMap[i][j] = winning.fruit;
                 } else
                     this.slotMap[i][j] = chooseFruit.call(this);
             }
         }
-
-        checkWin.call(this, winning.line);
-    }
-
-    function rowJackpot(i, j, winning) {
-            var index = winning.row.indexOf(j);
-            this.slotMap[i][j] = winning.fruit[index];
-    }
-
-    function jaggedJackpot(i, j, winning) {
-        if (i == 0 && j == winning.row[0]) {
-            this.slotMap[i][j] = winning.fruit;
-        } else if (i == this.options.dimension[0]-1 && j == winning.row[2]) {
-            this.slotMap[i][j] = winning.fruit;
-        } else if (i > 0 && i < this.options.dimension[0]-1 && j == winning.row[1]) {
-            this.slotMap[i][j] = winning.fruit;
-        } else {
-            this.slotMap[i][j] = chooseFruit.call(this);
-        }
-    }
-
-    function comboJackpot(i, j, winning) {
-        jaggedJackpot.call(this, i, j, winning);
-        if (j == winning.row[3]) {
-            this.slotMap[i][j] = winning.fruit;
-        }
-    }
-
-    function chooseWinning(winCode){
-        var row1 = chooseRow.call(this);
-        var row2 = chooseRow.call(this);
-        while (row1 == row2) {
-            row2 = chooseRow.call(this);
-        }
-        var row3 = chooseRow.call(this);
-        while (row3 == row1 || row3 == row2) {
-            row3 = chooseRow.call(this);
-        }
-
-        var jaggedUp = chooseRow.call(this);
-        while (jaggedUp+2 >= this.options.rowCount) {
-            jaggedUp = chooseRow.call(this);
-        }
-
-        var jaggedDown = chooseRow.call(this);
-        while (jaggedDown-2 < this.options.rowCount-this.options.dimension[1]) {
-            jaggedDown = chooseRow.call(this);
-        }
-
-        var line1 = findWinLine.call(this, row1);
-        var line2 = findWinLine.call(this, row2);
-        var line3 = findWinLine.call(this, row3);
-
-
-        var fruit1 = chooseFruit.call(this);
-        var fruit2 = chooseFruit.call(this);
-        var fruit3 = chooseFruit.call(this);
-        while (fruit3 == fruit2) {
-            fruit3 = chooseFruit.call(this);
-        }
-
-        switch(winCode) {
-            case 1:
-                return {
-                    row: [row1],
-                    fruit: [fruit1],
-                    line: [line1]
-                }
-                break;
-            case 4:
-                return {
-                    row: [row1, row2],
-                    fruit: [fruit1, fruit2],
-                    line: [line1, line2]
-                }
-                break;
-            case 7:
-                return {
-                row: [row1, row2, row3],
-                fruit: [fruit1, fruit2, fruit3],
-                line: [line1, line2, line3]
-                }
-                break;
-            case 2:
-                return {
-                    row: [jaggedUp, jaggedUp+1, jaggedUp+2],
-                    fruit: [fruit1],
-                    line: [4]
-                }
-                break;
-            case 3:
-                return {
-                    row: [jaggedDown, jaggedDown-1, jaggedDown-2],
-                    fruit: [fruit1],
-                    line: [5]
-                }
-                break;
-            case 5:
-                return {
-                    row: [jaggedUp, jaggedUp+1, jaggedUp+2, row1],
-                    fruit: [fruit1],
-                    line: [line1, 3]
-                }
-                break;
-            case 6:
-                return {
-                    row: [jaggedDown, jaggedDown-1, jaggedDown-2, row1],
-                    fruit: [fruit1],
-                    line: [line1, 4]
-                }
-                break;
-            case 8:
-                return {
-                    row: [], fruit: [fruit1], line: [0, 2, 3, 4]
-                }
-                break;
-            case 9:
-                return {
-                    row: [], fruit: [fruit1], line: [0, 1, 2, 3, 4]
-                }
-                break;
-            default:
-                return {
-                    row: [], fruit: [], line: []
-                }
-        }
-    }
-
-    function chooseRow() {
-        return this.options.rowCount-1-Math.floor(Math.random()*this.options.dimension[1]);
     }
 
     function chooseFruit() {
         return Math.floor(Math.random()*12);
     }
 
-    function findWinLine(row) {
-        var lineMap = [this.options.rowCount-2, this.options.rowCount-1, this.options.rowCount-3];
-        var line = lineMap.indexOf(row);
-        return line
-    }
 
-    function checkWin(line) {
-        var user = slotGame.get('lines');
-        if (user == undefined) user = 1;
-
-        switch (user) {
-            case 1: var userLines = [0]; break;
-            case 3: userLines = [0, 1, 2]; break;
-            case 5: userLines = [0, 1, 2, 3, 4]; break;
-            default: userLines = [0]; break;
-        }
-
-        payLines = [];
-        badLines = [];
-
-        for (var i = 0; i < line.length; i++) {
-            if (userLines.indexOf(line[i]) != -1) payLines.push(line[i]);
-            else badLines.push(line[i]);
-        }
-
-        winAmt = winChart[payLines.length];
-    }
 
     module.exports = SlotMachine;
 });

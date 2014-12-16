@@ -6,7 +6,7 @@ define(function(require, exports, module) {
 
     var UIElement           = require('core/UIElement');
     var CoinsMainView       = require('js/views/pages/coinsMainView');
-    var SlotMachine         = require('js/views/components/SlotMachine');
+    var SlotMachine         = require('js/views/components/SlotMachineCopy');
     var CreditBox           = require('js/views/components/CreditBox');
     var slotGame            = require('js/models/slotGame');
     var PushButton          = require('js/views/pages/PushButton');
@@ -39,7 +39,7 @@ define(function(require, exports, module) {
 
     var slotMachine = new SlotMachine({
         size: [window.innerWidth*.7,window.innerHeight*.7],
-        dimension: [5, 3],
+        dimension: [3, 3],
         rowCount: 40
     });
     var slotMod = new StateModifier({
@@ -66,8 +66,8 @@ define(function(require, exports, module) {
     var flipper = new Flipper();
     mainContext.add(centerModifier).add(flipper);
 
-    flipper.setBack(slotMachine);
-    flipper.setFront(gameStart);
+    flipper.setFront(slotMachine);
+    flipper.setBack(gameStart);
 
     var toggle = false;
     gameStart.buttonShadow.on('click', function(){

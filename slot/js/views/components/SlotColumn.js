@@ -53,7 +53,7 @@ define(function(require, exports, module) {
                 duration: duration,
                 curve: 'easeIn'
             }, function() {
-                soundEffect.stopspin.play();
+//                soundEffect.stopspin.play();
                 this.setPosition(0,this.rowHeight*(this.rowCount-this.options.dimension[1]),0, {
                     method: 'snap'
                 }, function() {
