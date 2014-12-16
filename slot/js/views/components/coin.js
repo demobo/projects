@@ -35,11 +35,12 @@ define(function(require, exports, module) {
 
     function _initParticle (){
         this.coin = new Surface({
-//            content: '<div><img src="/slot/assets/imgs/coin.png" /></div>',
+//            content: '<div><img src="/slot/assets/coin.png" /></div>',
             size: this.size,
+            classes:['coin'],
             properties: {
                 borderRadius: this.size[0] + 'px',
-                backgroundImage: 'url("/slot/assets/imgs/coin.png")',
+                //backgroundImage: 'url("/slot/assets/imgs/slot1.png")',
                 backgroundSize: 'contain'
             }
         });
