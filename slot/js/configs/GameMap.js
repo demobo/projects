@@ -2,7 +2,7 @@ define(function(require, exports, module){
 
     function GameMap(){
         var gameMap = {
-            length: 16,
+            length: 19,
             0: {
                 weight: 1, line: [0], isDiff: false
             },
@@ -49,6 +49,15 @@ define(function(require, exports, module){
                 weight: 1, line: [3, 4], isDiff: false
             },
             15: {
+                weight: 1, line: [0, 1], isDiff: true
+            },
+            16: {
+                weight: 1, line: [0, 2], isDiff: true
+            },
+            17: {
+                weight: 1, line: [1, 2], isDiff: true
+            },
+            18: {
                 weight: 1, line: [], isDiff: false
             }
         }

@@ -55,26 +55,22 @@ define(function(require, exports, module) {
             this.columns.push(c);
             this.add(c);
         }
-        this.gameMap = new GameMap({
-
-        }); console.log(this.gameMap);     window.gameMap = this.gameMap;
+        this.gameMap = new GameMap({});     window.gameMap = this.gameMap;
         for (var j = 0; j < this.gameMap.length; j++){
             this.gameMap[j].range = setRange(j); //console.log('gameMap range----- ', this.gameMap[j].range);
         }
-
     }
 
     function _setListeners() {
         Engine.on('click', function() {
             this.spin();
         }.bind(this));
-
     }
 
     SlotMachine.prototype.spin = _.debounce(function() {
         var winCombo = generateCombo.call(this);
-        var lines = this.gameMap[winCombo].line; console.log('lines:', lines);
-        var isDiff = this.gameMap[winCombo].isDiff;
+        var lines = this.gameMap[winCombo].line;
+        var isDiff = this.gameMap[winCombo].isDiff; console.log('lines:', lines, 'isDiff:', isDiff);
         var slotItems = generateSlotItems.call(this, lines, isDiff);
         generate.call(this, lines, slotItems, isDiff);
         var verify = verifySlotMap.call(this, lines, slotItems, isDiff); console.log('verify?', verify);
@@ -91,22 +87,19 @@ define(function(require, exports, module) {
                 r.animateLine(line,bad);
             });
         });
-        if (bad)
-            soundEffect.badline.play()
-        else
-            soundEffect.line.play()
+        if (bad) soundEffect.badline.play();
+        else soundEffect.line.play();
     };
 
     function generateCombo() {
-        var combo = 15;
-        var randomNumber = Math.floor(Math.random()*17);
+        var combo = 18;
+        var randomNumber = Math.floor(Math.random()*40);
         for (var i = 0; i < this.gameMap.length; i++){
             var inRange = checkRange(this.gameMap[i].range, randomNumber);
             if (inRange) {
-                combo = i;
-                break;
+                combo = i; break;
             }
-        } //console.log('randomnumber----',randomNumber, 'combo----', combo);
+        }
         return combo;
     }
 
@@ -129,9 +122,7 @@ define(function(require, exports, module) {
         var slotItems = [];
         var randomFruit = chooseFruit();
         for (var i = 0; i < lines.length; i++){
-            if (isDiff) {
-                randomFruit = chooseFruit();
-            }
+            if (isDiff) randomFruit = chooseFruit();
             slotItems.push(randomFruit);
         }
         return slotItems
@@ -193,7 +184,6 @@ define(function(require, exports, module) {
 
     function verifySlotMap(lines, items, isDiff) {
         var slotLines = [];
-
         if(items) {
             if (verifyLine0.call(this, items[0])) slotLines.push(0);
             if (verifyLine1.call(this, items[0])) slotLines.push(1);
@@ -201,9 +191,7 @@ define(function(require, exports, module) {
             if (verifyLine3.call(this, items[0])) slotLines.push(3);
             if (verifyLine4.call(this, items[0])) slotLines.push(4);
         }
-
         if(lines) var same = arraysIdentical(lines, slotLines);
-
         return same;
     }
 
@@ -240,8 +228,6 @@ define(function(require, exports, module) {
     function chooseFruit() {
         return Math.floor(Math.random()*12);
     }
-
-
 
     module.exports = SlotMachine;
 });
