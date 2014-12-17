@@ -102,13 +102,13 @@ define(function(require, exports, module) {
         var lines = this.gameMap[winCombo].line;
         var isDiff = this.gameMap[winCombo].isDiff;
         var slotItems = generateSlotItems.call(this, lines, isDiff);
-        console.log('lines:', lines, 'fruits:', slotItems, 'isDiff:', isDiff);
+        console.log('combo:', winCombo, 'lines:', lines, 'fruits:', slotItems, 'isDiff:', isDiff);
         return {lines: lines, isDiff: isDiff, slotItems: slotItems}
     }
 
     function generateCombo() {
-        var combo = 17;
-        var randomNumber = Math.floor(Math.random()*75);
+        var combo = 31;
+        var randomNumber = Math.floor(Math.random()*100);
         for (var i = 0; i < this.gameMap.length; i++){
             var inRange = checkRange(this.gameMap[i].range, randomNumber);
             if (inRange) {
@@ -276,9 +276,6 @@ define(function(require, exports, module) {
                 if (verifyLine4.call(this, items[0])) slotLines.push(4);
             }
         }
-
-        console.log('slotLines:', slotLines);
-
         if(lines) var same = arraysIdentical(lines, slotLines);
         return same;
     }
