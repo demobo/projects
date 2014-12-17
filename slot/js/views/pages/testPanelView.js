@@ -34,15 +34,15 @@ define(function(require, exports, module) {
         buttonSize: [100, 100]
     };
 
-    function _init(){
+    function _init() {
 
         this.redButton = new PushButton({
             content: '<img src="assets/imgs/RedSpinButton.png">',
-            origin: [0.5,0.5],
-            align: [0.5,0.5],
-            position: [275,200,0],
-            size: [300,300],
-            shadowSize: [250,250],
+            origin: [0.5, 0.5],
+            align: [0.5, 0.5],
+            position: [275, 200, 0],
+            size: [300, 300],
+            shadowSize: [250, 250],
             boxShadowBefore: '0px 0px 20px',
             boxShadowAfter: 'inset 0px 7px 150px',
             borderRadius: '130px'
@@ -51,8 +51,8 @@ define(function(require, exports, module) {
 
         this.greenButton = new PushButton({
             content: '<img src="assets/imgs/greenbutton.png">',
-            size: [250,250],
-            shadowSize: [210,210],
+            size: [250, 250],
+            shadowSize: [210, 210],
             position: [-300, 200, 0],
             boxShadowAfter: 'inset 0px 0px 100px',
             borderRadius: '130px'
@@ -62,12 +62,12 @@ define(function(require, exports, module) {
 
         this.lineOne = new PushButton({
             //classes: ['orangeButton'],
-            align: [0.25,0.25],
-            origin: [0.5,0.5],
+            align: [0.25, 0.25],
+            origin: [0.5, 0.5],
             content: '<img src="assets/imgs/YellowButton2.png">',
-            size: [200,100],
-            shadowSize: [193,92],
-            position: [-100,0,0],
+            size: [200, 100],
+            shadowSize: [193, 92],
+            position: [-100, 0, 0],
             //boxShadowBefore: '0px 0px 0px',
             boxShadowAfter: 'inset 0px 0px 75px',
             borderRadius: '10px'
@@ -75,54 +75,53 @@ define(function(require, exports, module) {
         });
 
         this.lineTwo = new PushButton({
-            align: [0.25,0.25],
-            origin: [0.5,0.5],
+            align: [0.25, 0.25],
+            origin: [0.5, 0.5],
             content: '<img src="assets/imgs/YellowButton2.png">',
-            size: [200,100],
-            shadowSize: [193,92],
-            position: [300,0,0],
+            size: [200, 100],
+            shadowSize: [193, 92],
+            position: [300, 0, 0],
             boxShadowAfter: 'inset 0px 0px 75px',
             borderRadius: '10px'
         });
         this.lineThree = new PushButton({
-            align: [0.25,0.25],
-            origin: [0.5,0.5],
+            align: [0.25, 0.25],
+            origin: [0.5, 0.5],
             content: '<img src="assets/imgs/YellowButton2.png">',
-            size: [200,100],
-            shadowSize: [193,92],
-            position: [700,0,0],
+            size: [200, 100],
+            shadowSize: [193, 92],
+            position: [700, 0, 0],
             boxShadowAfter: 'inset 0px 0px 75px',
             borderRadius: '10px'
         });
 
         this.add(this.lineOne);
-            this.add(this.lineTwo);
-                this.add(this.lineThree);
-
+        this.add(this.lineTwo);
+        this.add(this.lineThree);
 
 
         //this.surface = new Surface({
-           //define size, align in center
+        //define size, align in center
         this.flipper = new Flipper();
 
-        this.startButton = new PushButton({
-            origin: [.5,.5],
-            align: [.5,.5],
-            content: '<img src="assets/imgs/start-button.png"/>',
-            size: [600,190],
-            shadowSize: [575,173],
-            position: [0,-70,0],
-            boxShadowAfter: 'inset 0px 0px 100px',
-            borderRadius: '150px'
-
-            //    textAlign: 'center',
-            //    fontSize:'60px',
-            //    lineHeight: '100px',
-            //    padding:'50px',
-            //    color: 'white',
-            //    backgroundRepeat:'no-repeat'
-            //}
-        });
+        //this.startButton = new PushButton({
+        //    origin: [.5, .5],
+        //    align: [.5, .5],
+        //    content: '<img src="assets/imgs/start-button.png"/>',
+        //    size: [600, 190],
+        //    shadowSize: [575, 173],
+        //    position: [0, -70, 0],
+        //    boxShadowAfter: 'inset 0px 0px 100px',
+        //    borderRadius: '150px'
+        //
+        //    //    textAlign: 'center',
+        //    //    fontSize:'60px',
+        //    //    lineHeight: '100px',
+        //    //    padding:'50px',
+        //    //    color: 'white',
+        //    //    backgroundRepeat:'no-repeat'
+        //    //}
+        //});
 
         //this.add(this.startButton);
         //this.frontSurface = new UIElement({
@@ -141,48 +140,142 @@ define(function(require, exports, module) {
         //    }
         //});
 
-        this.backSurface= new UIElement({
-            origin: [.5,.5],
-            align: [.5,.5],
-            size:[800,500],
-            content : 'Game Start',
+        this.backSurface = new UIElement({
+            origin: [.5, .5],
+            align: [.5, .5],
+            size: [800, 500],
+            content: 'Game Start',
             style: {
                 textAlign: 'center',
                 lineHeight: '60px',
                 fontSize: '30px',
                 color: '#000',
-                backgroundColor:'blue'
+                backgroundColor: 'blue'
             }
         });
 
-       this.centerModifier = new StateModifier({
-            align: [0.5,0.5],
-            origin:[0.5,0.5]
-        })
+        this.centerModifier = new StateModifier({
+            align: [0.5, 0.5],
+            origin: [0.5, 0.5]
+        });
 
         this.flipper.setBack(this.backSurface);
         this.flipper.setFront(this.startButton);
         this.add(this.centerModifier).add(this.flipper);
 
+        this.testSurface = new UIElement({
+            size: [100, 100],
+            content: '<img src="assets/imgs/slot8.png">'
+
+        });
+        this.add(this.testSurface);
+        this.testSurface.center();
+
+        this.testSurface.setRotation(0, 0, 0);
+        this.testSurface.setPosition(0, 0,0);
+        //this.testSurface.setScale(0,0,0);
+
+        //this.testSurface.setPosition(0, 0,100, {
+        //    duration: 3000,
+        //    curve: 'spring'
+        //});
+
+        //this.testSurface.setRotation(0, 0, Math.PI*8, {
+        //    duration: 3000,
+        //    curve :Easing.inOutSine
+        //});
+
+        //function constantOriginChange() {
+        //    this.testSurface.setOrigin(Math.random(), Math.random(), {
+        //        duration: 1000,
+        //        curve: 'spring'
+        //    }.bind(this), constantOriginChange);
+        //}
+        //
+        //constantOriginChange();
+
+
+
+
+
+
+
+        //function animation1() {
+        //    this.testSurface.setScale([1.5, 1.5, 1], {duration: 4000, method: 'spring'});
+        //    this.testSurface.setRotation(0, 0, Math.PI * 2, {duration: 2000, curve: 'easeIn'}, function () {
+        //        this.testSurface.setScale([1, 1, 1], {duration: 4000, method: 'snap'});
+        //    }.bind(this));
+        //}
+        //animation1().call(this);
+
+
+
+
+
+
+
+        //this.i = 0.01;
+        //
+        //while(this.i<=10){
+        //    animation1().call(this);
+        //    this. i++;
+        //}
+
+
 
     }
+
+
+
+
+        //var i =1;
+
+        //if (i<=10){
+        //    this.testSurface.setScale([1.5, 1.5, 1.5], {duration: 200, method: 'spring'});
+        //
+        //    i++;}
+        //else {this.testSurface.setScale([1, 1, 1], {method: 'snap'});}
+
+
+
+
+        //function constantOriginChange() {
+        //        this.testSurface.setOrigin(Math.random(), Math.random(), {
+        //            duration: 1000,
+        //            curve: 'spring'
+        //        }, constantOriginChange).bind(this);
+        //}
+        //
+        //constantOriginChange();
+
+
+
+
+    //function constantOriginChange() {
+    //    this.testSurface.setOrigin(Math.random(), Math.random(), {
+    //        duration: 1000,
+    //        curve: 'spring'
+    //    }, constantOriginChange).bind(this);
+    //}
+    //
+    //constantOriginChange();
 
     function _setListeners(){
         var toggle = false;
 
-        this.startButton.buttonShadow.on('click', function(){
-            var angle = Math.PI;
-            //if (toggle) {
-            this.flipper.setAngle(angle, {curve: Easing.inQuad, duration : 2000}, function(){
-                this.backSurface.setScale(1.5, 1.5, 1, {
-                    method: 'spring'
-                });
-            }.bind(this));
-            //} else {
-
-            //}
-            //toggle = !toggle;
-        }.bind(this));
+        //this.startButton.buttonShadow.on('click', function(){
+        //    var angle = Math.PI;
+        //    //if (toggle) {
+        //    this.flipper.setAngle(angle, {curve: Easing.inQuad, duration : 2000}, function(){
+        //        this.backSurface.setScale(1.5, 1.5, 1, {
+        //            method: 'spring'
+        //        });
+        //    }.bind(this));
+        //    //} else {
+        //
+        //    //}
+        //    //toggle = !toggle;
+        //}.bind(this));
 
         this.backSurface.on('click', function() {
             var angle = 0;
@@ -192,7 +285,14 @@ define(function(require, exports, module) {
 
         }.bind(this));
 
+
+
     }
+
+
+
+
+
 
     module.exports = TestPanelView;
 

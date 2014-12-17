@@ -10,6 +10,7 @@ define(function(require, exports, module) {
     var CreditBox           = require('js/views/components/CreditBox');
     var slotGame            = require('js/models/slotGame');
     var PushButton          = require('js/views/pages/PushButton');
+    var testPanelView       = require('js/views/pages/testPanelView');
 
     var mainContext = Engine.createContext();
 
@@ -55,8 +56,8 @@ define(function(require, exports, module) {
         origin: [1,1]
     });
 
-    mainContext.add(slotMod).add(slotMachine);
-    mainContext.add(creditBoxMod).add(creditBox);
+    //mainContext.add(slotMod).add(slotMachine);
+    //mainContext.add(creditBoxMod).add(creditBox);
 
     var centerModifier = new StateModifier({
         align: [0.5,0.5],
@@ -64,7 +65,7 @@ define(function(require, exports, module) {
     });
 
     var flipper = new Flipper();
-    mainContext.add(centerModifier).add(flipper);
+    //mainContext.add(centerModifier).add(flipper);
 
     flipper.setBack(slotMachine);
     flipper.setFront(gameStart);
@@ -85,6 +86,10 @@ define(function(require, exports, module) {
         }
         toggle = !toggle;
     }.bind(this));
+
+    var testPanelView = new testPanelView({});
+    mainContext.add(centerModifier).add(testPanelView);
+
 
     var spin = _.debounce(function() {
         var lines = slotGame.get('lines');
@@ -118,6 +123,7 @@ define(function(require, exports, module) {
         if (value<(Date.now()-3000)) return;
         spin.call(this);
     }.bind(this));
+
 
     mainContext.setPerspective(1000);
     window.slotGame = slotGame;
