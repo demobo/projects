@@ -10,6 +10,7 @@ define(function(require, exports, module) {
     var soundEffect         = require('js/configs/SoundEffect');
     var SlotColumn          = require('js/views/components/SlotColumn');
     var GameMap             = require('js/configs/GameMap');
+    var SlotItemMap         = require('js/configs/SlotItemMap');
     var slotGame            = require('js/models/slotGame');
 
     var o = 'o'; var x = 'x';
@@ -43,9 +44,15 @@ define(function(require, exports, module) {
     function _createViews() {
         this.columns = [];
         this.gameMap = new GameMap({});     window.gameMap = this.gameMap;
+        this.slotItemMap = new SlotItemMap({});     window.slotItemMap = this.slotItemMap;
         for (var j = 0; j < this.gameMap.length; j++){
-            this.gameMap[j].range = setRange(j); //console.log('gameMap range----- ', this.gameMap[j].range);
+            this.gameMap[j].range = setRange(this.gameMap, j); //console.log('gameMap range----- ', this.gameMap[j].range);
         }
+        for (var k = 0; k < this.slotItemMap.length; k++){
+            this.slotItemMap[k].range = setRange(this.slotItemMap, k);
+        }
+
+
         generateMap.call(this);
 //        soundEffect.backgroundmusic.play();
         for (var i = 0; i<this.options.dimension[0]; i++) {
@@ -117,7 +124,7 @@ define(function(require, exports, module) {
     }
 
     function setVariables(){
-        var winCombo = generateCombo.call(this);
+        var winCombo = generateCombo.call(this, this.gameMap, 120, this.gameMap.length-1);
         var lines = this.gameMap[winCombo].line;
         var isDiff = this.gameMap[winCombo].isDiff;
         var combo = this.gameMap[winCombo].combo;
@@ -125,11 +132,11 @@ define(function(require, exports, module) {
         return {lines: lines, isDiff: isDiff, slotItems: slotItems, combo: combo};
     }
 
-    function generateCombo() {
-        var combo = this.gameMap.length-1;
-        var randomNumber = Math.floor(Math.random()*200);
-        for (var i = 0; i < this.gameMap.length; i++){
-            var inRange = checkRange(this.gameMap[i].range, randomNumber);
+    function generateCombo(map, upperLimit, defaultValue) {
+        var combo = defaultValue;
+        var randomNumber = Math.floor(Math.random()*upperLimit);
+        for (var i = 0; i < map.length; i++){
+            var inRange = checkRange(map[i].range, randomNumber);
             if (inRange) {
                 combo = i; break;
             }
@@ -137,13 +144,13 @@ define(function(require, exports, module) {
         return combo;
     }
 
-    function setRange(index){
+    function setRange(map, index){
         if (index == 0) {
             var min = 0;
-            var max = this.gameMap[0].weight-1;
+            var max = map[0].weight-1;
         } else {
-            min = this.gameMap[index-1].range[1]+1;
-            max = min+this.gameMap[index].weight-1;
+            min = map[index-1].range[1]+1;
+            max = min+map[index].weight-1;
         }
         return [min, max]
     }
@@ -187,7 +194,7 @@ define(function(require, exports, module) {
     }
 
     function chooseFruit() {
-        return Math.floor(Math.random()*12);
+        return generateCombo.call(this, this.slotItemMap, 20, this.slotItemMap.length-1)
     }
 
     function setWinCombo(i, j, lines, items, isDiff) {
@@ -334,7 +341,7 @@ define(function(require, exports, module) {
     }
 
     function calcWin(results) {
-        var itemValue = 1;
+        var itemValue = 1; console.log('fruitvalue:', this.slotItemMap[results.slotItems[0]])
         return winChart[results.lines.length]*itemValue;
     }
 
