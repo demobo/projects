@@ -69,13 +69,29 @@ define(function(require, exports, module) {
     }
 
     SlotMachine.prototype.spin = _.debounce(function() {
-//        var currentResults = this.results;
-        generateMap.call(this);
+        var currentResults = this.results;
+        console.log('combo:', currentResults.combo, 'lines:', currentResults.lines, 'fruits:', currentResults.slotItems, 'isDiff:', currentResults.isDiff);
 
+        generateMap.call(this);
         this.columns.map(function(c, i){
             c.spin(500*i+1000);
         });
 //        soundEffect.slot.play();
+
+        if (currentResults.lines.length == 5) {
+            slotGame.save('jackpot', Date.now());
+        }
+
+        if (currentResults.lines.length) {
+            _.delay(function() {
+                currentResults.lines.map(function(line, index){
+                    setTimeout(function() {
+                        this.animateLine(line, false);
+                    }.bind(this), index*1000);
+                }.bind(this));
+            }.bind(this), 3000);
+        }
+
     },1000, true);
 
     SlotMachine.prototype.animateLine = function(line, bad) {
@@ -103,9 +119,9 @@ define(function(require, exports, module) {
         var winCombo = generateCombo.call(this);
         var lines = this.gameMap[winCombo].line;
         var isDiff = this.gameMap[winCombo].isDiff;
+        var combo = this.gameMap[winCombo].combo;
         var slotItems = generateSlotItems.call(this, lines, isDiff);
-        console.log('combo:', this.gameMap[winCombo].combo, 'lines:', lines, 'fruits:', slotItems, 'isDiff:', isDiff);
-        return {lines: lines, isDiff: isDiff, slotItems: slotItems}
+        return {lines: lines, isDiff: isDiff, slotItems: slotItems, combo: combo};
     }
 
     function generateCombo() {
