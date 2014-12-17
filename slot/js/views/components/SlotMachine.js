@@ -44,6 +44,11 @@ define(function(require, exports, module) {
     function _createViews() {
         this.columns = [];
         generate.call(this);
+        var verify = verifySlotMap.call(this, [], [], false); console.log('init verify', verify);
+        while (verify == false) {
+            regenerate.call(this, [], [], false);
+            verify = verifySlotMap.call(this, [], [], false);
+        }
 //        soundEffect.backgroundmusic.play();
         for (var i = 0; i<this.options.dimension[0]; i++) {
             var c = new SlotColumn({
@@ -70,11 +75,11 @@ define(function(require, exports, module) {
     SlotMachine.prototype.spin = _.debounce(function() {
         var results = setVariables.call(this);
         generate.call(this, results.lines, results.slotItems, results.isDiff);
-        var verify = verifySlotMap.call(this, results.lines, results.slotItems, results.isDiff); console.log('verify?', verify);
+        var verify = verifySlotMap.call(this, results.lines, results.slotItems, results.isDiff); //console.log('verify?', verify);
         while (verify == false) {
             results = setVariables.call(this)
             regenerate.call(this, results.lines, results.slotItems, results.isDiff);
-            verify = verifySlotMap.call(this, results.lines, results.slotItems, results.isDiff); console.log('verify regenerated', verify)
+            verify = verifySlotMap.call(this, results.lines, results.slotItems, results.isDiff); //console.log('verify regenerated', verify)
         }
         this.columns.map(function(c, i){
             c.spin(500*i+1000);
@@ -95,9 +100,9 @@ define(function(require, exports, module) {
     function setVariables(){
         var winCombo = generateCombo.call(this);
         var lines = this.gameMap[winCombo].line;
-        var isDiff = this.gameMap[winCombo].isDiff; console.log('lines:', lines, 'isDiff:', isDiff);
+        var isDiff = this.gameMap[winCombo].isDiff;
         var slotItems = generateSlotItems.call(this, lines, isDiff);
-
+        console.log('lines:', lines, 'fruits:', slotItems, 'isDiff:', isDiff);
         return {lines: lines, isDiff: isDiff, slotItems: slotItems}
     }
 
@@ -132,8 +137,13 @@ define(function(require, exports, module) {
         var slotItems = [];
         var randomFruit = chooseFruit();
         for (var i = 0; i < lines.length; i++){
-            if (isDiff) randomFruit = chooseFruit();
+            if (isDiff) {
+                var oldFruit = randomFruit;
+                randomFruit = chooseFruit();
+                while (randomFruit == oldFruit) randomFruit = chooseFruit();
+            }
             slotItems.push(randomFruit);
+
         }
         return slotItems
     }
@@ -203,6 +213,26 @@ define(function(require, exports, module) {
     }
 
     function setDiffItems(i, j, lines, items) {
+        var notLines = [];
+        if (lines.length < 3) {
+            for (var lineNum = 0; lineNum < 3; lineNum++) {
+                if (lines.indexOf(lineNum) == -1) notLines.push(lineNum)
+            }
+        }
+        for (var p = 0; p < notLines.length; p++) {
+            switch (notLines[p]) {
+                case 0:
+                    if(line0[i][this.options.rowCount-j-1]=='x') this.slotMap[i][j] = chooseFruit.call(this);
+                    break;
+                case 1:
+                    if(line1[i][this.options.rowCount-j-1]=='x') this.slotMap[i][j] = chooseFruit.call(this);
+                    break;
+                case 2:
+                    if(line2[i][this.options.rowCount-j-1]=='x') this.slotMap[i][j] = chooseFruit.call(this);
+                    break;
+            }
+        }
+
         for (var k = 0; k < lines.length; k++) {
             switch (lines[k]) {
                 case 0:
@@ -230,35 +260,47 @@ define(function(require, exports, module) {
 
     function verifySlotMap(lines, items, isDiff) {
         var slotLines = [];
+
         if(items) {
-            if (verifyLine0.call(this, items)) slotLines.push(0);
-            if (verifyLine1.call(this, items)) slotLines.push(1);
-            if (verifyLine2.call(this, items)) slotLines.push(2);
-            if (verifyLine3.call(this, items)) slotLines.push(3);
-            if (verifyLine4.call(this, items)) slotLines.push(4);
+            if (isDiff) {
+                if (verifyLine0.call(this, items[0])) slotLines.push(0);
+                if (verifyLine1.call(this, items[0]) || verifyLine1.call(this, items[1])) slotLines.push(1);
+                if (items.length >= 2) {
+                    if (verifyLine2.call(this, items[1]) || verifyLine2.call(this, items[2])) slotLines.push(2);
+                }
+            } else {
+                if (verifyLine0.call(this, items[0])) slotLines.push(0);
+                if (verifyLine1.call(this, items[0])) slotLines.push(1);
+                if (verifyLine2.call(this, items[0])) slotLines.push(2);
+                if (verifyLine3.call(this, items[0])) slotLines.push(3);
+                if (verifyLine4.call(this, items[0])) slotLines.push(4);
+            }
         }
+
+        console.log('slotLines:', slotLines);
+
         if(lines) var same = arraysIdentical(lines, slotLines);
         return same;
     }
 
     function verifyLine0(item) {
-        return (item.indexOf(this.slotMap[0][this.midRow]) != -1 && item.indexOf(this.slotMap[1][this.midRow]) != -1 && item.indexOf(this.slotMap[2][this.midRow]) != -1)
+        return (this.slotMap[0][this.midRow] == item && this.slotMap[1][this.midRow] == item && this.slotMap[2][this.midRow] == item)
     }
 
     function verifyLine1(item) {
-        return (item.indexOf(this.slotMap[0][this.topRow]) != -1 && item.indexOf(this.slotMap[1][this.topRow]) != -1 && item.indexOf(this.slotMap[2][this.topRow]) != -1)
+        return (this.slotMap[0][this.topRow] == item && this.slotMap[1][this.topRow] == item && this.slotMap[2][this.topRow] == item)
     }
 
     function verifyLine2(item) {
-        return (item.indexOf(this.slotMap[0][this.bottomRow]) != -1 && item.indexOf(this.slotMap[1][this.bottomRow]) != -1 && item.indexOf(this.slotMap[2][this.bottomRow]) != -1)
+        return (this.slotMap[0][this.bottomRow] == item && this.slotMap[1][this.bottomRow] == item && this.slotMap[2][this.bottomRow] == item)
     }
 
     function verifyLine3(item) {
-        return (item.indexOf(this.slotMap[0][this.bottomRow]) != -1 && item.indexOf(this.slotMap[1][this.midRow]) != -1 && item.indexOf(this.slotMap[2][this.topRow]) != -1)
+        return (this.slotMap[0][this.bottomRow] == item && this.slotMap[1][this.midRow] == item && this.slotMap[2][this.topRow] == item)
     }
 
     function verifyLine4(item) {
-        return (item.indexOf(this.slotMap[0][this.topRow]) != -1 && item.indexOf(this.slotMap[1][this.midRow]) != -1 && item.indexOf(this.slotMap[2][this.bottomRow]) != -1)
+        return (this.slotMap[0][this.topRow] == item && this.slotMap[1][this.midRow] == item && this.slotMap[2][this.bottomRow] == item)
     }
 
     function arraysIdentical(lines, slotLines) {
