@@ -102,7 +102,7 @@ define(function(require, exports, module) {
         var lines = this.gameMap[winCombo].line;
         var isDiff = this.gameMap[winCombo].isDiff;
         var slotItems = generateSlotItems.call(this, lines, isDiff);
-        console.log('combo:', winCombo, 'lines:', lines, 'fruits:', slotItems, 'isDiff:', isDiff);
+        console.log('combo:', this.gameMap[winCombo].combo, 'lines:', lines, 'fruits:', slotItems, 'isDiff:', isDiff);
         return {lines: lines, isDiff: isDiff, slotItems: slotItems}
     }
 
