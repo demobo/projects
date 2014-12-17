@@ -12,15 +12,14 @@ define(function(require, exports, module) {
     var GameMap             = require('js/configs/GameMap');
     var slotGame            = require('js/models/slotGame');
 
-    var o = 'o';
-    var x = 'x';
-
+    var o = 'o'; var x = 'x';
     var line0 = [[o,x,o],[o,x,o],[o,x,o]];
     var line1 = [[x,o,o],[x,o,o],[x,o,o]];
     var line2 = [[o,o,x],[o,o,x],[o,o,x]];
     var line3 = [[o,o,x],[o,x,o],[x,o,o]];
     var line4 = [[x,o,o],[o,x,o],[o,o,x]];
 
+    var winChart = [0, 1, 5, 25, 125, 10000];
 
     function SlotMachine(options) {
         ContainerSurface.apply(this, arguments);
@@ -71,6 +70,8 @@ define(function(require, exports, module) {
     SlotMachine.prototype.spin = _.debounce(function() {
         var currentResults = this.results;
         console.log('combo:', currentResults.combo, 'lines:', currentResults.lines, 'fruits:', currentResults.slotItems, 'isDiff:', currentResults.isDiff);
+        var winnings = calcWin.call(this, currentResults); console.log('winnings:', winnings);
+
 
         generateMap.call(this);
         this.columns.map(function(c, i){
@@ -125,8 +126,8 @@ define(function(require, exports, module) {
     }
 
     function generateCombo() {
-        var combo = this.gameMap.length-2;
-        var randomNumber = Math.floor(Math.random()*100);
+        var combo = this.gameMap.length-1;
+        var randomNumber = Math.floor(Math.random()*200);
         for (var i = 0; i < this.gameMap.length; i++){
             var inRange = checkRange(this.gameMap[i].range, randomNumber);
             if (inRange) {
@@ -183,6 +184,10 @@ define(function(require, exports, module) {
                     this.slotMap[i][j] = chooseFruit.call(this);
             }
         }
+    }
+
+    function chooseFruit() {
+        return Math.floor(Math.random()*12);
     }
 
     function setWinCombo(i, j, lines, items, isDiff) {
@@ -328,8 +333,9 @@ define(function(require, exports, module) {
             return true;
     }
 
-    function chooseFruit() {
-        return Math.floor(Math.random()*12);
+    function calcWin(results) {
+        var itemValue = 1;
+        return winChart[results.lines.length]*itemValue;
     }
 
     module.exports = SlotMachine;
