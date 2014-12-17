@@ -87,7 +87,7 @@ define(function(require, exports, module) {
                 currentResults.lines.map(function(line, index){
                     setTimeout(function() {
                         this.animateLine(line, false);
-                    }.bind(this), index*1000);
+                    }.bind(this), index*2000);
                 }.bind(this));
             }.bind(this), 3000);
         }

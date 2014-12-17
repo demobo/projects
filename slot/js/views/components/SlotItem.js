@@ -28,7 +28,7 @@ define(function(require, exports, module) {
             } else {
                 this.image.setClasses(['good']);
             }
-            this.frame.setClasses(['active']); console.log(this.options.map[this.options.column][this.options.row]);
+            this.frame.setClasses(['active']); //console.log(this.options.map[this.options.column][this.options.row]);
 
             var icon = this.options.map[this.options.column][this.options.row];
             if (this.image.getClasses() == 'good') {
@@ -92,19 +92,19 @@ define(function(require, exports, module) {
                 this.animate(bad);
             }
             else if (line===3) {
-                if (this.options.row==2 && this.options.column==0)
+                if (this.options.row==0 && this.options.column==0)
                     this.animate(bad);
-                else if (this.options.row==1 && this.options.column!=0 && this.options.column!=4)
+                else if (this.options.row==1 && this.options.column==1)
                     this.animate(bad);
-                else if (this.options.row==0 && this.options.column==4)
+                else if (this.options.row==2 && this.options.column==2)
                     this.animate(bad);
             }
             else if (line===4) {
-                if (this.options.row==2 && this.options.column==4)
+                if (this.options.row==2 && this.options.column==0)
                     this.animate(bad);
-                else if (this.options.row==1 && this.options.column!=0 && this.options.column!=4)
+                else if (this.options.row==1 && this.options.column==1)
                     this.animate(bad);
-                else if (this.options.row==0 && this.options.column==0)
+                else if (this.options.row==0 && this.options.column==2)
                     this.animate(bad);
             }
         }
