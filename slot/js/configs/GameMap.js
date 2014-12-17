@@ -52,13 +52,13 @@ define(function(require, exports, module){
                 weight: 1, line: [0, 1], isDiff: true
             },
             16: {
-                weight: 1, line: [0, 2], isDiff: true
+                weight: 20, line: [0, 2], isDiff: true
             },
             17: {
-                weight: 1, line: [1, 2], isDiff: true
+                weight: 20, line: [1, 2], isDiff: true
             },
             18: {
-                weight: 1, line: [], isDiff: false
+                weight: 20, line: [], isDiff: false
             }
         }
         return gameMap;

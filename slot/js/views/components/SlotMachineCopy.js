@@ -131,6 +131,7 @@ define(function(require, exports, module) {
             default:
                 break;
         }
+        winCode = 7;
 
         var winning = chooseWinning.call(this, winCode);
         for (var i=0; i<this.options.dimension[0]; i++) {
@@ -228,9 +229,9 @@ define(function(require, exports, module) {
         var fruit1 = chooseFruit.call(this);
         var fruit2 = chooseFruit.call(this);
         var fruit3 = chooseFruit.call(this);
-        while (fruit3 == fruit2) {
-            fruit3 = chooseFruit.call(this);
-        }
+//        while (fruit3 == fruit2) {
+//            fruit3 = chooseFruit.call(this);
+//        }
 
         switch(winCode) {
             case 1:
@@ -304,7 +305,8 @@ define(function(require, exports, module) {
     }
 
     function chooseFruit() {
-        return Math.floor(Math.random()*12);
+//        return Math.floor(Math.random()*12);
+        return 4;
     }
 
     function findWinLine(row) {

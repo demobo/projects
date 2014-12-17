@@ -70,11 +70,11 @@ define(function(require, exports, module) {
     SlotMachine.prototype.spin = _.debounce(function() {
         var results = setVariables.call(this);
         generate.call(this, results.lines, results.slotItems, results.isDiff);
-        var verify = verifySlotMap.call(this, results.lines, results.slotItems, results.isDiff); //console.log('verify?', verify);
+        var verify = verifySlotMap.call(this, results.lines, results.slotItems, results.isDiff); console.log('verify?', verify);
         while (verify == false) {
             results = setVariables.call(this)
             regenerate.call(this, results.lines, results.slotItems, results.isDiff);
-            verify = verifySlotMap.call(this, results.lines, results.slotItems, results.isDiff); //console.log('verify regenerated', verify)
+            verify = verifySlotMap.call(this, results.lines, results.slotItems, results.isDiff); console.log('verify regenerated', verify)
         }
         this.columns.map(function(c, i){
             c.spin(500*i+1000);
@@ -103,7 +103,7 @@ define(function(require, exports, module) {
 
     function generateCombo() {
         var combo = 17;
-        var randomNumber = Math.floor(Math.random()*40);
+        var randomNumber = Math.floor(Math.random()*75);
         for (var i = 0; i < this.gameMap.length; i++){
             var inRange = checkRange(this.gameMap[i].range, randomNumber);
             if (inRange) {
@@ -150,48 +150,72 @@ define(function(require, exports, module) {
                 if (this.slotMap[i][j+this.options.rowCount-this.options.dimension[1]] !== undefined) {
                     this.slotMap[i][j] = this.slotMap[i][j+this.options.rowCount-this.options.dimension[1]];
                 } else if ((j == this.topRow || j == this.midRow || j == this.bottomRow) && lines != undefined) {
-                    setWinCombo.call(this, i, j, lines, items)
+                    setWinCombo.call(this, i, j, lines, items, isDiff)
                 } else
                     this.slotMap[i][j] = chooseFruit.call(this);
             }
         }
     }
 
-    function setWinCombo(i, j, lines, items) {
+    function setWinCombo(i, j, lines, items, isDiff) {
         if (lines.length == 0) {
             this.slotMap[i][j] = chooseFruit.call(this);
+        } else if (isDiff) {
+            setDiffItems.call(this, i, j, lines, items);
         } else {
-            for (var k = 0; k < lines.length; k++) {
-                switch(lines[k]) {
-                    case 0:
-                        if(line0[i][this.options.rowCount-j-1]=='x' || items.indexOf(this.slotMap[i][j]) != -1)
-                            this.slotMap[i][j] = items[k];
-                        else this.slotMap[i][j] = chooseFruit.call(this);
-                        break;
-                    case 1:
-                        if(line1[i][this.options.rowCount-j-1]=='x' || items.indexOf(this.slotMap[i][j]) != -1)
-                            this.slotMap[i][j] = items[k];
-                        else this.slotMap[i][j] = chooseFruit.call(this);
-                        break;
-                    case 2:
-                        if(line2[i][this.options.rowCount-j-1]=='x' || items.indexOf(this.slotMap[i][j]) != -1)
-                            this.slotMap[i][j] = items[k];
-                        else this.slotMap[i][j] = chooseFruit.call(this);
-                        break;
-                    case 3:
-                        if(line3[i][this.options.rowCount-j-1]=='x' || items.indexOf(this.slotMap[i][j]) != -1)
-                            this.slotMap[i][j] = items[k];
-                        else this.slotMap[i][j] = chooseFruit.call(this);
-                        break;
-                    case 4:
-                        if(line4[i][this.options.rowCount-j-1]=='x' || items.indexOf(this.slotMap[i][j]) != -1)
-                            this.slotMap[i][j] = items[k];
-                        else this.slotMap[i][j] = chooseFruit.call(this);
-                        break;                                break;
-                    default:
-                        this.slotMap[i][j] = chooseFruit.call(this);
-                        break;
-                }
+           setSameItems.call(this, i, j, lines, items);
+        }
+    }
+
+    function setSameItems(i, j, lines, items) {
+        for (var k = 0; k < lines.length; k++) {
+            switch(lines[k]) {
+                case 0:
+                    if(line0[i][this.options.rowCount-j-1]=='x' || items.indexOf(this.slotMap[i][j]) != -1)
+                        this.slotMap[i][j] = items[k];
+                    else this.slotMap[i][j] = chooseFruit.call(this);
+                    break;
+                case 1:
+                    if(line1[i][this.options.rowCount-j-1]=='x' || items.indexOf(this.slotMap[i][j]) != -1)
+                        this.slotMap[i][j] = items[k];
+                    else this.slotMap[i][j] = chooseFruit.call(this);
+                    break;
+                case 2:
+                    if(line2[i][this.options.rowCount-j-1]=='x' || items.indexOf(this.slotMap[i][j]) != -1)
+                        this.slotMap[i][j] = items[k];
+                    else this.slotMap[i][j] = chooseFruit.call(this);
+                    break;
+                case 3:
+                    if(line3[i][this.options.rowCount-j-1]=='x' || items.indexOf(this.slotMap[i][j]) != -1)
+                        this.slotMap[i][j] = items[k];
+                    else this.slotMap[i][j] = chooseFruit.call(this);
+                    break;
+                case 4:
+                    if(line4[i][this.options.rowCount-j-1]=='x' || items.indexOf(this.slotMap[i][j]) != -1)
+                        this.slotMap[i][j] = items[k];
+                    else this.slotMap[i][j] = chooseFruit.call(this);
+                    break;                                break;
+                default:
+                    this.slotMap[i][j] = chooseFruit.call(this);
+                    break;
+            }
+        }
+    }
+
+    function setDiffItems(i, j, lines, items) {
+        for (var k = 0; k < lines.length; k++) {
+            switch (lines[k]) {
+                case 0:
+                    if(line0[i][this.options.rowCount-j-1]=='x') this.slotMap[i][j] = items[k];
+                    break;
+                case 1:
+                    if(line1[i][this.options.rowCount-j-1]=='x') this.slotMap[i][j] = items[k];
+                    break;
+                case 2:
+                    if(line2[i][this.options.rowCount-j-1]=='x') this.slotMap[i][j] = items[k];
+                    break;
+                default:
+                    this.slotMap[i][j] = chooseFruit.call(this);
             }
         }
     }
@@ -199,7 +223,7 @@ define(function(require, exports, module) {
     function regenerate(lines, items, isDiff) {
         for (var i=0; i<this.options.dimension[0]; i++) {
             for (var j=this.bottomRow; j<this.options.rowCount; j++) {
-                setWinCombo.call(this, i, j, lines, items);
+                setWinCombo.call(this, i, j, lines, items, isDiff);
             }
         }
     }
@@ -207,34 +231,34 @@ define(function(require, exports, module) {
     function verifySlotMap(lines, items, isDiff) {
         var slotLines = [];
         if(items) {
-            if (verifyLine0.call(this, items[0])) slotLines.push(0);
-            if (verifyLine1.call(this, items[0])) slotLines.push(1);
-            if (verifyLine2.call(this, items[0])) slotLines.push(2);
-            if (verifyLine3.call(this, items[0])) slotLines.push(3);
-            if (verifyLine4.call(this, items[0])) slotLines.push(4);
+            if (verifyLine0.call(this, items)) slotLines.push(0);
+            if (verifyLine1.call(this, items)) slotLines.push(1);
+            if (verifyLine2.call(this, items)) slotLines.push(2);
+            if (verifyLine3.call(this, items)) slotLines.push(3);
+            if (verifyLine4.call(this, items)) slotLines.push(4);
         }
         if(lines) var same = arraysIdentical(lines, slotLines);
         return same;
     }
 
     function verifyLine0(item) {
-        return (this.slotMap[0][this.midRow] == item && this.slotMap[1][this.midRow] == item && this.slotMap[2][this.midRow] == item)
+        return (item.indexOf(this.slotMap[0][this.midRow]) != -1 && item.indexOf(this.slotMap[1][this.midRow]) != -1 && item.indexOf(this.slotMap[2][this.midRow]) != -1)
     }
 
     function verifyLine1(item) {
-        return (this.slotMap[0][this.topRow] == item && this.slotMap[1][this.topRow] == item && this.slotMap[2][this.topRow] == item)
+        return (item.indexOf(this.slotMap[0][this.topRow]) != -1 && item.indexOf(this.slotMap[1][this.topRow]) != -1 && item.indexOf(this.slotMap[2][this.topRow]) != -1)
     }
 
     function verifyLine2(item) {
-        return (this.slotMap[0][this.bottomRow] == item && this.slotMap[1][this.bottomRow] == item && this.slotMap[2][this.bottomRow] == item)
+        return (item.indexOf(this.slotMap[0][this.bottomRow]) != -1 && item.indexOf(this.slotMap[1][this.bottomRow]) != -1 && item.indexOf(this.slotMap[2][this.bottomRow]) != -1)
     }
 
     function verifyLine3(item) {
-        return (this.slotMap[0][this.bottomRow] == item && this.slotMap[1][this.midRow] == item && this.slotMap[2][this.topRow] == item)
+        return (item.indexOf(this.slotMap[0][this.bottomRow]) != -1 && item.indexOf(this.slotMap[1][this.midRow]) != -1 && item.indexOf(this.slotMap[2][this.topRow]) != -1)
     }
 
     function verifyLine4(item) {
-        return (this.slotMap[0][this.topRow] == item && this.slotMap[1][this.midRow] == item && this.slotMap[2][this.bottomRow] == item)
+        return (item.indexOf(this.slotMap[0][this.topRow]) != -1 && item.indexOf(this.slotMap[1][this.midRow]) != -1 && item.indexOf(this.slotMap[2][this.bottomRow]) != -1)
     }
 
     function arraysIdentical(lines, slotLines) {
