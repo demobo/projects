@@ -43,12 +43,11 @@ define(function(require, exports, module) {
 
     function _createViews() {
         this.columns = [];
-        generate.call(this);
-        var verify = verifySlotMap.call(this, [], [], false); console.log('init verify', verify);
-        while (verify == false) {
-            regenerate.call(this, [], [], false);
-            verify = verifySlotMap.call(this, [], [], false);
+        this.gameMap = new GameMap({});     window.gameMap = this.gameMap;
+        for (var j = 0; j < this.gameMap.length; j++){
+            this.gameMap[j].range = setRange(j); //console.log('gameMap range----- ', this.gameMap[j].range);
         }
+        generateMap.call(this);
 //        soundEffect.backgroundmusic.play();
         for (var i = 0; i<this.options.dimension[0]; i++) {
             var c = new SlotColumn({
@@ -60,10 +59,7 @@ define(function(require, exports, module) {
             this.columns.push(c);
             this.add(c);
         }
-        this.gameMap = new GameMap({});     window.gameMap = this.gameMap;
-        for (var j = 0; j < this.gameMap.length; j++){
-            this.gameMap[j].range = setRange(j); //console.log('gameMap range----- ', this.gameMap[j].range);
-        }
+
     }
 
     function _setListeners() {
@@ -73,14 +69,9 @@ define(function(require, exports, module) {
     }
 
     SlotMachine.prototype.spin = _.debounce(function() {
-        var results = setVariables.call(this);
-        generate.call(this, results.lines, results.slotItems, results.isDiff);
-        var verify = verifySlotMap.call(this, results.lines, results.slotItems, results.isDiff); //console.log('verify?', verify);
-        while (verify == false) {
-            results = setVariables.call(this)
-            regenerate.call(this, results.lines, results.slotItems, results.isDiff);
-            verify = verifySlotMap.call(this, results.lines, results.slotItems, results.isDiff); //console.log('verify regenerated', verify)
-        }
+//        var currentResults = this.results;
+        generateMap.call(this);
+
         this.columns.map(function(c, i){
             c.spin(500*i+1000);
         });
@@ -97,6 +88,17 @@ define(function(require, exports, module) {
         else soundEffect.line.play();
     };
 
+    function generateMap(){
+        this.results = setVariables.call(this);
+        generate.call(this, this.results.lines, this.results.slotItems, this.results.isDiff);
+        var verify = verifySlotMap.call(this, this.results.lines, this.results.slotItems, this.results.isDiff); //console.log('verify?', verify);
+        while (verify == false) {
+            this.results = setVariables.call(this)
+            regenerate.call(this, this.results.lines, this.results.slotItems, this.results.isDiff);
+            verify = verifySlotMap.call(this, this.results.lines, this.results.slotItems, this.results.isDiff); //console.log('verify regenerated', verify)
+        }
+    }
+
     function setVariables(){
         var winCombo = generateCombo.call(this);
         var lines = this.gameMap[winCombo].line;
@@ -107,7 +109,7 @@ define(function(require, exports, module) {
     }
 
     function generateCombo() {
-        var combo = 31;
+        var combo = this.gameMap.length-2;
         var randomNumber = Math.floor(Math.random()*100);
         for (var i = 0; i < this.gameMap.length; i++){
             var inRange = checkRange(this.gameMap[i].range, randomNumber);

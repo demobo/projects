@@ -93,7 +93,7 @@ define(function(require, exports, module){
                 combo: 'fourLine-2', weight: 3, line: [1, 2, 3, 4], isDiff: false
             },
             {
-                combo: 'fiveLine-jackpot', weight: 3, line: [0, 1, 3, 4, 5], isDiff: false
+                combo: 'fiveLine-jackpot', weight: 3, line: [0, 1, 2, 3, 4], isDiff: false
             },
             {
                 combo: 'default-no win', weight: 30, line: [], isDiff: false
