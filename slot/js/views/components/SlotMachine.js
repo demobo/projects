@@ -76,8 +76,8 @@ define(function(require, exports, module) {
 
     SlotMachine.prototype.spin = _.debounce(function() {
         var currentResults = this.results;
-        console.log('combo:', currentResults.combo, 'lines:', currentResults.lines, 'fruits:', currentResults.slotItems, 'isDiff:', currentResults.isDiff);
-        var winnings = calcWin.call(this, currentResults); console.log('winnings:', winnings);
+//        console.log('combo:', currentResults.combo, 'lines:', currentResults.lines, 'fruits:', currentResults.slotItems, 'isDiff:', currentResults.isDiff);
+        var winnings = calcWin.call(this, currentResults); //console.log('winnings:', winnings);
 
         generateMap.call(this);
         this.columns.map(function(c, i){
@@ -118,20 +118,20 @@ define(function(require, exports, module) {
     function generateMap(){
         this.results = setVariables.call(this);
         generate.call(this, this.results.lines, this.results.slotItems, this.results.isDiff);
-        var verify = verifySlotMap.call(this, this.results.lines, this.results.slotItems, this.results.isDiff); //console.log('verify?', verify);
+        var verify = verifySlotMap.call(this, this.results.lines, this.results.slotItems, this.results.isDiff); console.log('verify?', verify);
         while (verify == false) {
             this.results = setVariables.call(this)
             regenerate.call(this, this.results.lines, this.results.slotItems, this.results.isDiff);
-            verify = verifySlotMap.call(this, this.results.lines, this.results.slotItems, this.results.isDiff); //console.log('verify regenerated', verify)
+            verify = verifySlotMap.call(this, this.results.lines, this.results.slotItems, this.results.isDiff); console.log('verify regenerated', verify)
         }
     }
 
     function setVariables(){
-        var winCombo = generateCombo.call(this, this.gameMap, 120, this.gameMap.length-1);
+        var winCombo = generateCombo.call(this, this.gameMap, 1000, this.gameMap.length-1);
         var lines = this.gameMap[winCombo].line;
         var isDiff = this.gameMap[winCombo].isDiff;
         var combo = this.gameMap[winCombo].combo;
-        var slotItems = generateSlotItems.call(this, lines, isDiff);
+        var slotItems = generateSlotItems.call(this, lines, isDiff); console.log('lines:', lines, 'slotItems', slotItems, 'isDiff', isDiff);
         return {lines: lines, isDiff: isDiff, slotItems: slotItems, combo: combo};
     }
 
@@ -309,7 +309,7 @@ define(function(require, exports, module) {
                 if (verifyLine4.call(this, items[0])) slotLines.push(4);
             }
         }
-        if(lines) var same = arraysIdentical(lines, slotLines);
+        if(lines) var same = arraysIdentical(lines, slotLines); console.log(slotLines)
         return same;
     }
 
