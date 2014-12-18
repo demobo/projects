@@ -6,7 +6,7 @@ define(function(require, exports, module) {
 
     var UIElement           = require('core/UIElement');
     var CoinsMainView       = require('js/views/pages/coinsMainView');
-    var SlotMachine         = require('js/views/components/SlotMachineCopy');
+    var SlotMachine         = require('js/views/components/SlotMachine');
     var CreditBox           = require('js/views/components/CreditBox');
     var slotGame            = require('js/models/slotGame');
     var PushButton          = require('js/views/pages/PushButton');

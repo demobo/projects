@@ -20,7 +20,7 @@ define(function(require, exports, module) {
     var line3 = [[o,o,x],[o,x,o],[x,o,o]];
     var line4 = [[x,o,o],[o,x,o],[o,o,x]];
 
-    var winChart = [0, 1, 5, 25, 125, 10000];
+    var winChart = [0, 1, 5, 15, 25, 2000];
 
     function SlotMachine(options) {
         ContainerSurface.apply(this, arguments);
@@ -79,7 +79,6 @@ define(function(require, exports, module) {
         console.log('combo:', currentResults.combo, 'lines:', currentResults.lines, 'fruits:', currentResults.slotItems, 'isDiff:', currentResults.isDiff);
         var winnings = calcWin.call(this, currentResults); console.log('winnings:', winnings);
 
-
         generateMap.call(this);
         this.columns.map(function(c, i){
             c.spin(500*i+1000);
@@ -99,6 +98,10 @@ define(function(require, exports, module) {
                 }.bind(this));
             }.bind(this), 3000);
         }
+
+        _.delay(function() {
+            slotGame.save('credit', slotGame.get('credit')+winnings);
+        }, 3000);
 
     },1000, true);
 
@@ -341,8 +344,17 @@ define(function(require, exports, module) {
     }
 
     function calcWin(results) {
-        var itemValue = 1; console.log('fruitvalue:', this.slotItemMap[results.slotItems[0]])
-        return winChart[results.lines.length]*itemValue;
+        if (results.lines.length > 0) {
+            var winAmt = 0;
+            for (var i = 0; i < results.lines.length; i++){
+                var lineWin = winChart[results.lines.length]*this.slotItemMap[results.slotItems[i]].value;
+                winAmt = winAmt + lineWin;
+            }
+            return winAmt;
+        } else {
+            return 0;
+        }
+
     }
 
     module.exports = SlotMachine;
