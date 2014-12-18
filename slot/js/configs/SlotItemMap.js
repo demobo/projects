@@ -2,11 +2,11 @@ define(function(require, exports, module){
 
     function slotItemMap(){
         var slotItemMap = [
-            {item: 0, weight: 50, value: 1, fruit: 'kiwi'},
-            {item: 1, weight: 50, value: 1, fruit: 'strawberry'},
-            {item: 2, weight: 50, value: 1, fruit: 'pineapple'},
-            {item: 3, weight: 30, value: 2, fruit: 'lime'},
-            {item: 4, weight: 30, value: 2, fruit: 'avocado'},
+            {item: 0, weight: 100, value: 1, fruit: 'kiwi'},
+            {item: 1, weight: 100, value: 1, fruit: 'strawberry'},
+            {item: 2, weight: 100, value: 1, fruit: 'pineapple'},
+            {item: 3, weight: 40, value: 2, fruit: 'lime'},
+            {item: 4, weight: 40, value: 2, fruit: 'avocado'},
             {item: 5, weight: 20, value: 4, fruit: 'orange'},
             {item: 6, weight: 20, value: 4, fruit: 'blueberry'},
             {item: 7, weight: 15, value: 8, fruit: 'pomegranate'},

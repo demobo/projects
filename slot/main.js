@@ -66,8 +66,8 @@ define(function(require, exports, module) {
     var flipper = new Flipper();
     mainContext.add(centerModifier).add(flipper);
 
-    flipper.setFront(slotMachine);
-    flipper.setBack(gameStart);
+    flipper.setFront(gameStart);
+    flipper.setBack(slotMachine);
 
     var toggle = false;
     gameStart.buttonShadow.on('click', function(){
