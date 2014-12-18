@@ -197,7 +197,7 @@ define(function(require, exports, module) {
     }
 
     function chooseFruit() {
-        return generateCombo.call(this, this.slotItemMap, 20, this.slotItemMap.length-1)
+        return generateCombo.call(this, this.slotItemMap, 400, 0)
     }
 
     function setWinCombo(i, j, lines, items, isDiff) {
