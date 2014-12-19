@@ -85,18 +85,18 @@ define(function(require, exports, module) {
         });
 //        soundEffect.slot.play();
 
-        if (currentResults.lines.length == 5) {
-            slotGame.save('jackpot', Date.now());
-        }
+//        if (currentResults.lines.length == 5) {
+//            slotGame.save('jackpot', Date.now());
+//        }
 
         if (currentResults.lines.length) {
             _.delay(function() {
                 currentResults.lines.map(function(line, index){
                     setTimeout(function() {
                         this.animateLine(line, false);
-                    }.bind(this), index*2000);
+                    }.bind(this), index*2100);
                 }.bind(this));
-            }.bind(this), 3000);
+            }.bind(this), 500*this.options.dimension[0]+1500);
         }
 
         _.delay(function() {
@@ -166,11 +166,11 @@ define(function(require, exports, module) {
         var slotItems = [];
         var randomFruit = chooseFruit();
         for (var i = 0; i < lines.length; i++){
-            if (isDiff) {
-                var oldFruit = randomFruit;
-                randomFruit = chooseFruit();
-                while (randomFruit == oldFruit) randomFruit = chooseFruit();
-            }
+//            if (isDiff) {
+//                var oldFruit = randomFruit;
+//                randomFruit = chooseFruit();
+//                while (randomFruit == oldFruit) randomFruit = chooseFruit();
+//            }
             slotItems.push(randomFruit);
 
         }
@@ -197,7 +197,8 @@ define(function(require, exports, module) {
     }
 
     function chooseFruit() {
-        return generateCombo.call(this, this.slotItemMap, 600, 0)
+        return generateCombo.call(this, this.slotItemMap, 600, 0);
+//        return 1;
     }
 
     function setWinCombo(i, j, lines, items, isDiff) {
