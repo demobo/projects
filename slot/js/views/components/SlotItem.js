@@ -33,32 +33,34 @@ define(function(require, exports, module) {
             if (this.image.getClasses() == 'good') {
                 switch (icon) {
                     case 0: case 3: case 5: case 9:
-                        this.image.setRotation(0,0, -Math.PI*2, {duration: 1500, curve: 'easeIn'}, function () {
+                        this.image.setRotation(0,0, -Math.PI*2, {duration: 1000, curve: 'easeIn'}, function () {
                             this.image.setRotation(0, 0, 0, {duration: 500, curve: 'easeOut'})
                         }.bind(this));
-                        animateSize.call(this, 1.2, 1900, 100);
+                        animateSize.call(this, 1.2, 1500, 100);
                         break;
-                    case 1:
-                        this.image.setRotation(Math.PI*2,0,0, {duration: 1000, curve: Easing.inOutBounce}, function () {
-                            this.image.setRotation(0,0,0, {duration: 1000, curve: Easing.outBounce})
+                    case 1: case 2: case 4:
+                        this.image.setRotation(0,Math.PI*6,0, {duration: 1400, curve: Easing.inOutBounce}, function () {
+                            this.image.setRotation(0,0,0, {duration: 100, curve: Easing.inOutBounce});
                         }.bind(this));
-                        animateSize.call(this, 1.2, 1900, 100);
+                        animateSize.call(this, 1.2, 1500, 100);
                         break;
-                    case 2:
-                        this.image.setRotation(0,0,Math.PI*2, {duration: 1000, curve: Easing.inBounce},function () {
-                            this.image.setRotation(0,0,0, {duration: 1000, curve: Easing.inOutElastic})
+                    case 6:
+                        this.image.setRotation(0,0,Math.PI*2, {duration: 500, curve: Easing.inBounce},function () {
+                            this.image.setRotation(0,0,0, {duration: 500, curve: Easing.inOutElastic})
                         }.bind(this));
-                        animateSize.call(this, 1.2, 1900, 100);
+                        animateSize.call(this, 1.2, 1500, 100);
                         break;
-                    case 4:
-                        this.image.setScale([1.5,1.5,1], {duration: 2000,method: 'spring'});
-                        animateSize.call(this, 1.2, 1900, 100);
+                    case 7:
+                        this.image.setScale([1.5,1.5,1], {duration: 1400, method: 'spring'}, function () {
+                            this.image.setScale([1,1,1], {duration: 100, method: 'snap'});
+                        }.bind(this));
+                        changeFrame.call(this, 1.2, 1500, 100);
                         break;
                     default:
-                        this.image.setRotation(0, 0, Math.PI, {duration: 1500, curve: 'easeIn'}, function () {
-                            this.image.setRotation(0, 0, 0, {duration: 500, curve: 'easeIn'})
+                        this.image.setRotation(0, 0, Math.PI*2, {duration: 1000, curve: 'spring'}, function () {
+                            this.image.setRotation(0, 0, 0, {duration: 500, curve: 'spring'})
                         }.bind(this));
-                        animateSize.call(this, 1.2, 1900, 100);
+                        animateSize.call(this, 1.2, 1500, 100);
                         break;
                 }
             } else if (this.image.getClasses() == 'bad') {

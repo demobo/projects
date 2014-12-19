@@ -94,14 +94,14 @@ define(function(require, exports, module) {
                 currentResults.lines.map(function(line, index){
                     setTimeout(function() {
                         this.animateLine(line, false);
-                    }.bind(this), index*2100);
+                    }.bind(this), index*1700);
                 }.bind(this));
             }.bind(this), 500*this.options.dimension[0]+1500);
         }
 
         _.delay(function() {
             slotGame.save('credit', slotGame.get('credit')+winnings);
-        }, 3000);
+        }, 500*this.options.dimension[0]+2000);
 
     },1000, true);
 
@@ -166,11 +166,11 @@ define(function(require, exports, module) {
         var slotItems = [];
         var randomFruit = chooseFruit();
         for (var i = 0; i < lines.length; i++){
-//            if (isDiff) {
-//                var oldFruit = randomFruit;
-//                randomFruit = chooseFruit();
-//                while (randomFruit == oldFruit) randomFruit = chooseFruit();
-//            }
+            if (isDiff) {
+                var oldFruit = randomFruit;
+                randomFruit = chooseFruit();
+                while (randomFruit == oldFruit) randomFruit = chooseFruit();
+            }
             slotItems.push(randomFruit);
 
         }
