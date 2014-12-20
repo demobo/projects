@@ -42,21 +42,6 @@ define(function(require, exports, module) {
         dimension: [3, 3],
         rowCount: 40
     });
-    var slotMod = new StateModifier({
-        align: [.505,.55],
-        origin: [.5,.5]
-    });
-    var creditBox = new CreditBox({
-
-    });
-    var creditBoxMod = new StateModifier({
-        size: [200,60],
-        align: [1,1],
-        origin: [1,1]
-    });
-
-    mainContext.add(slotMod).add(slotMachine);
-    mainContext.add(creditBoxMod).add(creditBox);
 
     var centerModifier = new StateModifier({
         align: [0.5,0.5],
@@ -85,6 +70,14 @@ define(function(require, exports, module) {
         }
         toggle = !toggle;
     }.bind(this));
+
+    var creditBox = new CreditBox({});
+    var creditBoxMod = new StateModifier({
+        size: [200,60],
+        align: [1,1],
+        origin: [1,1]
+    });
+    mainContext.add(creditBoxMod).add(creditBox);
 
     var spin = _.debounce(function() {
         var lines = slotGame.get('lines');

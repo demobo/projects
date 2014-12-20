@@ -6,7 +6,7 @@ define(function(require, exports, module) {
         constructor:function(options) {
             options = options || {};
 
-            this._callSuper(UICimponent, 'constructor', {
+            this._callSuper(UIComponent, 'constructor', {
 
             });
 

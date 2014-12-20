@@ -8,11 +8,13 @@ define(function(require, exports, module) {
         constructor:function(options) {
             this._callSuper(UIComponent, 'constructor', options);
             this.options = options;
-            this.image = new UIElement({});
+            this.image = new UIElement({
+                size: options.size
+            });
             this.image.center();
             this._addChild(this.image);
             this.frame = new UIElement({
-                size:[options.size[0]*0.90, options.size[1]]
+                size:[options.size[0]*0.90, options.size[1]*0.90]
             });
             this.frame.center();
             this._addChild(this.frame); window.image = this.image;
@@ -27,7 +29,7 @@ define(function(require, exports, module) {
             if (bad) this.image.setClasses(['bad']);
             else this.image.setClasses(['good']);
 
-            this.frame.setClasses(['active']); //console.log(this.options.map[this.options.column][this.options.row]);
+            this.frame.setClasses(['active']);
 
             var icon = this.options.map[this.options.column][this.options.row];
             if (this.image.getClasses() == 'good') {

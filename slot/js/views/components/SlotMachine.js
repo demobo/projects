@@ -5,6 +5,7 @@ define(function(require, exports, module) {
     var Transform           = require('famous/core/Transform');
     var Modifier            = require('famous/core/Modifier');
     var StateModifier       = require('famous/modifiers/StateModifier');
+    var Lightbox            = require('famous/views/Lightbox');
     var UIElement           = require('core/UIElement');
     var Engine              = require('famous/core/Engine');
     var soundEffect         = require('js/configs/SoundEffect');
@@ -12,6 +13,7 @@ define(function(require, exports, module) {
     var GameMap             = require('js/configs/GameMap');
     var SlotItemMap         = require('js/configs/SlotItemMap');
     var slotGame            = require('js/models/slotGame');
+    var MessageView         = require('js/views/ui/MessageView');
 
     var o = 'o'; var x = 'x';
     var line0 = [[o,x,o],[o,x,o],[o,x,o]];
@@ -20,7 +22,7 @@ define(function(require, exports, module) {
     var line3 = [[o,o,x],[o,x,o],[x,o,o]];
     var line4 = [[x,o,o],[o,x,o],[o,o,x]];
 
-    var winChart = [0, 1, 5, 15, 25, 2000];
+    var winChart = [0, 1, 5, 15, 25, 100];
 
     function SlotMachine(options) {
         ContainerSurface.apply(this, arguments);
@@ -51,8 +53,7 @@ define(function(require, exports, module) {
         for (var k = 0; k < this.slotItemMap.length; k++){
             this.slotItemMap[k].range = setRange(this.slotItemMap, k);
         }
-
-
+        slotGame.save('credit', 100);
         generateMap.call(this);
 //        soundEffect.backgroundmusic.play();
         for (var i = 0; i<this.options.dimension[0]; i++) {
@@ -66,15 +67,28 @@ define(function(require, exports, module) {
             this.add(c);
         }
 
+        this.messageView = new MessageView({});
+        this.messageView.init();
+        this.add(this.messageView);
     }
 
     function _setListeners() {
         Engine.on('click', function() {
-            this.spin();
+            if (slotGame.get('spinState') != 'spinning') {
+                slotGame.save('credit', slotGame.get('credit')-5);
+                this.spin();
+            }
+        }.bind(this));
+
+        slotGame.on('change:winnings', function(model, value){
+            if(value >= 10 && value < 500) this.messageView.update(value);
+            if (value >= 500 && value < 10000) this.messageView.update('<div style="font-size:48px">Big Win! ' + value +'</div>');
+            if (value >= 10000) this.messageView.update('<div style="font-size:48px">JACKPOT! ' + value +'</div>');
         }.bind(this));
     }
 
     SlotMachine.prototype.spin = _.debounce(function() {
+        slotGame.save('spinState', 'spinning');
         var currentResults = this.results;
         console.log('combo:', currentResults.combo, 'lines:', currentResults.lines, 'fruits:', currentResults.slotItems, 'isDiff:', currentResults.isDiff);
         var winnings = calcWin.call(this, currentResults); //console.log('winnings:', winnings);
@@ -85,9 +99,9 @@ define(function(require, exports, module) {
         });
 //        soundEffect.slot.play();
 
-//        if (currentResults.lines.length == 5) {
-//            slotGame.save('jackpot', Date.now());
-//        }
+        if (currentResults.lines.length == 5) {
+            slotGame.save('jackpot', Date.now());
+        }
 
         if (currentResults.lines.length) {
             _.delay(function() {
@@ -101,7 +115,9 @@ define(function(require, exports, module) {
 
         _.delay(function() {
             slotGame.save('credit', slotGame.get('credit')+winnings);
-        }, 500*this.options.dimension[0]+2000);
+            slotGame.save('winnings', winnings);
+            slotGame.save('spinState', 'endSpin');
+        }.bind(this), 500*this.options.dimension[0]+1500);
 
     },1000, true);
 
@@ -347,7 +363,6 @@ define(function(require, exports, module) {
         } else {
             return 0;
         }
-
     }
 
     module.exports = SlotMachine;
