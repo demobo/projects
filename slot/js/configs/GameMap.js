@@ -6,7 +6,7 @@ define(function(require, exports, module){
             {combo: 'oneLine-1', weight: 100, line: [1], isDiff: false},
             {combo: 'oneLine-2', weight: 100, line: [2], isDiff: false},
             {combo: 'oneLine-3', weight: 100, line: [3], isDiff: false},
-            {combo: 'oneLine-4', weight: 50, line: [4], isDiff: false},
+            {combo: 'oneLine-4', weight: 100, line: [4], isDiff: false},
             {combo: 'twoLine-0', weight: 25, line: [0, 1], isDiff: false},
             {combo: 'twoLine-1', weight: 25, line: [0, 2], isDiff: false},
             {combo: 'twoLine-2', weight: 25, line: [1, 2], isDiff: false},

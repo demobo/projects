@@ -143,7 +143,7 @@ define(function(require, exports, module) {
     }
 
     function setVariables(){
-        var winCombo = generateCombo.call(this, this.gameMap, 1000, this.gameMap.length-1);
+        var winCombo = generateCombo.call(this, this.gameMap, 2000, this.gameMap.length-1);
         var lines = this.gameMap[winCombo].line;
         var isDiff = this.gameMap[winCombo].isDiff;
         var combo = this.gameMap[winCombo].combo;
