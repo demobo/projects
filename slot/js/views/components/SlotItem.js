@@ -40,19 +40,19 @@ define(function(require, exports, module) {
                         }.bind(this));
                         animateSize.call(this, 1.2, 1500, 100);
                         break;
-                    case 1: case 2: case 4:
+                    case 1: case 2:
                         this.image.setRotation(0,Math.PI*6,0, {duration: 1400, curve: Easing.inOutBounce}, function () {
                             this.image.setRotation(0,0,0, {duration: 100, curve: Easing.inOutBounce});
                         }.bind(this));
                         animateSize.call(this, 1.2, 1500, 100);
                         break;
-                    case 6:
+                    case 6: case 10: case 11:
                         this.image.setRotation(0,0,Math.PI*2, {duration: 500, curve: Easing.inBounce},function () {
                             this.image.setRotation(0,0,0, {duration: 500, curve: Easing.inOutElastic})
                         }.bind(this));
                         animateSize.call(this, 1.2, 1500, 100);
                         break;
-                    case 7:
+                    case 4: case 7:
                         this.image.setScale([1.5,1.5,1], {duration: 1400, method: 'spring'}, function () {
                             this.image.setScale([1,1,1], {duration: 100, method: 'snap'});
                         }.bind(this));

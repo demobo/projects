@@ -109,7 +109,7 @@ define(function(require, exports, module) {
 
     slotGame.on('change:button3',function(model, value){
         if (value<(Date.now()-3000)) return;
-        if (slotGame.get('spinState') != 'spinning') spin.call(this);
+        else if (slotGame.get('spinState') == 'endSpin') spin.call(this);
     }.bind(this));
 
     mainContext.setPerspective(1000);

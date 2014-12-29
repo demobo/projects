@@ -74,7 +74,7 @@ define(function(require, exports, module) {
 
     function _setListeners() {
         Engine.on('click', function() {
-            if (slotGame.get('spinState') != 'spinning') {
+            if (slotGame.get('spinState') == 'endSpin') {
                 slotGame.save('credit', slotGame.get('credit')-5);
                 this.spin();
             }
@@ -107,6 +107,7 @@ define(function(require, exports, module) {
             _.delay(function() {
                 currentResults.lines.map(function(line, index){
                     setTimeout(function() {
+                        if (slotGame.get('spinState') == 'spinning') return;
                         this.animateLine(line, false);
                     }.bind(this), index*1700);
                 }.bind(this));
